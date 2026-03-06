@@ -10,4 +10,11 @@ export const media = {
   tablet: `@media (max-width: ${breakpoints.tablet})`,
   laptop: `@media (max-width: ${breakpoints.laptop})`,
   desktop: `@media (max-width: ${breakpoints.desktop})`,
-};
+}; 
+
+export const media2 = {
+  mobile: `@media (max-width: ${breakpoints.mobile})`,
+  tablet: `@media (max-width: ${breakpoints.tablet})`,
+  laptop: `@media (max-width: ${breakpoints.laptop})`,
+  desktop: `@media (max-width: ${breakpoints.desktop})`,
+}; 
