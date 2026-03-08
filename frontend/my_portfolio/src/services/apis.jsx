@@ -5,7 +5,7 @@ const API_BASE =
 
 const api = axios.create({
   baseURL: API_BASE,
-  headers: { "Content-Type": "application/json" },
+  // headers: { "Content-Type": "application/json" },
 });
 
 // Attach JWT token to requests
@@ -86,8 +86,9 @@ export const blogAPI = {
 // ====================
 // CASE STUDY API
 // ====================
-
 export const caseStudyAPI = {
+  getFeatured: () => api.get("/case-studies/featured"),
+
   getAll: (page = 1, limit = 10) =>
     api.get("/case-studies", { params: { page, limit } }),
 
@@ -95,13 +96,10 @@ export const caseStudyAPI = {
 
   create: (data) => api.post("/case-studies", data),
 
-  update: (id, data) =>
-    api.put(`/case-studies/${id}`, data),
+  update: (id, data) => api.put(`/case-studies/${id}`, data),
 
-  delete: (id) =>
-    api.delete(`/case-studies/${id}`),
+  delete: (id) => api.delete(`/case-studies/${id}`),
 };
-
 // ====================
 // CONTACT API
 // ====================
@@ -114,4 +112,17 @@ export const contactAPI = {
     api.get("/contact", { params: { page, limit } }),
 };
 
+
+export const uploadAPI = {
+  // Images for case study preview
+  uploadImages: (formData) => api.post("/upload", formData),
+
+  // Media inside editor (images/videos)
+  uploadMedia: (file, type) => {
+    const form = new FormData();
+    form.append(type === "video" ? "videos" : "images", file);
+    return api.post("/upload", form);
+  }
+};
 export default api;
+

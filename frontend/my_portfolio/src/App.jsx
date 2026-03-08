@@ -23,6 +23,8 @@ import Contact from "./pages/Contact";
 import AdminLogin from "./pages/AdminLogin";
 import Admin from "./pages/Admin";
 import NotFound from "./components/ui/NotFound";
+import BlogDetail from "./pages/BlogDetails";
+import CaseStudyDetails from "./pages/CaseStudyDetails";
 
 const queryClient = new QueryClient();
 
@@ -60,9 +62,10 @@ const AnimatedRoutes = () => {
           path="/case-studies"
           element={<PageTransition><CaseStudies /></PageTransition>}
         />
-
+        <Route path="/case-studies/:slug" element={<PageTransition><CaseStudyDetails/></PageTransition>} />
         <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />
 
+        <Route path="/blog/:slug" element={<PageTransition><BlogDetail /></PageTransition>} />
         <Route
           path="/contact"
           element={<PageTransition><Contact /></PageTransition>}

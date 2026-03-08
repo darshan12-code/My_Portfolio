@@ -140,52 +140,6 @@ export const projects = [
   },
 ];
 
-export const blogPosts = [
-  {
-    id: 'react-performance',
-    title: 'React Performance Optimization: Beyond React.memo',
-    excerpt: 'Deep dive into virtualization, code splitting, and bundle analysis techniques that actually move the needle.',
-    category: 'React',
-    readTime: '8 min',
-    date: 'Feb 28, 2026',
-    link: '/blog/react-performance',
-  },
-  {
-    id: 'flask-microservices',
-    title: 'Building Microservices with Flask + Docker',
-    excerpt: 'How to structure a Python Flask backend as decoupled microservices with Docker Compose orchestration.',
-    category: 'Backend',
-    readTime: '12 min',
-    date: 'Feb 15, 2026',
-    link: '/blog/flask-microservices',
-  },
-  {
-    id: 'css-animations',
-    title: 'Advanced CSS Animations Without JavaScript',
-    excerpt: 'Creating complex keyframe sequences, scroll-driven animations, and GPU-optimized transitions using pure CSS.',
-    category: 'CSS',
-    readTime: '6 min',
-    date: 'Jan 30, 2026',
-    link: '/blog/css-animations',
-  },
-  {
-    id: 'd3-react',
-    title: 'Integrating D3.js with React: The Right Way',
-    excerpt: 'Avoiding common pitfalls when combining D3 DOM manipulation with React virtual DOM reconciliation.',
-    category: 'Data Viz',
-    readTime: '10 min',
-    date: 'Jan 12, 2026',
-  },
-  {
-    id: 'remote-work',
-    title: 'Remote Engineering: Tools & Habits That Work',
-    excerpt: 'After 3 years of remote full-stack work, here are the systems and tools that keep me productive.',
-    category: 'Career',
-    readTime: '5 min',
-    date: 'Dec 20, 2025',
-  },
-];
-
 export const aboutTraits = [
   { emoji: '🎨', label: 'Creative', description: 'Design-driven development' },
   { emoji: '🧠', label: 'Strategic', description: 'Scalable architecture thinking' },

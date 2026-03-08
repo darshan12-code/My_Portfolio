@@ -4,15 +4,13 @@ from models import CaseStudy
 from flask_jwt_extended import jwt_required
 from utils.decorators import admin_required
 from utils.helpers import generate_slug
+import json
 
 case_bp = Blueprint(
     "case_studies",
     __name__,
     url_prefix="/portfolio/case-studies"
 )
-
-
-# SERIALIZER
 def serialize_case(case):
     return {
         "id": case.id,
@@ -21,116 +19,128 @@ def serialize_case(case):
         "summary": case.summary,
         "content": case.content,
         "tech_stack": case.tech_stack,
+        "thumbnail": case.thumbnail,        # ← single URL string, no JSON parsing
         "github_url": case.github_url,
         "live_url": case.live_url,
+        "category": case.category,
+        "company_project": case.company_project,
         "is_published": case.is_published,
         "created_at": case.created_at.isoformat() if case.created_at else None
     }
 
+def safe_preview_images(value):
+    """Always store preview_images as a valid JSON string"""
+    if not value:
+        return json.dumps([])
+    if isinstance(value, list):
+        return json.dumps(value)
+    if isinstance(value, str):
+        try:
+            parsed = json.loads(value)
+            if isinstance(parsed, list):
+                return value  # already valid JSON array string
+            return json.dumps([value])
+        except:
+            return json.dumps([value])
+    return json.dumps([])
 
-# GET ALL (Public)
+
 @case_bp.route("", methods=["GET"])
 def get_all():
-    page = request.args.get("page", 1, type=int)
-    per_page = request.args.get("limit", 10, type=int)
-
-    pagination = CaseStudy.query.filter_by(is_published=True)\
-        .order_by(CaseStudy.created_at.desc())\
-        .paginate(page=page, per_page=per_page, error_out=False)
-
-    return jsonify({
-        "total": pagination.total,
-        "pages": pagination.pages,
-        "current_page": pagination.page,
-        "data": [serialize_case(c) for c in pagination.items]
-    })
-
-
-# GET BY SLUG
-@case_bp.route("/<slug>", methods=["GET"])
-def get_by_slug(slug):
-    case = CaseStudy.query.filter_by(slug=slug, is_published=True).first_or_404()
-
-    return jsonify(serialize_case(case))
-
-
-# ADMIN GET ALL (includes drafts)
-@case_bp.route("/admin", methods=["GET"])
-@jwt_required()
-@admin_required
-def admin_get_all():
-
-    cases = CaseStudy.query.order_by(CaseStudy.created_at.desc()).all()
+    cases = CaseStudy.query.filter_by(is_published=True)\
+        .order_by(CaseStudy.created_at.desc()).all()
 
     return jsonify({
         "data": [serialize_case(c) for c in cases]
     })
 
 
-# CREATE
+@case_bp.route("/<slug>", methods=["GET"])
+def get_by_slug(slug):
+    case = CaseStudy.query.filter_by(
+        slug=slug,
+        is_published=True
+    ).first_or_404()
+
+    return jsonify(serialize_case(case))
+
+
 @case_bp.route("", methods=["POST"])
 @jwt_required()
 @admin_required
 def create_case():
+    try:
+        data = request.form
+        slug = generate_slug(data["title"])
 
-    data = request.json
+        existing = CaseStudy.query.filter_by(slug=slug).first()
+        if existing:
+            import time
+            slug = f"{slug}-{int(time.time())}"
 
-    slug = generate_slug(data["title"])
+        case = CaseStudy(
+            title=data.get("title"),
+            slug=slug,
+            summary=data.get("summary"),
+            content=data.get("content"),
+            tech_stack=data.get("tech_stack"),
+            thumbnail=data.get("thumbnail") or None,   # ← single URL
+            github_url=data.get("github_url") or None,
+            live_url=data.get("live_url") or None,
+            category=data.get("category") or None,
+            company_project=data.get("company_project") == "true",
+            is_published=data.get("is_published", "true") == "true"
+        )
 
-    case = CaseStudy(
-        title=data.get("title"),
-        slug=slug,
-        summary=data.get("summary"),
-        content=data.get("content"),
-        tech_stack=data.get("tech_stack"),
-        github_url=data.get("github_url"),
-        live_url=data.get("live_url"),
-        is_published=data.get("is_published", True)
-    )
+        db.session.add(case)
+        db.session.commit()
 
-    db.session.add(case)
-    db.session.commit()
+        return jsonify({"message": "Case Study Created", "data": serialize_case(case)})
 
-    return jsonify({
-        "message": "Case Study Created",
-        "data": serialize_case(case)
-    }), 201
+    except Exception as e:
+        db.session.rollback()
+        print("CREATE CASE ERROR:", str(e))
+        return jsonify({"error": str(e)}), 500
 
 
-# UPDATE
 @case_bp.route("/<int:id>", methods=["PUT"])
 @jwt_required()
 @admin_required
 def update_case(id):
-
     case = CaseStudy.query.get_or_404(id)
-    data = request.json
+    data = request.form
 
-    if "title" in data:
-        case.title = data["title"]
-        case.slug = generate_slug(data["title"])
-
+    case.title = data.get("title", case.title)
     case.summary = data.get("summary", case.summary)
     case.content = data.get("content", case.content)
     case.tech_stack = data.get("tech_stack", case.tech_stack)
-    case.github_url = data.get("github_url", case.github_url)
-    case.live_url = data.get("live_url", case.live_url)
-    case.is_published = data.get("is_published", case.is_published)
+    case.github_url = data.get("github_url") or None
+    case.live_url = data.get("live_url") or None
+    case.category = data.get("category") or None
+    case.company_project = data.get("company_project") == "true"
+    case.is_published = data.get("is_published", "true") == "true"
+
+    new_thumbnail = data.get("thumbnail")
+    if new_thumbnail:
+        case.thumbnail = new_thumbnail
 
     db.session.commit()
+    return jsonify({"message": "Case Study Updated", "data": serialize_case(case)})
+
+# In your case_studies route
+@case_bp.route("/featured", methods=["GET"])
+def get_featured():
+    cases = CaseStudy.query.filter_by(is_featured=True)\
+                .order_by(CaseStudy.created_at.desc())\
+                .limit(4).all()
 
     return jsonify({
-        "message": "Case Study Updated",
-        "data": serialize_case(case)
+        "data": [s.to_dict() for s in cases]
     })
-
-
-# DELETE
 @case_bp.route("/<int:id>", methods=["DELETE"])
 @jwt_required()
 @admin_required
 def delete_case(id):
-
     case = CaseStudy.query.get_or_404(id)
 
     db.session.delete(case)

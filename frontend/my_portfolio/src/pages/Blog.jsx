@@ -58,15 +58,14 @@ const Blog = () => {
       const res = await blogAPI.getAll();
 
       const formatted = res.data.data.map((blog) => ({
-        id: blog.id,
-        title: blog.title,
-        excerpt: blog.excerpt,
-        category: "Article", // optional since DB doesn't have category
-        readTime: "5 min",   // optional
-        date: new Date(blog.created_at).toLocaleDateString(),
-        link: `/blog/${blog.slug}`
-      }));
-
+              id: blog.id,
+              title: blog.title,
+              excerpt: blog.excerpt,
+              category: blog.category || "Article",
+              readTime: blog.read_time,
+              date: new Date(blog.created_at).toLocaleDateString(),
+              link: `/blog/${blog.slug}`
+            }));
       setPosts(formatted);
 
     } catch (err) {

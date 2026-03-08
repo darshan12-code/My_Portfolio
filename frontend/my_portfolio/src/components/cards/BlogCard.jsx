@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-
+import { Link } from 'react-router-dom';
+import React from 'react';
 const Card = styled(motion.div)`
   padding: 1.5rem;
   background: ${({ theme }) => theme.colors.bgSecondary};
@@ -49,6 +50,12 @@ const Date = styled.span`
   color: ${({ theme }) => theme.colors.textTertiary};
 `;
 
+const ReadMoreLink = styled(Link)`
+  color: ${({ theme }) => theme.colors.accentBlue};
+  font-weight: 600;
+  text-decoration: underline;
+`;
+
 const BlogCard = ({ post }) => (
   <Card
     initial={{ y: 20, opacity: 0 }}
@@ -64,7 +71,9 @@ const BlogCard = ({ post }) => (
     <Title>{post.title}</Title>
     <Excerpt>{post.excerpt}</Excerpt>
     <Date>{post.date}</Date>
+    <ReadMoreLink to={post.link}>Read More →</ReadMoreLink>
   </Card>
 );
 
-export default BlogCard;
+
+export default React.memo(BlogCard);
