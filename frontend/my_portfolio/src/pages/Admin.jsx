@@ -28,41 +28,50 @@ const Admin = () => {
   const [editItem, setEditItem] = useState(null);
 
   const [formData, setFormData] = useState({});
-const schemas = {
-  blogs: [
-    { name: "title", label: "Blog Title", type: "text" },
-    { name: "excerpt", label: "Excerpt", type: "textarea" },
-    { name: "category", label: "Category", type: "text" },
-    { name: "content_type", label: "Editor Type", type: "radio" },
-    { name: "content", label: "Blog Content", type: "editor" },
-    { name: "is_published", label: "Publish", type: "checkbox" }
-  ],
-cases: [
-  { name: "title", label: "Project Title", type: "text" },
-  { name: "summary", label: "Summary", type: "textarea" },
-  { name: "category", label: "Category", type: "text" },
-  { name: "tech_stack", label: "Tech Stack", type: "text" },
-  { name: "github_url", label: "Github URL", type: "text" },
-  { name: "live_url", label: "Live URL", type: "text" },
-  { name: "thumbnail", label: "Thumbnail Image", type: "thumbnail" }, // ← changed
-  { name: "company_project", label: "Company Project", type: "checkbox" },
-  { name: "content", label: "Case Study Content", type: "editor" },
-  { name: "is_published", label: "Publish", type: "checkbox" }
-],
-  messages: [
-    { name: "name", label: "Name", type: "text" },
-    { name: "email", label: "Email", type: "text" },
-    { name: "message", label: "Message", type: "textarea" }
-  ]
-};
 
-const closeForm = () => {
-  
-  setShowForm(false);
-  setEditItem(null);
-  setFormData({});  // ← resets all inputs
-};
+  const schemas = {
+    blogs: [
+      { name: "title", label: "Blog Title", type: "text" },
+      { name: "excerpt", label: "Excerpt", type: "textarea" },
+      { name: "category", label: "Category", type: "text" },
+      { name: "content_type", label: "Editor Type", type: "radio" },
+      { name: "content", label: "Blog Content", type: "editor" },
+      { name: "is_published", label: "Publish", type: "checkbox" }
+    ],
+    cases: [
+      { name: "title", label: "Project Title", type: "text" },
+      { name: "summary", label: "Summary", type: "textarea" },
+      { name: "category", label: "Category", type: "text" },
+      { name: "tech_stack", label: "Tech Stack", type: "text" },
+      { name: "github_url", label: "Github URL", type: "text" },
+      { name: "live_url", label: "Live URL", type: "text" },
+      { name: "thumbnail", label: "Thumbnail Image", type: "thumbnail" },
+      { name: "company_project", label: "Company Project", type: "checkbox" },
+      { name: "content", label: "Case Study Content", type: "editor" },
+      { name: "is_published", label: "Publish", type: "checkbox" }
+    ],
+    messages: [
+      { name: "name", label: "Name", type: "text" },
+      { name: "email", label: "Email", type: "text" },
+      { name: "message", label: "Message", type: "textarea" }
+    ]
+  };
 
+  // Prevent background scroll when modal is open
+  useEffect(() => {
+    if (showForm || showPreview) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [showForm, showPreview]);
+
+  const closeForm = () => {
+    setShowForm(false);
+    setEditItem(null);
+    setFormData({});
+  };
 
   const fetchData = async () => {
     const [b, c, m] = await Promise.all([
@@ -91,68 +100,69 @@ const closeForm = () => {
   const paginated = dataset.slice(start, start + ITEMS_PER_PAGE);
 
   const totalPages = Math.ceil(dataset.length / ITEMS_PER_PAGE);
-const openCreate = () => {
-  setEditItem(null);
 
-  const empty = {};
+  const openCreate = () => {
+    setEditItem(null);
 
-  schemas[tab].forEach((field) => {          // field is the object
-    if (field.name === "is_published") empty[field.name] = true;
-    else if (field.name === "content_type") empty[field.name] = "rich";
-    else empty[field.name] = "";
-  });
+    const empty = {};
 
-  setFormData(empty);
-  setShowForm(true);
-};
-const openEdit = (item) => {
-  setEditItem(item);
+    schemas[tab].forEach((field) => {
+      if (field.name === "is_published") empty[field.name] = true;
+      else if (field.name === "content_type") empty[field.name] = "rich";
+      else empty[field.name] = "";
+    });
 
-  const fields = schemas[tab].map(f => f.name);
-  const filtered = {};
+    setFormData(empty);
+    setShowForm(true);
+  };
 
-  fields.forEach(name => {
-    filtered[name] = item[name] ?? "";
-  });
+  const openEdit = (item) => {
+    setEditItem(item);
 
-  // Only add content_type for blogs, nothing extra
-  if (tab === "blogs") {
-    filtered.content_type = item.content_type || "rich";
-  }
+    const fields = schemas[tab].map(f => f.name);
+    const filtered = {};
 
-  setFormData(filtered);  // ← no extra spread, strictly schema fields only
-  setShowForm(true);
-};
+    fields.forEach(name => {
+      filtered[name] = item[name] ?? "";
+    });
 
-const handleSave = async () => {
-  if (tab === "blogs") {
-    const payload = { ...formData };
-    editItem
-      ? await blogAPI.update(editItem.id, payload)
-      : await blogAPI.create(payload);
-  }
+    if (tab === "blogs") {
+      filtered.content_type = item.content_type || "rich";
+    }
 
-  if (tab === "cases") {
-    const form = new FormData();
-    form.append("title", formData.title || "");
-    form.append("summary", formData.summary || "");
-    form.append("content", formData.content || "");
-    form.append("category", formData.category || "");
-    form.append("tech_stack", formData.tech_stack || "");
-    form.append("github_url", formData.github_url || "");
-    form.append("live_url", formData.live_url || "");
-    form.append("thumbnail", formData.thumbnail || "");  // ← single URL already set
-    form.append("company_project", formData.company_project ? "true" : "false");
-    form.append("is_published", formData.is_published ? "true" : "false");
+    setFormData(filtered);
+    setShowForm(true);
+  };
 
-    editItem
-      ? await caseStudyAPI.update(editItem.id, form)
-      : await caseStudyAPI.create(form);
-  }
+  const handleSave = async () => {
+    if (tab === "blogs") {
+      const payload = { ...formData };
+      editItem
+        ? await blogAPI.update(editItem.id, payload)
+        : await blogAPI.create(payload);
+    }
 
-  closeForm();
-  fetchData();
-};
+    if (tab === "cases") {
+      const form = new FormData();
+      form.append("title", formData.title || "");
+      form.append("summary", formData.summary || "");
+      form.append("content", formData.content || "");
+      form.append("category", formData.category || "");
+      form.append("tech_stack", formData.tech_stack || "");
+      form.append("github_url", formData.github_url || "");
+      form.append("live_url", formData.live_url || "");
+      form.append("thumbnail", formData.thumbnail || "");
+      form.append("company_project", formData.company_project ? "true" : "false");
+      form.append("is_published", formData.is_published ? "true" : "false");
+
+      editItem
+        ? await caseStudyAPI.update(editItem.id, form)
+        : await caseStudyAPI.create(form);
+    }
+
+    closeForm();
+    fetchData();
+  };
 
   const handleDelete = async (id) => {
     if (!window.confirm("Delete item?")) return;
@@ -167,16 +177,18 @@ const handleSave = async () => {
     if (!text) return "";
     return text.replace(/<[^>]+>/g, "").slice(0, 140) + "...";
   };
-const uploadMediaToCloudinary = async (file, type) => {
-  try {
-    const res = await uploadAPI.uploadMedia(file, type);
-    const uploaded = res.data.files[0];
-    return uploaded?.url || null;
-  } catch (err) {
-    console.error("Media upload failed:", err);
-    return null;
-  }
-};
+
+  const uploadMediaToCloudinary = async (file, type) => {
+    try {
+      const res = await uploadAPI.uploadMedia(file, type);
+      const uploaded = res.data.files[0];
+      return uploaded?.url || null;
+    } catch (err) {
+      console.error("Media upload failed:", err);
+      return null;
+    }
+  };
+
   return (
     <Page>
       <Sidebar>
@@ -291,17 +303,22 @@ const uploadMediaToCloudinary = async (file, type) => {
             >
               <ModalCard
                 as={motion.div}
-                initial={{ scale: 0.9 }}
-                animate={{ scale: 1 }}
-                exit={{ scale: 0.9 }}
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
                 onClick={(e) => e.stopPropagation()}
               >
-                <h3>{editItem ? `Edit ${tab}` : `Create ${tab}`}</h3>
-              <FormGrid>
-                                {Object.entries(formData).map(([key, value]) => {
+                {/* Fixed header inside modal */}
+                <ModalHeader>
+                  <h3>{editItem ? `Edit ${tab}` : `Create ${tab}`}</h3>
+                </ModalHeader>
 
-                                      if (key === "content" && (tab === "blogs" || tab === "cases")) {
-                        // For cases always rich, for blogs check content_type
+                {/* Scrollable form body */}
+                <FormBody>
+                  <FormGrid>
+                    {Object.entries(formData).map(([key, value]) => {
+
+                      if (key === "content" && (tab === "blogs" || tab === "cases")) {
                         if (tab === "cases" || formData.content_type === "rich") {
                           return (
                             <EditorBlock key={key}>
@@ -341,143 +358,132 @@ const uploadMediaToCloudinary = async (file, type) => {
                           );
                         }
                       }
-                  // CASE STUDY IMAGE UPLOAD
-                 
-                 if (key === "thumbnail") {
-                    return (
-                      <FormGroup key={key}>
-                        <Label>Thumbnail Image</Label>
 
-                        <ImageUpload
-                          type="file"
-                          accept="image/*"
-                          onChange={async (e) => {
-                            const file = e.target.files[0];
-                            if (!file) return;
+                      if (key === "thumbnail") {
+                        return (
+                          <FormGroup key={key}>
+                            <Label>Thumbnail Image</Label>
 
-                            // Show local preview instantly while uploading
-                            const localUrl = URL.createObjectURL(file);
-                            setFormData(prev => ({ ...prev, thumbnail: localUrl }));
+                            <ImageUpload
+                              type="file"
+                              accept="image/*"
+                              onChange={async (e) => {
+                                const file = e.target.files[0];
+                                if (!file) return;
 
-                            // Then replace with Cloudinary URL
-                            const url = await uploadMediaToCloudinary(file, "image");
-                            if (url) setFormData(prev => ({ ...prev, thumbnail: url }));
-                          }}
-                        />
+                                const localUrl = URL.createObjectURL(file);
+                                setFormData(prev => ({ ...prev, thumbnail: localUrl }));
 
-                        {formData.thumbnail && (
-                          <ThumbnailPreview>
-                            <img
-                              src={formData.thumbnail}
-                              alt="thumbnail"
-                              onError={(e) => e.target.style.display = "none"}
+                                const url = await uploadMediaToCloudinary(file, "image");
+                                if (url) setFormData(prev => ({ ...prev, thumbnail: url }));
+                              }}
                             />
-                          </ThumbnailPreview>
-                        )}
-                      </FormGroup>
-                    );
-                  }
-                  // COMPANY PROJECT TOGGLE
-                  if (key === "company_project") {
-                    return (
-                      <ToggleRow key={key}>
-                        <Label>Company Project</Label>
 
-                        <input
-                          type="checkbox"
-                          checked={value || false}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              company_project: e.target.checked,
-                            })
-                          }
-                        />
-                      </ToggleRow>
-                    );
-                  }
+                            {formData.thumbnail && (
+                              <ThumbnailPreview>
+                                <img
+                                  src={formData.thumbnail}
+                                  alt="thumbnail"
+                                  onError={(e) => e.target.style.display = "none"}
+                                />
+                              </ThumbnailPreview>
+                            )}
+                          </FormGroup>
+                        );
+                      }
 
-                  // CONTENT TYPE RADIO
-                 
-                    if (key === "content_type") {
-                      if (tab !== "blogs") return null;  // ← hide for cases
-                      return (
-                      <RadioGroup key={key}>
-                        <Label>Editor Type</Label>
-
-                        <RadioRow>
-
-                          <label>
+                      if (key === "company_project") {
+                        return (
+                          <ToggleRow key={key}>
+                            <Label>Company Project</Label>
                             <input
-                              type="radio"
-                              checked={value === "text"}
-                              onChange={() =>
+                              type="checkbox"
+                              checked={value || false}
+                              onChange={(e) =>
                                 setFormData({
                                   ...formData,
-                                  content_type: "text",
+                                  company_project: e.target.checked,
                                 })
                               }
                             />
-                            Plain Text
-                          </label>
+                          </ToggleRow>
+                        );
+                      }
 
-                          <label>
+                      if (key === "content_type") {
+                        if (tab !== "blogs") return null;
+                        return (
+                          <RadioGroup key={key}>
+                            <Label>Editor Type</Label>
+                            <RadioRow>
+                              <label>
+                                <input
+                                  type="radio"
+                                  checked={value === "text"}
+                                  onChange={() =>
+                                    setFormData({ ...formData, content_type: "text" })
+                                  }
+                                />
+                                Plain Text
+                              </label>
+                              <label>
+                                <input
+                                  type="radio"
+                                  checked={value === "rich"}
+                                  onChange={() =>
+                                    setFormData({ ...formData, content_type: "rich" })
+                                  }
+                                />
+                                Rich Editor
+                              </label>
+                              <label>
+                                <input
+                                  type="radio"
+                                  checked={value === "html"}
+                                  onChange={() =>
+                                    setFormData({ ...formData, content_type: "html" })
+                                  }
+                                />
+                                HTML
+                              </label>
+                            </RadioRow>
+                          </RadioGroup>
+                        );
+                      }
+
+                      if (typeof value === "boolean") {
+                        return (
+                          <CheckboxRow key={key}>
+                            <Label>{key.replaceAll("_", " ").toUpperCase()}</Label>
                             <input
-                              type="radio"
-                              checked={value === "rich"}
-                              onChange={() =>
-                                setFormData({
-                                  ...formData,
-                                  content_type: "rich",
-                                })
+                              type="checkbox"
+                              checked={value}
+                              onChange={(e) =>
+                                setFormData({ ...formData, [key]: e.target.checked })
                               }
                             />
-                            Rich Editor
-                          </label>
+                          </CheckboxRow>
+                        );
+                      }
 
-                          <label>
-                            <input
-                              type="radio"
-                              checked={value === "html"}
-                              onChange={() =>
-                                setFormData({
-                                  ...formData,
-                                  content_type: "html",
-                                })
+                      if (key === "summary" || key === "excerpt") {
+                        return (
+                          <FormGroup key={key}>
+                            <Label>{key.replace("_", " ")}</Label>
+                            <Textarea
+                              value={value || ""}
+                              onChange={(e) =>
+                                setFormData({ ...formData, [key]: e.target.value })
                               }
                             />
-                            HTML
-                          </label>
+                          </FormGroup>
+                        );
+                      }
 
-                        </RadioRow>
-                      </RadioGroup>
-                    );
-                  }
-
-                  // BOOLEAN FIELDS
-                  if (typeof value === "boolean") {
-                    return (
-                      <CheckboxRow key={key}>
-                        <Label>{key.replaceAll("_", " ").toUpperCase()}</Label>
-
-                        <input
-                          type="checkbox"
-                          checked={value}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              [key]: e.target.checked,
-                            })
-                          }
-                        />
-                      </CheckboxRow>
-                    );
-                  }
-                    if (key === "summary" || key === "excerpt") {
                       return (
                         <FormGroup key={key}>
                           <Label>{key.replace("_", " ")}</Label>
-                          <Textarea
+                          <Input
                             value={value || ""}
                             onChange={(e) =>
                               setFormData({ ...formData, [key]: e.target.value })
@@ -485,25 +491,12 @@ const uploadMediaToCloudinary = async (file, type) => {
                           />
                         </FormGroup>
                       );
-                    }
-                  // DEFAULT INPUT
-                  return (
-                    <FormGroup key={key}>
-                      <Label>{key.replace("_", " ")}</Label>
+                    })}
+                  </FormGrid>
+                </FormBody>
 
-                      <Input
-                        value={value || ""}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            [key]: e.target.value,
-                          })
-                        }
-                      />
-                    </FormGroup>
-                  );
-                })}
-                <ButtonRow>
+                {/* Sticky footer with action buttons */}
+                <ModalFooter>
                   <MagneticButton onClick={() => setShowPreview(true)}>
                     Preview
                   </MagneticButton>
@@ -515,8 +508,7 @@ const uploadMediaToCloudinary = async (file, type) => {
                   <MagneticButton onClick={() => closeForm()}>
                     Cancel
                   </MagneticButton>
-                </ButtonRow>
-                </FormGrid>
+                </ModalFooter>
               </ModalCard>
             </ModalOverlay>
           )}
@@ -559,6 +551,13 @@ const Sidebar = styled.aside`
   width: 220px;
   background: ${({ theme }) => theme.colors.bgTertiary};
   padding: 3rem 1rem;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    gap: 8px;
+  }
 `;
 
 const SideLink = styled.button`
@@ -573,11 +572,20 @@ const SideLink = styled.button`
   &:hover {
     color: ${({ theme }) => theme.colors.textPrimary};
   }
+
+  @media (max-width: 768px) {
+    margin-bottom: 0;
+    white-space: nowrap;
+  }
 `;
 
 const Content = styled.main`
   flex: 1;
   padding: 2rem;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
 `;
 
 const Welcome = styled.p`
@@ -592,6 +600,10 @@ const CardGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const Card = styled.div`
@@ -624,19 +636,22 @@ const CardActions = styled.div`
 
 const IconButton = styled.button`
   border: none;
-  background: ${({ danger }) => (danger ? "#ff4d4f" : "#2d2d2d")};
+  background: ${({ $danger }) => ($danger ? "#ff4d4f" : "#2d2d2d")};
   color: white;
   padding: 6px;
   border-radius: 6px;
   cursor: pointer;
 `;
+
 const Label = styled.label`
   display: block;
   font-size: 0.85rem;
   margin-bottom: 6px;
   color: ${({ theme }) => theme.colors.textSecondary};
 `;
+
 const Input = styled.input`
+  width: 100%;
   padding: 10px;
   border-radius: 6px;
   border: 1px solid ${({ theme }) => theme.colors.borderDefault};
@@ -648,33 +663,43 @@ const Input = styled.input`
     outline: none;
   }
 `;
+
 const ImageUpload = styled.input`
   padding: 10px;
   border: 2px dashed ${({ theme }) => theme.colors.borderDefault};
   border-radius: 8px;
   cursor: pointer;
+  width: 100%;
 `;
+
 const Textarea = styled.textarea`
   width: 100%;
   min-height: 120px;
-  margin-bottom: 12px;
+  margin-bottom: 4px;
   padding: 10px;
   border-radius: 6px;
+  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  background: ${({ theme }) => theme.colors.bgPrimary};
+  color: ${({ theme }) => theme.colors.textPrimary};
+  resize: vertical;
 `;
 
 const CheckboxRow = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 10px;
 `;
 
 const RadioGroup = styled.div`
   margin-bottom: 12px;
+  grid-column: 1 / -1;
 `;
 
 const RadioRow = styled.div`
   display: flex;
-  gap: 16px;
+  gap: 12px;
+  flex-wrap: wrap;
 
   label {
     display: flex;
@@ -695,6 +720,7 @@ const RadioRow = styled.div`
     accent-color: ${({ theme }) => theme.colors.accentPink};
   }
 `;
+
 const ThumbnailPreview = styled.div`
   margin-top: 10px;
 
@@ -706,14 +732,11 @@ const ThumbnailPreview = styled.div`
     border: 1px solid ${({ theme }) => theme.colors.borderDefault};
   }
 `;
+
 const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 14px;
-`;
-const ButtonRow = styled.div`
-  display: flex;
-  gap: 10px;
+  margin-bottom: 4px;
 `;
 
 const ActionRow = styled.div`
@@ -724,62 +747,159 @@ const Pagination = styled.div`
   margin-top: 2rem;
   display: flex;
   gap: 20px;
+  align-items: center;
 `;
+
+/* ── Modal ────────────────────────────────────────── */
+
 const ModalOverlay = styled.div`
   position: fixed;
-  top: 0;
-  left: 0;
-
-  width: 100vw;
-  height: 100vh;
-
-  background: rgba(0,0,0,0.6);
-
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
-
   z-index: 1000;
+  height: 100vh;           /* Sets the container height to 100% of the viewport height */
+  width: 100vw;  
+  /* No overflow here — we let the inner card scroll */
+  padding: 16px;
+
+  @media (max-width: 480px) {
+    padding: 0;
+    align-items: flex-end;
+  }
 `;
+
+const ModalCard = styled.div`
+  /* Full layout using flex column so footer sticks */
+  display: flex;
+  flex-direction: column;
+
+  width: 90vw;
+  max-width: 860px;
+  /* Responsive height: fills most of viewport, never overflows */
+  max-height: 90vh;
+  height: auto;
+
+  background: ${({ theme }) => theme.colors.bgSecondary};
+  border-radius: 12px;
+  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+
+  /* No overflow on the card itself — children handle scroll */
+  overflow: hidden;
+
+  @media (max-width: 480px) {
+    width: 100vw;
+    max-height: 95vh;
+    border-radius: 16px 16px 0 0;
+  }
+`;
+
+/* Fixed modal title bar */
+const ModalHeader = styled.div`
+  flex-shrink: 0;
+  padding: 20px 28px 16px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.borderDefault};
+
+  h3 {
+    margin: 0;
+    text-transform: capitalize;
+  }
+
+  @media (max-width: 480px) {
+    padding: 16px 20px 12px;
+  }
+`;
+
+/* Scrollable form area */
+const FormBody = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 28px;
+
+  /* Smooth scrolling & custom scrollbar */
+  scroll-behavior: smooth;
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.colors.borderDefault};
+    border-radius: 3px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 16px 20px;
+  }
+`;
+
+/* Sticky action buttons at bottom */
+const ModalFooter = styled.div`
+  flex-shrink: 0;
+  padding: 16px 28px;
+  border-top: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: ${({ theme }) => theme.colors.bgSecondary};
+
+  @media (max-width: 480px) {
+    padding: 14px 20px;
+    gap: 8px;
+
+    /* Make buttons fill on very small screens */
+    & > * {
+      flex: 1;
+      min-width: 80px;
+    }
+  }
+`;
+
+const FormGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
 const ToggleRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 12px 0;
-`;
-const ModalCard = styled.div`
-  width: 90vw;
-  height: 90vh;
-  max-height: 80vh;
-  overflow-y: auto;
-  background: ${({ theme }) => theme.colors.bgSecondary};
-  padding: 30px;
-  border-radius: 12px;
-  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  margin: 4px 0;
 `;
 
 const EditorBlock = styled.div`
-  margin-bottom: 20px;
+  grid-column: 1 / -1;
+  margin-bottom: 4px;
 
   .ql-editor {
     min-height: 200px;
   }
 `;
 
-const PreviewBox = styled.div`
-  margin-top: 20px;
-  padding: 15px;
-  border-radius: 8px;
-  background: ${({ theme }) => theme.colors.bgTertiary};
+const PreviewModal = styled.div`
+  width: min(900px, 95vw);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: ${({ theme }) => theme.colors.bgSecondary};
+  padding: 40px;
+  border-radius: 12px;
+
+  @media (max-width: 480px) {
+    padding: 24px 16px;
+    border-radius: 16px 16px 0 0;
+    max-height: 95vh;
+  }
 `;
 
 const PreviewContent = styled.div`
   margin-top: 10px;
   line-height: 1.6;
 
-  img {
-    max-width: 100%;
-  }
+  img { max-width: 100%; }
 
   pre {
     background: #111;
@@ -788,65 +908,7 @@ const PreviewContent = styled.div`
   }
 `;
 
-const PreviewModal = styled.div`
-  width: 900px;
-  max-height: 90vh;
-  overflow-y: auto;
-  background: ${({ theme }) => theme.colors.bgSecondary};
-  padding: 40px;
-  border-radius: 12px;
-`;
-const FormGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-`;
 const Category = styled.div`
   margin-bottom: 20px;
   opacity: 0.6;
-`;
-const TipTapWrapper = styled.div`
-  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  border-radius: 8px;
-  padding: 12px;
-  background: ${({ theme }) => theme.colors.bgPrimary};
-
-  .ProseMirror {
-    min-height: 200px;
-    outline: none;
-    line-height: 1.6;
-  }
-
-  p {
-    margin: 0 0 10px;
-  }
-
-  h1, h2, h3 {
-    margin: 10px 0;
-  }
-
-  code {
-    background: #111;
-    padding: 4px 6px;
-    border-radius: 4px;
-  }
-
-  pre {
-    background: #111;
-    padding: 10px;
-    overflow-x: auto;
-  }
-`;
-const Toolbar = styled.div`
-  display: flex;
-  gap: 8px;
-  margin-bottom: 10px;
-
-  button {
-    padding: 6px 10px;
-    border-radius: 6px;
-    border: none;
-    background: ${({ theme }) => theme.colors.bgTertiary};
-    cursor: pointer;
-  }
 `;
