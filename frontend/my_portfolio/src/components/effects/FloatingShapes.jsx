@@ -1,11 +1,12 @@
 // src/components/effects/FloatingShapes.jsx
-// PERFORMANCE FIXES:
-// 1. One shared RAF loop drives ALL shapes — was spawning a loop per shape
-// 2. spring interpolation done manually in shared tick — no @react-spring overhead per frame
-// 3. Direct style mutation via refs instead of re-rendering React state
-// 4. CSS float animation removed — only JS drives position
-// 5. Gyroscope support on mobile (tilt to move shapes)
-// 6. Hidden on ≤480px screens
+//
+// Props:
+//   hideOnMobile={true}  — default, hides on touch devices (phones/tablets)
+//   hideOnMobile={false} — shows on mobile, shapes react to gyroscope or touch drag
+//
+// Mobile input priority:
+//   1. Gyroscope (tilt phone to move shapes) — iOS needs a tap first for permission
+//   2. touchmove fallback — drag finger to move shapes (works immediately)
 
 import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
@@ -19,10 +20,6 @@ const ShapeWrap = styled.div`
   z-index: 3;
   pointer-events: none;
   overflow: hidden;
-
-  @media (max-width: 480px) {
-    display: none;
-  }
 `;
 
 const ShapeEl = styled.div`
@@ -98,57 +95,80 @@ const shapes = [
   },
 ];
 
-const FloatingShapes = () => {
-  const wrapRef   = useRef(null);
-  const elRefs    = useRef([]);        // DOM refs for each shape div
-  const targetRef = useRef({ x: 0, y: 0 }); // raw pointer/gyro target
-  const currentRef= useRef(
-    shapes.map(() => ({ x: 0, y: 0 })) // per-shape spring current position
-  );
-  const frameRef  = useRef(null);
+const FloatingShapes = ({ hideOnMobile = true }) => {
+  const elRefs     = useRef([]);
+  const targetRef  = useRef({ x: 0, y: 0 });
+  const currentRef = useRef(shapes.map(() => ({ x: 0, y: 0 })));
+  const frameRef   = useRef(null);
 
-  /* ── Pointer / gyro input ── */
+  // Bail out early — return null so no DOM, no RAF, no listeners
+  if (hideOnMobile && IS_TOUCH) return null;
+
+  /* ── Input listeners ── */
   useEffect(() => {
     if (!IS_TOUCH) {
-      const onMove = (e) => {
+      // ── Desktop: mouse ──
+      const onMouseMove = (e) => {
         targetRef.current = {
-          x: (e.clientX / window.innerWidth  - 0.5),
-          y: (e.clientY / window.innerHeight - 0.5),
+          x: e.clientX / window.innerWidth  - 0.5,
+          y: e.clientY / window.innerHeight - 0.5,
         };
       };
-      window.addEventListener('mousemove', onMove, { passive: true });
-      return () => window.removeEventListener('mousemove', onMove);
-    } else {
-      // Gyroscope for mobile
-      const handler = (e) => {
-        targetRef.current = {
-          x: Math.max(-1, Math.min(1, (e.gamma || 0) / 30)),
-          y: Math.max(-1, Math.min(1, ((e.beta  || 0) - 45) / 30)),
-        };
-      };
-      if (typeof DeviceOrientationEvent?.requestPermission === 'function') {
-        window.addEventListener('touchstart', async () => {
-          try {
-            if (await DeviceOrientationEvent.requestPermission() === 'granted') {
-              window.addEventListener('deviceorientation', handler, { passive: true });
-            }
-          } catch (_) {}
-        }, { once: true });
-      } else {
-        window.addEventListener('deviceorientation', handler, { passive: true });
-        return () => window.removeEventListener('deviceorientation', handler);
-      }
+      window.addEventListener('mousemove', onMouseMove, { passive: true });
+      return () => window.removeEventListener('mousemove', onMouseMove);
     }
+
+    // ── Mobile: gyroscope + touchmove fallback ──
+    const gyroHandler = (e) => {
+      targetRef.current = {
+        x: Math.max(-1, Math.min(1, (e.gamma || 0) / 30)),
+        y: Math.max(-1, Math.min(1, ((e.beta  || 0) - 45) / 30)),
+      };
+    };
+
+    const touchMoveHandler = (e) => {
+      if (!e.touches.length) return;
+      targetRef.current = {
+        x: e.touches[0].clientX / window.innerWidth  - 0.5,
+        y: e.touches[0].clientY / window.innerHeight - 0.5,
+      };
+    };
+
+    // touchmove works immediately — no permission needed
+    window.addEventListener('touchmove', touchMoveHandler, { passive: true });
+
+    const tryGyro = async () => {
+      // iOS 13+ needs explicit user permission for DeviceOrientationEvent
+      if (typeof DeviceOrientationEvent?.requestPermission === 'function') {
+        try {
+          const result = await DeviceOrientationEvent.requestPermission();
+          if (result === 'granted') {
+            window.addEventListener('deviceorientation', gyroHandler, { passive: true });
+          }
+        } catch (_) {
+          // Permission denied — touchmove fallback already active
+        }
+      } else {
+        // Android + other browsers — no permission needed
+        window.addEventListener('deviceorientation', gyroHandler, { passive: true });
+      }
+    };
+
+    // iOS: must call inside a user gesture (touchstart)
+    window.addEventListener('touchstart', tryGyro, { once: true });
+
+    return () => {
+      window.removeEventListener('touchmove', touchMoveHandler);
+      window.removeEventListener('deviceorientation', gyroHandler);
+      window.removeEventListener('touchstart', tryGyro);
+    };
   }, []);
 
-  /* ── Single shared RAF loop — FIXED: was one loop per shape ── */
+  /* ── Single shared RAF loop ── */
   useEffect(() => {
-    // Spring config
-    const STIFFNESS = IS_TOUCH ? 0.04 : 0.08; // how fast it catches up
-    const DAMPING   = IS_TOUCH ? 0.85 : 0.82; // how much it overshoots (1 = no overshoot)
-
-    // Per-shape velocity for spring physics
-    const velocity = shapes.map(() => ({ x: 0, y: 0 }));
+    const STIFFNESS = IS_TOUCH ? 0.04 : 0.08;
+    const DAMPING   = IS_TOUCH ? 0.85 : 0.82;
+    const velocity  = shapes.map(() => ({ x: 0, y: 0 }));
 
     const tick = () => {
       const tx = targetRef.current.x;
@@ -161,11 +181,10 @@ const FloatingShapes = () => {
         const targetX = tx * shape.depth * 80;
         const targetY = ty * shape.depth * 80;
 
-        // Simple spring: velocity += (target - current) * stiffness; current += velocity; velocity *= damping
-        velocity[i].x  += (targetX - currentRef.current[i].x) * STIFFNESS;
-        velocity[i].y  += (targetY - currentRef.current[i].y) * STIFFNESS;
-        velocity[i].x  *= DAMPING;
-        velocity[i].y  *= DAMPING;
+        velocity[i].x += (targetX - currentRef.current[i].x) * STIFFNESS;
+        velocity[i].y += (targetY - currentRef.current[i].y) * STIFFNESS;
+        velocity[i].x *= DAMPING;
+        velocity[i].y *= DAMPING;
         currentRef.current[i].x += velocity[i].x;
         currentRef.current[i].y += velocity[i].y;
 
@@ -180,7 +199,7 @@ const FloatingShapes = () => {
   }, []);
 
   return (
-    <ShapeWrap ref={wrapRef}>
+    <ShapeWrap>
       {shapes.map((s, i) => (
         <ShapeEl
           key={i}
