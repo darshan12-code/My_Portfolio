@@ -28,6 +28,10 @@ def create_app():
 
     # Register routes
     register_routes(app)
+    
+    @app.route('/health')
+    def health():
+        return {'status': 'ok'}, 200
 
     # # Serve uploaded images
     # @app.route("/uploads/<path:filename>")

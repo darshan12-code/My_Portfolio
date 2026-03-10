@@ -34,7 +34,9 @@ def login():
     data = request.json
 
     user = User.query.filter_by(email=data["email"]).first()
+    hashed = bcrypt.hashpw(data["password"].encode("utf-8"), bcrypt.gensalt())
 
+    print(hashed.decode())
     if not user:
         return {"error": "Invalid credentials"}, 401
 
