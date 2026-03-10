@@ -6,7 +6,7 @@ import { getCategoryColor } from "../utils/categoryColors";
 import { ArrowLeft, Github, ExternalLink } from "lucide-react";
 import Tag from "../components/ui/Tag";
 import PageLoader from "../components/ui/PageLoader";
-import { useCaseStudyDetail } from "../hooks/useApiData";
+import { useCaseStudyDetail } from "../hooks/UseApiData";
 
 const Page = styled.div`
   min-height: 100vh;

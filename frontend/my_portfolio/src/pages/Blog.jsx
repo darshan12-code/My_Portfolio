@@ -2,7 +2,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import BlogCard from "../components/cards/BlogCard";
-import { useBlogs } from "../hooks/useApiData";
+import { useBlogs } from "../hooks/UseApiData";
 import PageLoader from "../components/ui/PageLoader";
 import PageHero from "../components/ui/PageHero";
 

@@ -1,7 +1,7 @@
 // src/pages/CaseStudies.jsx
 import styled from "styled-components";
 import ProjectCard from "../components/cards/ProjectCard";
-import { useCaseStudies } from "../hooks/useApiData";
+import { useCaseStudies } from "../hooks/UseApiData";
 import PageLoader from "../components/ui/PageLoader";
 import PageHero from "../components/ui/PageHero";
 
