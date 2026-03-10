@@ -32,7 +32,7 @@ def create_app():
     @app.route('/health')
     def health():
         return {'status': 'ok'}, 200
-
+    
     # # Serve uploaded images
     # @app.route("/uploads/<path:filename>")
     # def uploaded_file(filename):
