@@ -205,8 +205,8 @@ const FloatingShapes = ({ hideOnMobile = true }) => {
         const el = elRefs.current[i];
         if (!el) return;
 
-        const targetX = tx * shape.depth * 1200;
-        const targetY = ty * shape.depth * 1200;
+        const targetX = tx * shape.depth * 800;
+        const targetY = ty * shape.depth * 800;
 
         velocity[i].x += (targetX - currentRef.current[i].x) * STIFFNESS;
         velocity[i].y += (targetY - currentRef.current[i].y) * STIFFNESS;
