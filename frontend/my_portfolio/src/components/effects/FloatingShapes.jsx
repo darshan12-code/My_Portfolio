@@ -1,12 +1,11 @@
 // src/components/effects/FloatingShapes.jsx
 //
 // Props:
-//   hideOnMobile={true}  — default, hides on touch devices (phones/tablets)
+//   hideOnMobile={true}  — default, hides on touch devices
 //   hideOnMobile={false} — shows on mobile, shapes react to gyroscope or touch drag
 //
-// Mobile input priority:
-//   1. Gyroscope (tilt phone to move shapes) — iOS needs a tap first for permission
-//   2. touchmove fallback — drag finger to move shapes (works immediately)
+// FIXED: removed early return before hooks (React rule violation that silently
+// killed the RAF loop on mobile — shapes rendered but never moved)
 
 import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
@@ -101,13 +100,14 @@ const FloatingShapes = ({ hideOnMobile = true }) => {
   const currentRef = useRef(shapes.map(() => ({ x: 0, y: 0 })));
   const frameRef   = useRef(null);
 
-  // Bail out early — return null so no DOM, no RAF, no listeners
-  if (hideOnMobile && IS_TOUCH) return null;
-
-  /* ── Input listeners ── */
+  // ── Input listeners ──
+  // All hooks run unconditionally — visibility is handled via CSS display:none
   useEffect(() => {
+    // Skip all listeners if hidden
+    if (hideOnMobile && IS_TOUCH) return;
+
     if (!IS_TOUCH) {
-      // ── Desktop: mouse ──
+      // Desktop: mouse
       const onMouseMove = (e) => {
         targetRef.current = {
           x: e.clientX / window.innerWidth  - 0.5,
@@ -118,14 +118,7 @@ const FloatingShapes = ({ hideOnMobile = true }) => {
       return () => window.removeEventListener('mousemove', onMouseMove);
     }
 
-    // ── Mobile: gyroscope + touchmove fallback ──
-    const gyroHandler = (e) => {
-      targetRef.current = {
-        x: Math.max(-1, Math.min(1, (e.gamma || 0) / 30)),
-        y: Math.max(-1, Math.min(1, ((e.beta  || 0) - 45) / 30)),
-      };
-    };
-
+    // Mobile: touchmove works immediately, gyro activates on first tap
     const touchMoveHandler = (e) => {
       if (!e.touches.length) return;
       targetRef.current = {
@@ -134,27 +127,31 @@ const FloatingShapes = ({ hideOnMobile = true }) => {
       };
     };
 
-    // touchmove works immediately — no permission needed
+    const gyroHandler = (e) => {
+      // gamma = left/right tilt (-90 to 90), beta = front/back tilt (-180 to 180)
+      targetRef.current = {
+        x: Math.max(-1, Math.min(1, (e.gamma || 0) / 30)),
+        y: Math.max(-1, Math.min(1, ((e.beta  || 0) - 45) / 30)),
+      };
+    };
+
     window.addEventListener('touchmove', touchMoveHandler, { passive: true });
 
     const tryGyro = async () => {
-      // iOS 13+ needs explicit user permission for DeviceOrientationEvent
       if (typeof DeviceOrientationEvent?.requestPermission === 'function') {
+        // iOS 13+ — needs user gesture before requesting
         try {
           const result = await DeviceOrientationEvent.requestPermission();
           if (result === 'granted') {
             window.addEventListener('deviceorientation', gyroHandler, { passive: true });
           }
-        } catch (_) {
-          // Permission denied — touchmove fallback already active
-        }
+        } catch (_) {}
       } else {
-        // Android + other browsers — no permission needed
+        // Android + all other browsers — no permission needed
         window.addEventListener('deviceorientation', gyroHandler, { passive: true });
       }
     };
 
-    // iOS: must call inside a user gesture (touchstart)
     window.addEventListener('touchstart', tryGyro, { once: true });
 
     return () => {
@@ -162,10 +159,12 @@ const FloatingShapes = ({ hideOnMobile = true }) => {
       window.removeEventListener('deviceorientation', gyroHandler);
       window.removeEventListener('touchstart', tryGyro);
     };
-  }, []);
+  }, [hideOnMobile]);
 
-  /* ── Single shared RAF loop ── */
+  // ── RAF loop — always runs, guarded by same condition ──
   useEffect(() => {
+    if (hideOnMobile && IS_TOUCH) return;
+
     const STIFFNESS = IS_TOUCH ? 0.04 : 0.08;
     const DAMPING   = IS_TOUCH ? 0.85 : 0.82;
     const velocity  = shapes.map(() => ({ x: 0, y: 0 }));
@@ -196,10 +195,13 @@ const FloatingShapes = ({ hideOnMobile = true }) => {
 
     frameRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frameRef.current);
-  }, []);
+  }, [hideOnMobile]);
+
+  // Hide via CSS — never via early return (that breaks hooks)
+  const hidden = hideOnMobile && IS_TOUCH;
 
   return (
-    <ShapeWrap>
+    <ShapeWrap style={{ display: hidden ? 'none' : 'block' }}>
       {shapes.map((s, i) => (
         <ShapeEl
           key={i}

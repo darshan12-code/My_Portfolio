@@ -11,13 +11,13 @@ export const personalInfo = {
     'Remote-First Builder',
   ],
   bio: "I'm a full-stack engineer with 4+ years of experience building performant, scalable web applications. I thrive at the intersection of clean code and intuitive design, specializing in React ecosystems and Python backends.",
-  email: 'darshan@example.com',
+  email: 'darshanagrawal007@gmail.com',
   location: 'Seattle, WA (Remote)',
   resumeUrl: '/resume.pdf',
   socials: {
-    github: 'https://github.com/darshanagrawal',
-    linkedin: 'https://linkedin.com/in/darshanagrawal',
-    twitter: 'https://twitter.com/darshanagrawal',
+    github: 'https://github.com/darshan12-code/',
+    linkedin: 'https://www.linkedin.com/in/darshan-agrawal-012/',
+    twitter: 'https://twitter.com',
   },
 };
 

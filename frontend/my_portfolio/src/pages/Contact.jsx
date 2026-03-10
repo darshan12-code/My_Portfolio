@@ -5,13 +5,14 @@ import { FloatingInput, FloatingTextArea } from "../components/ui/FloatingInput"
 import MagneticButton from "../components/ui/MagneticButton";
 import { contactAPI } from "../services/apis";
 import { Github, Linkedin, Twitter, Mail, MapPin, Clock, ArrowRight } from "lucide-react";
+import { personalInfo } from "../data/siteData";
 
 /* ─── Data ─────────────────────────────────────────── */
 const SOCIALS = [
-  { icon: Github,   label: "GitHub",    href: "https://github.com/darshanagrawal",   handle: "@darshanagrawal" },
-  { icon: Linkedin, label: "LinkedIn",  href: "https://linkedin.com/in/darshanagrawal", handle: "Darshan Agrawal" },
-  { icon: Twitter,  label: "Twitter",   href: "https://twitter.com/darshanagrawal",  handle: "@darshanagrawal" },
-  { icon: Mail,     label: "Email",     href: "mailto:hello@darshanagrawal.dev",      handle: "hello@darshanagrawal.dev" },
+  { icon: Github,   label: "GitHub",    href: `${personalInfo.socials.github}`,   handle: "@darshan12-code" },
+  { icon: Linkedin, label: "LinkedIn",  href: `${personalInfo.socials.linkedin}`, handle: "darshan-agrawal-012" },
+  { icon: Twitter,  label: "Twitter",   href: `${personalInfo.socials.twitter}`,  handle: "@darshan_agrawal" },
+  { icon: Mail,     label: "Email",     href: `mailto:${personalInfo.email}`,      handle: `${personalInfo.email}` },
 ];
 
 const AVAILABILITY = [
@@ -75,6 +76,21 @@ const Contact = () => {
         </HeaderInner>
       </Header>
 
+      {/* ── Toast ── */}
+      <AnimatePresence>
+        {toast && (
+          <Toast
+            $type={toast.type}
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 20, opacity: 0 }}
+            transition={{ duration: 0.25 }}
+          >
+            <ToastIcon>{toast.type === "success" ? "✓" : "✕"}</ToastIcon>
+            {toast.msg}
+          </Toast>
+        )}
+      </AnimatePresence>
       {/* ── Two-col layout ── */}
       <BodyGrid>
 
@@ -182,21 +198,6 @@ const Contact = () => {
         </FormCol>
       </BodyGrid>
 
-      {/* ── Toast ── */}
-      <AnimatePresence>
-        {toast && (
-          <Toast
-            $type={toast.type}
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 20, opacity: 0 }}
-            transition={{ duration: 0.25 }}
-          >
-            <ToastIcon>{toast.type === "success" ? "✓" : "✕"}</ToastIcon>
-            {toast.msg}
-          </Toast>
-        )}
-      </AnimatePresence>
     </Page>
   );
 };

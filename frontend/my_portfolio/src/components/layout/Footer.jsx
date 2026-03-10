@@ -1,6 +1,7 @@
 import styled, { keyframes } from "styled-components";
 import { Link } from "react-router-dom";
 import { Github, Linkedin, Twitter, Mail } from "lucide-react";
+import { personalInfo } from "../../data/siteData";
 
 const NAV = [
   { label: "Home",          to: "/" },
@@ -10,10 +11,10 @@ const NAV = [
 ];
 
 const SOCIALS = [
-  { icon: Github,   href: "https://github.com/darshanagrawal",       label: "GitHub" },
-  { icon: Linkedin, href: "https://linkedin.com/in/darshanagrawal",   label: "LinkedIn" },
-  { icon: Twitter,  href: "https://twitter.com/darshanagrawal",       label: "Twitter" },
-  { icon: Mail,     href: "mailto:hello@darshanagrawal.dev",           label: "Email" },
+  { icon: Github,   href: `${personalInfo.socials.github}`,       label: "GitHub" },
+  { icon: Linkedin, href: `${personalInfo.socials.linkedin}`,   label: "LinkedIn" },
+  { icon: Twitter,  href: `${personalInfo.socials.twitter}`,       label: "Twitter" },
+  { icon: Mail,     href: `mailto:${personalInfo.email}`,           label: "Email" },
 ];
 
 const Footer = () => (
@@ -24,8 +25,8 @@ const Footer = () => (
     <Inner>
       {/* Brand */}
       <Brand>
-        <BrandName>Darshan Agrawal</BrandName>
-        <BrandSub>Full Stack Engineer · 4 Years Building the Future</BrandSub>
+        <BrandName>{personalInfo.name} {personalInfo.lastName}</BrandName>
+        <BrandSub>Full Stack Engineer ¦ 4 Years Building the Future</BrandSub>
         <AvailBadge>
           <PulseDot />
           Open to opportunities
@@ -60,15 +61,15 @@ const Footer = () => (
             </SocialBtn>
           ))}
         </SocialRow>
-        <EmailText href="mailto:hello@darshanagrawal.dev">
-          hello@darshanagrawal.dev
+        <EmailText href={`mailto:${personalInfo.email}`}>
+          {personalInfo.email}
         </EmailText>
       </SocialsBlock>
     </Inner>
 
     {/* Bottom strip */}
     <BottomStrip>
-      <Copyright>© {new Date().getFullYear()} Darshan Agrawal. Built with React + Flask.</Copyright>
+      <Copyright>© {new Date().getFullYear()} {personalInfo.name} {personalInfo.lastName}. Built with React + Flask.</Copyright>
       <MadeWith>
         Made with <Heart>♥</Heart> and too much coffee
       </MadeWith>
