@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Tag from "../ui/Tag";
 import Tilt from "react-parallax-tilt";
 import { getCategoryColor } from "../../utils/categoryColors";
+import ProjectThumbnail from "../../assets/project_thumbnail.png";
 
 const ProjectCard = ({ project }) => {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ const ProjectCard = ({ project }) => {
       glareColor="#3B82F6"
       scale={1.02}
       transitionSpeed={500}
-      style={{ borderRadius: "14px", transformStyle: "preserve-3d" }}
+      style={{ borderRadius: "14px", transformStyle: "preserve-3d", height: "100%" }}
     >
       <CardLink
         onClick={() => navigate(project.link)}
@@ -27,19 +28,21 @@ const ProjectCard = ({ project }) => {
         viewport={{ once: true }}
         transition={{ duration: 0.42 }}
       >
-        {/* ── Thumbnail with zoom-on-hover ── */}
-        {project.image && (
-          <ImageWrap>
-            <ProjectImage src={project.image} alt={project.title} loading="lazy" />
-            <ImageOverlay />
-            {project.category && (
-              <CategoryBadge $c={colors}>{project.category}</CategoryBadge>
-            )}
-          </ImageWrap>
-        )}
+        <ImageWrap>
+          <ProjectImage
+            src={project.image || ProjectThumbnail}
+            alt={project.title || "Project thumbnail"}
+            loading="lazy"
+          />
+          <ImageOverlay />
+          {project.category && (
+            <CategoryBadge $c={colors}>{project.category}</CategoryBadge>
+          )}
+        </ImageWrap>
 
         <CardBody>
           <Title>{project.title}</Title>
+          {/* Fixed height desc — always 3 lines regardless of content length */}
           <Desc>{project.description}</Desc>
 
           {project.tags && project.tags.length > 0 && (
@@ -53,12 +56,12 @@ const ProjectCard = ({ project }) => {
             </Tags>
           )}
 
+          {/* Pushed to bottom via flex */}
           <ArrowChip whileHover={{ x: 5 }} transition={{ type: "spring", stiffness: 400 }}>
             View Case Study →
           </ArrowChip>
         </CardBody>
 
-        {/* Top gradient bar slides in on hover */}
         <TopBar />
       </CardLink>
     </Tilt>
@@ -71,6 +74,10 @@ export default ProjectCard;
 
 const CardLink = styled(motion.div)`
   position: relative;
+  /* Fixed total card height — all cards identical regardless of content */
+  height: 420px;
+  display: flex;
+  flex-direction: column;
   background: ${({ theme }) => theme.colors.bgSecondary};
   border: 1px solid ${({ theme }) => theme.colors.borderDefault};
   border-radius: 14px;
@@ -84,7 +91,6 @@ const CardLink = styled(motion.div)`
   }
 `;
 
-/* The top gradient bar that scaleX(0→1) on hover */
 const TopBar = styled.span`
   position: absolute;
   top: 0; left: 0; right: 0;
@@ -100,55 +106,34 @@ const TopBar = styled.span`
   }
 `;
 
-/* ── Image wrapper: overflow hidden so zoom stays clipped ── */
+/* Fixed image height — always same slice of the card */
 const ImageWrap = styled.div`
   position: relative;
   width: 100%;
-  /* 
-    aspect-ratio keeps the slot a fixed 16:9 regardless of image dimensions.
-    The image inside uses object-fit:cover so it fills without distortion.
-    Change the ratio here to suit your thumbnails (e.g. "4/3", "1/1").
-  */
-  aspect-ratio: 16 / 9;
+  height: 180px;
+  flex-shrink: 0;
   overflow: hidden;
   background: ${({ theme }) => theme.colors.bgTertiary};
-`;
-
-const zoomIn = keyframes`
-  from { transform: scale(1); }
-  to   { transform: scale(1.08); }
-`;
-
-const zoomOut = keyframes`
-  from { transform: scale(1.08); }
-  to   { transform: scale(1); }
 `;
 
 const ProjectImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Use object-position to keep the focal point centred */
   object-position: center top;
   display: block;
   transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   will-change: transform;
 
-  /* Zoom in when parent card is hovered */
   ${CardLink}:hover & {
     transform: scale(1.08);
   }
 `;
 
-/* Dark gradient over image bottom — for text legibility */
 const ImageOverlay = styled.div`
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    transparent 50%,
-    rgba(13, 15, 20, 0.55) 100%
-  );
+  background: linear-gradient(to bottom, transparent 50%, rgba(13, 15, 20, 0.55) 100%);
   pointer-events: none;
   transition: opacity 0.3s ease;
 
@@ -157,7 +142,6 @@ const ImageOverlay = styled.div`
   }
 `;
 
-/* Category badge floating over image bottom-left */
 const CategoryBadge = styled.span`
   position: absolute;
   bottom: 0.65rem;
@@ -175,9 +159,14 @@ const CategoryBadge = styled.span`
   backdrop-filter: blur(8px);
 `;
 
-/* ── Card body ── */
+/* Body takes remaining height and uses flex to push arrow to bottom */
 const CardBody = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   padding: 1.25rem 1.25rem 1.5rem;
+  /* Clip anything that overflows — belt-and-suspenders */
+  overflow: hidden;
 `;
 
 const Title = styled.h3`
@@ -186,6 +175,11 @@ const Title = styled.h3`
   color: ${({ theme }) => theme.colors.textPrimary};
   margin-bottom: 0.5rem;
   line-height: 1.25;
+  /* Always 2 lines max so titles don't push content down */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   transition: color 0.2s ease;
 
   ${CardLink}:hover & {
@@ -198,9 +192,9 @@ const Desc = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   margin-bottom: 1rem;
   line-height: 1.6;
-  /* Clamp to 2 lines so all cards have consistent height */
+  /* Always exactly 3 lines — long or short descriptions look identical */
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 `;
@@ -224,15 +218,17 @@ const MoreTags = styled.span`
   color: ${({ theme }) => theme.colors.textTertiary};
 `;
 
+/* margin-top: auto pushes this to the bottom of CardBody regardless of content above */
 const ArrowChip = styled(motion.span)`
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  margin-top: 1rem;
+  margin-top: auto;
   padding: 0.35rem 0.9rem;
   border-radius: 999px;
   font-size: 0.78rem;
   font-weight: 600;
+  align-self: flex-start;
   background: linear-gradient(90deg, rgba(255, 45, 107, 0.1), rgba(59, 130, 246, 0.1));
   border: 1px solid rgba(255, 45, 107, 0.2);
   color: ${({ theme }) => theme.colors.gradientPinkBlue};

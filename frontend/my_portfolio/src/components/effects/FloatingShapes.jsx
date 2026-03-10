@@ -2,16 +2,22 @@
 //
 // Props:
 //   hideOnMobile={true}  — default, hides on touch devices
-//   hideOnMobile={false} — shows on mobile, shapes react to gyroscope or touch drag
-//
-// FIXED: removed early return before hooks (React rule violation that silently
-// killed the RAF loop on mobile — shapes rendered but never moved)
+//   hideOnMobile={false} — shows on mobile with:
+//                          • slow auto-spin CSS animation when idle
+//                          • gyroscope tilt moves shapes (Android auto, iOS needs first tap)
+//                          • touchmove fallback if no gyro
 
 import { useEffect, useRef } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 const IS_TOUCH = typeof window !== 'undefined' &&
   window.matchMedia('(pointer: coarse)').matches;
+
+// Slow idle spin — only plays on mobile, stops when gyro/touch takes over
+const spinSlow = keyframes`
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+`;
 
 const ShapeWrap = styled.div`
   position: fixed;
@@ -23,9 +29,17 @@ const ShapeWrap = styled.div`
 
 const ShapeEl = styled.div`
   position: absolute;
-  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.3));
   will-change: transform;
   opacity: ${({ $opacity }) => $opacity};
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+
+  /* Auto-spin SVG on mobile when idle — JS transform overrides this once input arrives */
+  svg {
+    ${IS_TOUCH ? `
+      animation: ${spinSlow} ${({ $spinDuration }) => $spinDuration || '12s'} linear infinite;
+      transform-origin: center;
+    ` : ''}
+  }
 `;
 
 const shapes = [
@@ -38,7 +52,7 @@ const shapes = [
           stroke="rgba(255,45,107,0.2)" strokeWidth="1" fill="none" />
       </svg>
     ),
-    x: '4%', y: '18%', depth: 0.018, opacity: 0.85,
+    x: '4%', y: '18%', depth: 0.018, opacity: 0.85, spinDuration: '14s',
   },
   {
     svg: (
@@ -49,7 +63,7 @@ const shapes = [
         <line x1="2" y1="30" x2="58" y2="30" stroke="rgba(0,232,157,0.15)" strokeWidth="0.8" />
       </svg>
     ),
-    x: '88%', y: '20%', depth: 0.025, opacity: 0.9,
+    x: '88%', y: '20%', depth: 0.025, opacity: 0.9, spinDuration: '10s',
   },
   {
     svg: (
@@ -60,7 +74,7 @@ const shapes = [
           stroke="rgba(59,130,246,0.2)" strokeWidth="0.8" fill="none" />
       </svg>
     ),
-    x: '82%', y: '62%', depth: 0.012, opacity: 0.8,
+    x: '82%', y: '62%', depth: 0.012, opacity: 0.8, spinDuration: '18s',
   },
   {
     svg: (
@@ -73,7 +87,7 @@ const shapes = [
           transform="rotate(20 25 25)" />
       </svg>
     ),
-    x: '6%', y: '75%', depth: 0.02, opacity: 0.85,
+    x: '6%', y: '75%', depth: 0.02, opacity: 0.85, spinDuration: '8s',
   },
   {
     svg: (
@@ -90,7 +104,7 @@ const shapes = [
         <circle cx="50" cy="30" r="8" stroke="rgba(255,45,107,0.4)" strokeWidth="1.5" fill="rgba(255,45,107,0.08)" />
       </svg>
     ),
-    x: '48%', y: '85%', depth: 0.008, opacity: 0.6,
+    x: '48%', y: '85%', depth: 0.008, opacity: 0.6, spinDuration: '20s',
   },
 ];
 
@@ -99,15 +113,14 @@ const FloatingShapes = ({ hideOnMobile = true }) => {
   const targetRef  = useRef({ x: 0, y: 0 });
   const currentRef = useRef(shapes.map(() => ({ x: 0, y: 0 })));
   const frameRef   = useRef(null);
+  // Track if user has interacted — used to pause CSS spin once JS takes over
+  const interactedRef = useRef(false);
 
   // ── Input listeners ──
-  // All hooks run unconditionally — visibility is handled via CSS display:none
   useEffect(() => {
-    // Skip all listeners if hidden
     if (hideOnMobile && IS_TOUCH) return;
 
     if (!IS_TOUCH) {
-      // Desktop: mouse
       const onMouseMove = (e) => {
         targetRef.current = {
           x: e.clientX / window.innerWidth  - 0.5,
@@ -118,9 +131,19 @@ const FloatingShapes = ({ hideOnMobile = true }) => {
       return () => window.removeEventListener('mousemove', onMouseMove);
     }
 
-    // Mobile: touchmove works immediately, gyro activates on first tap
+    // Mobile touchmove — stops CSS spin, JS takes over position
     const touchMoveHandler = (e) => {
       if (!e.touches.length) return;
+      if (!interactedRef.current) {
+        interactedRef.current = true;
+        // Pause CSS spin animation on all SVGs so JS transform is clean
+        elRefs.current.forEach((el) => {
+          if (el) {
+            const svg = el.querySelector('svg');
+            if (svg) svg.style.animationPlayState = 'paused';
+          }
+        });
+      }
       targetRef.current = {
         x: e.touches[0].clientX / window.innerWidth  - 0.5,
         y: e.touches[0].clientY / window.innerHeight - 0.5,
@@ -128,7 +151,15 @@ const FloatingShapes = ({ hideOnMobile = true }) => {
     };
 
     const gyroHandler = (e) => {
-      // gamma = left/right tilt (-90 to 90), beta = front/back tilt (-180 to 180)
+      if (!interactedRef.current) {
+        interactedRef.current = true;
+        elRefs.current.forEach((el) => {
+          if (el) {
+            const svg = el.querySelector('svg');
+            if (svg) svg.style.animationPlayState = 'paused';
+          }
+        });
+      }
       targetRef.current = {
         x: Math.max(-1, Math.min(1, (e.gamma || 0) / 30)),
         y: Math.max(-1, Math.min(1, ((e.beta  || 0) - 45) / 30)),
@@ -139,7 +170,6 @@ const FloatingShapes = ({ hideOnMobile = true }) => {
 
     const tryGyro = async () => {
       if (typeof DeviceOrientationEvent?.requestPermission === 'function') {
-        // iOS 13+ — needs user gesture before requesting
         try {
           const result = await DeviceOrientationEvent.requestPermission();
           if (result === 'granted') {
@@ -147,7 +177,6 @@ const FloatingShapes = ({ hideOnMobile = true }) => {
           }
         } catch (_) {}
       } else {
-        // Android + all other browsers — no permission needed
         window.addEventListener('deviceorientation', gyroHandler, { passive: true });
       }
     };
@@ -161,7 +190,7 @@ const FloatingShapes = ({ hideOnMobile = true }) => {
     };
   }, [hideOnMobile]);
 
-  // ── RAF loop — always runs, guarded by same condition ──
+  // ── RAF loop ──
   useEffect(() => {
     if (hideOnMobile && IS_TOUCH) return;
 
@@ -177,8 +206,8 @@ const FloatingShapes = ({ hideOnMobile = true }) => {
         const el = elRefs.current[i];
         if (!el) return;
 
-        const targetX = tx * shape.depth * 80;
-        const targetY = ty * shape.depth * 80;
+        const targetX = tx * shape.depth * 1200;
+        const targetY = ty * shape.depth * 1200;
 
         velocity[i].x += (targetX - currentRef.current[i].x) * STIFFNESS;
         velocity[i].y += (targetY - currentRef.current[i].y) * STIFFNESS;
@@ -197,7 +226,6 @@ const FloatingShapes = ({ hideOnMobile = true }) => {
     return () => cancelAnimationFrame(frameRef.current);
   }, [hideOnMobile]);
 
-  // Hide via CSS — never via early return (that breaks hooks)
   const hidden = hideOnMobile && IS_TOUCH;
 
   return (
@@ -207,6 +235,7 @@ const FloatingShapes = ({ hideOnMobile = true }) => {
           key={i}
           ref={(el) => (elRefs.current[i] = el)}
           $opacity={s.opacity}
+          $spinDuration={s.spinDuration}
           style={{ left: s.x, top: s.y }}
         >
           {s.svg}

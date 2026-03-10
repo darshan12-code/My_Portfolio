@@ -7,6 +7,7 @@
 |   |   |-- myphoto_cutout.png
 |   |   |-- myphoto_cutout2.png
 |   |   |-- noise.png
+|   |   |-- project_thumbnail.png
 |   |   |-- react.svg
 |   |-- components/
 |   |   |-- admin/
@@ -46,6 +47,7 @@
 |   |   |   |-- MagneticButton.jsx
 |   |   |   |-- NotFound.jsx
 |   |   |   |-- PageHero.jsx
+|   |   |   |-- PageLoader.jsx
 |   |   |   |-- RichEditor.jsx
 |   |   |   |-- SectionHeader.jsx
 |   |   |   |-- Tag.jsx
@@ -56,6 +58,7 @@
 |   |-- data/
 |   |   |-- siteData.jsx
 |   |-- hooks/
+|   |   |-- useApiData.jsx
 |   |   |-- useCountUp.jsx
 |   |   |-- useFetch.jsx
 |   |   |-- useMousePosition.jsx
@@ -74,6 +77,7 @@
 |   |   |-- Home.jsx
 |   |-- services/
 |   |   |-- apis.jsx
+|   |   |-- queryClient.jsx
 |   |-- styles/
 |   |   |-- globalStyles.js
 |   |   |-- theme.js
@@ -233,35 +237,6 @@ export const media2 = {
 
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\README.md
-
-```
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
-
-Note: This will impact Vite dev & build performances.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-```
-
-
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\resume.pdf
-
-```
-
-
 ### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\vercel.json
 
 ```
@@ -295,11 +270,18 @@ export default defineConfig({
 ### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\App.css
 
 ```
+/* App.css
+   FIXED: Removed max-width and padding from #root â€” these were causing
+   extra right-side space on mobile because they conflicted with full-width
+   fixed/absolute positioned elements (navbar, waves, floating shapes).
+   Layout padding is now handled per-section in individual components. */
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  /* max-width: 1280px; â† REMOVED */
+  /* padding: 2rem;     â† REMOVED */
+  /* text-align: center;â† REMOVED */
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .logo {
@@ -316,12 +298,8 @@ export default defineConfig({
 }
 
 @keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -337,7 +315,6 @@ export default defineConfig({
 .read-the-docs {
   color: #888;
 }
-
 
 @keyframes float-drift {
   0%, 100% { transform: translateY(0) rotate(var(--start-rotation)); }
@@ -362,9 +339,13 @@ export default defineConfig({
 ### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\App.jsx
 
 ```
-import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
+// src/App.jsx
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
+
+// CHANGED: import the configured client instead of creating inline with no options
+import queryClient from "./services/Queryclient";
 
 import GlobalStyles from "./styles/globalStyles";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
@@ -395,94 +376,47 @@ import CaseStudyDetails from "./pages/CaseStudyDetails";
 import CustomCursor from "./components/ui/CustomCursor";
 import ComicGrid from "./components/effects/ComicGrid";
 
-const queryClient = new QueryClient();
-
-/* â”€â”€ Protected route â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 const ProtectedRoute = ({ children }) => {
   const { isAdmin, loading } = useAuth();
   if (loading) return <LoadingScreen />;
   return isAdmin ? children : <Navigate to="/admin/login" replace />;
 };
 
-/* â”€â”€ All routes with transitions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 const AnimatedRoutes = () => {
   const location = useLocation();
-
   return (
     <>
-      {/*
-        ScrollToTop MUST be here â€” inside the Router context (so it can
-        read useLocation) but OUTSIDE AnimatePresence (so it fires
-        immediately on pathname change, before the exit animation starts).
-      */}
       <ScrollToTop />
-
-      <AnimatePresence mode="wait" initial={false}>
-        {/*
-          KEY = location.pathname tells AnimatePresence which child changed.
-          "wait" mode means: fully finish exit animation, THEN start enter.
-          This is what gives the clean comic-page-flip feel.
-        */}
-        <PageTransition key={location.pathname} locationKey={location.pathname}>
-        <Routes location={location} key={location.pathname}>
-
-          <Route path="/"
-            element={<Home />}
-          />
-
-          <Route path="/case-studies"
-            element={<CaseStudies />}
-          />
-
-          <Route path="/case-studies/:slug"
-            element={<CaseStudyDetails />}
-          />
-
-          <Route path="/blog"
-            element={<Blog />}
-          />
-
-          <Route path="/blog/:slug"
-            element={<BlogDetail />}
-          />
-
-          <Route path="/contact"
-            element={<Contact />}
-          />
-
-          <Route path="/admin/login"
-            element={<AdminLogin />}
-          />
-
-          <Route path="/admin"
-            element={
-              <ProtectedRoute>
-                <Admin />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route path="*" element={<NotFound />} />
-
-        </Routes>
+      <AnimatePresence mode="sync" initial={false}>
+        <PageTransition key={location.pathname}>
+          <Routes location={location} key={location.pathname}>
+            <Route path="/"                   element={<Home />} />
+            <Route path="/case-studies"       element={<CaseStudies />} />
+            <Route path="/case-studies/:slug" element={<CaseStudyDetails />} />
+            <Route path="/blog"               element={<Blog />} />
+            <Route path="/blog/:slug"         element={<BlogDetail />} />
+            <Route path="/contact"            element={<Contact />} />
+            <Route path="/admin/login"        element={<AdminLogin />} />
+            <Route path="/admin"
+              element={<ProtectedRoute><Admin /></ProtectedRoute>}
+            />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </PageTransition>
       </AnimatePresence>
     </>
   );
 };
 
-/* â”€â”€ Themed shell (no Router here â€” BrowserRouter is in App) â”€â”€ */
 const ThemedApp = () => {
   const { isDark } = useTheme();
-  const activeTheme = isDark ? darkTheme : lightTheme;
-
   return (
-    <StyledProvider theme={activeTheme}>
+    <StyledProvider theme={isDark ? darkTheme : lightTheme}>
       <GlobalStyles />
       <CustomCursor />
       <NoiseOverlay />
       <ComicGrid />
-      <FloatingShapes hideOnMobile={true} />
+      <FloatingShapes hideOnMobile={false} />
       <WaterWaves />
       <ScrollProgress />
       <Navbar />
@@ -492,18 +426,15 @@ const ThemedApp = () => {
   );
 };
 
-/* â”€â”€ Root â€” BrowserRouter lives HERE and ONLY here â”€â”€â”€â”€â”€â”€â”€â”€ */
 function App() {
   return (
-  
-      <ThemeProvider>
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <ThemedApp />
-          </AuthProvider>
-        </QueryClientProvider>
-      </ThemeProvider>
-  
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <ThemedApp />
+        </AuthProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }
 
@@ -514,7 +445,6 @@ export default App;
 ### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\index.css
 
 ```
-
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -541,10 +471,12 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  /* FIXED: removed "place-items: center" and "display: flex" which caused 
+     horizontal overflow / extra right-side space on mobile */
   min-width: 20rem;
   min-height: 100vh;
+  /* Prevent horizontal scroll globally */
+  overflow-x: hidden;
 }
 
 h1 {
@@ -594,6 +526,8 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Prevent horizontal overflow at root */
+  overflow-x: hidden;
 }
 body {
   font-family: 'DM Sans', sans-serif;
@@ -653,7 +587,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
 ```
 export const AdminContent = styled.main`
-  margin-left: 240px;
+  margin-left: 15rem;
   padding: 2rem;
   min-height: 100vh;
   background: ${({ theme }) => theme.colors.bgPrimary};
@@ -698,11 +632,13 @@ export const AdminSidebar = styled.aside`
 ### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\cards\BlogCard.jsx
 
 ```
-import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import React from 'react';
-import { getCategoryColor } from '../../utils/categoryColors';
-import { useNavigate } from 'react-router-dom';
+import styled from "styled-components";
+import { motion } from "framer-motion";
+import React from "react";
+import { getCategoryColor } from "../../utils/categoryColors";
+import { useNavigate } from "react-router-dom";
+
+/* ---------- Badge ---------- */
 
 const CategoryBadge = styled.span`
   display: inline-block;
@@ -717,100 +653,157 @@ const CategoryBadge = styled.span`
   color: ${({ $colors }) => $colors.text};
 `;
 
-const Card = styled(motion.div)`
-  padding: 1.5rem;
-  background: ${({ theme }) => theme.colors.bgSecondary};
-  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  cursor: pointer;
-  transition: ${({ theme }) => theme.transitions.default};
-
-  &:hover {
-    transform: translateY(-3px);
-    border-color: ${({ theme }) => theme.colors.borderHover};
-    box-shadow: ${({ theme }) => theme.colors.shadowCard};
-  }
-`;
-
-const Meta = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: ${({ theme }) => theme.fontSizes.xs};
-  color: ${({ theme }) => theme.colors.textTertiary};
-  margin-bottom: 0.75rem;
-`;
-
-
-
-const Title = styled.h3`
-  font-family: ${({ theme }) => theme.fonts.heading};
-  font-size: ${({ theme }) => theme.fontSizes.h3};
-  color: ${({ theme }) => theme.colors.textPrimary};
-  margin-bottom: 0.5rem;
-`;
-
-const Excerpt = styled.p`
-  font-size: ${({ theme }) => theme.fontSizes.small};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  line-height: 1.5;
-  margin-bottom: 0.75rem;
-`;
-
-const Date = styled.span`
-  font-size: ${({ theme }) => theme.fontSizes.xs};
-  color: ${({ theme }) => theme.colors.textTertiary};
-`;
-
+/* ---------- Card ---------- */
 
 const CardLink = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   padding: 1.5rem;
+  min-height: 240px;
+
   background: ${({ theme }) => theme.colors.bgSecondary};
   border: 1px solid ${({ theme }) => theme.colors.borderDefault};
   border-radius: ${({ theme }) => theme.borderRadius.md};
+
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
-  /* gradient top bar reveals on hover */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease,
+    transform 0.25s ease;
+
+  /* gradient top bar */
   &::before {
-    content: '';
+    content: "";
     position: absolute;
-    top: 0; left: 0; right: 0;
+    top: 0;
+    left: 0;
+    right: 0;
     height: 2px;
-    background: linear-gradient(90deg, #FF2D6B 0%, #3B82F6 100%);
+
+    background: linear-gradient(90deg, #ff2d6b 0%, #3b82f6 100%);
+
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.3s ease;
   }
 
   &:hover {
+    transform: translateY(-4px);
     border-color: ${({ theme }) => theme.colors.borderHover};
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-    &::before { transform: scaleX(1); }
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.35);
+
+    &::before {
+      transform: scaleX(1);
+    }
+  }
+
+  /* responsive height */
+  @media (max-width: 768px) {
+    min-height: 210px;
+  }
+
+  @media (max-width: 480px) {
+    min-height: auto;
   }
 `;
+
+/* ---------- Meta ---------- */
+
+const Meta = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  color: ${({ theme }) => theme.colors.textTertiary};
+
+  margin-bottom: 0.75rem;
+`;
+
+/* ---------- Title ---------- */
+
+const Title = styled.h3`
+  font-family: ${({ theme }) => theme.fonts.heading};
+  font-size: ${({ theme }) => theme.fontSizes.h3};
+  color: ${({ theme }) => theme.colors.textPrimary};
+
+  margin-bottom: 0.4rem;
+
+  /* limit title lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+`;
+
+/* ---------- Excerpt ---------- */
+
+const Excerpt = styled.p`
+  font-size: ${({ theme }) => theme.fontSizes.small};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  line-height: 1.5;
+
+  margin-bottom: 0.75rem;
+
+  /* limit text lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+`;
+
+/* ---------- Date ---------- */
+
+const Date = styled.span`
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  color: ${({ theme }) => theme.colors.textTertiary};
+`;
+
+/* ---------- Bottom Row ---------- */
+
+const Footer = styled.div`
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+/* ---------- Arrow ---------- */
 
 const ArrowChip = styled(motion.span)`
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  margin-top: 1rem;
-  margin-left:1rem;
+
   padding: 0.35rem 0.85rem;
+
   border-radius: 999px;
+
   font-size: 0.78rem;
   font-weight: 600;
-  background: linear-gradient(90deg, rgba(255,45,107,0.12), rgba(59,130,246,0.12));
-  border: 1px solid rgba(255,45,107,0.2);
+
+  background: linear-gradient(
+    90deg,
+    rgba(255, 45, 107, 0.12),
+    rgba(59, 130, 246, 0.12)
+  );
+
+  border: 1px solid rgba(255, 45, 107, 0.2);
+
   color: ${({ theme }) => theme.colors.gradientPinkBlue};
 `;
 
+/* ---------- Component ---------- */
+
 const BlogCard = ({ post }) => {
-const colors = getCategoryColor(post.category);
- const navigate = useNavigate();
-  return (   <CardLink
+  const navigate = useNavigate();
+  const colors = getCategoryColor(post.category);
+
+  return (
+    <CardLink
       onClick={() => navigate(post.link)}
       initial={{ y: 20, opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
@@ -818,18 +811,30 @@ const colors = getCategoryColor(post.category);
       transition={{ duration: 0.4 }}
       whileHover={{ y: -4 }}
     >
-      <Meta>
-        <CategoryBadge $colors={getCategoryColor(post.category)}>{post.category}</CategoryBadge>
-        <span>Â·</span>
-        <span>{post.readTime}</span>
-      </Meta>
-      <Title>{post.title}</Title>
-      <Excerpt>{post.excerpt}</Excerpt>
-      <Date>{post.date}</Date>
-      <ArrowChip whileHover={{ x: 4 }}>Read more â†’</ArrowChip>
-    </CardLink>)
-};
+      <div>
+        <Meta>
+          <CategoryBadge $colors={colors}>
+            {post.category}
+          </CategoryBadge>
+          <span>Â·</span>
+          <span>{post.readTime}</span>
+        </Meta>
 
+        <Title>{post.title}</Title>
+
+        <Excerpt>{post.excerpt}</Excerpt>
+      </div>
+
+      <Footer>
+        <Date>{post.date}</Date>
+
+        <ArrowChip whileHover={{ x: 4 }}>
+          Read more â†’
+        </ArrowChip>
+      </Footer>
+    </CardLink>
+  );
+};
 
 export default React.memo(BlogCard);
 ```
@@ -844,6 +849,7 @@ import { useNavigate } from "react-router-dom";
 import Tag from "../ui/Tag";
 import Tilt from "react-parallax-tilt";
 import { getCategoryColor } from "../../utils/categoryColors";
+import ProjectThumbnail from "../../assets/project_thumbnail.png";
 
 const ProjectCard = ({ project }) => {
   const navigate = useNavigate();
@@ -858,7 +864,7 @@ const ProjectCard = ({ project }) => {
       glareColor="#3B82F6"
       scale={1.02}
       transitionSpeed={500}
-      style={{ borderRadius: "14px", transformStyle: "preserve-3d" }}
+      style={{ borderRadius: "14px", transformStyle: "preserve-3d", height: "100%" }}
     >
       <CardLink
         onClick={() => navigate(project.link)}
@@ -867,19 +873,21 @@ const ProjectCard = ({ project }) => {
         viewport={{ once: true }}
         transition={{ duration: 0.42 }}
       >
-        {/* â”€â”€ Thumbnail with zoom-on-hover â”€â”€ */}
-        {project.image && (
-          <ImageWrap>
-            <ProjectImage src={project.image} alt={project.title} loading="lazy" />
-            <ImageOverlay />
-            {project.category && (
-              <CategoryBadge $c={colors}>{project.category}</CategoryBadge>
-            )}
-          </ImageWrap>
-        )}
+        <ImageWrap>
+          <ProjectImage
+            src={project.image || ProjectThumbnail}
+            alt={project.title || "Project thumbnail"}
+            loading="lazy"
+          />
+          <ImageOverlay />
+          {project.category && (
+            <CategoryBadge $c={colors}>{project.category}</CategoryBadge>
+          )}
+        </ImageWrap>
 
         <CardBody>
           <Title>{project.title}</Title>
+          {/* Fixed height desc â€” always 3 lines regardless of content length */}
           <Desc>{project.description}</Desc>
 
           {project.tags && project.tags.length > 0 && (
@@ -893,12 +901,12 @@ const ProjectCard = ({ project }) => {
             </Tags>
           )}
 
+          {/* Pushed to bottom via flex */}
           <ArrowChip whileHover={{ x: 5 }} transition={{ type: "spring", stiffness: 400 }}>
             View Case Study â†’
           </ArrowChip>
         </CardBody>
 
-        {/* Top gradient bar slides in on hover */}
         <TopBar />
       </CardLink>
     </Tilt>
@@ -911,6 +919,10 @@ export default ProjectCard;
 
 const CardLink = styled(motion.div)`
   position: relative;
+  /* Fixed total card height â€” all cards identical regardless of content */
+  height: 420px;
+  display: flex;
+  flex-direction: column;
   background: ${({ theme }) => theme.colors.bgSecondary};
   border: 1px solid ${({ theme }) => theme.colors.borderDefault};
   border-radius: 14px;
@@ -924,7 +936,6 @@ const CardLink = styled(motion.div)`
   }
 `;
 
-/* The top gradient bar that scaleX(0â†’1) on hover */
 const TopBar = styled.span`
   position: absolute;
   top: 0; left: 0; right: 0;
@@ -940,55 +951,34 @@ const TopBar = styled.span`
   }
 `;
 
-/* â”€â”€ Image wrapper: overflow hidden so zoom stays clipped â”€â”€ */
+/* Fixed image height â€” always same slice of the card */
 const ImageWrap = styled.div`
   position: relative;
   width: 100%;
-  /* 
-    aspect-ratio keeps the slot a fixed 16:9 regardless of image dimensions.
-    The image inside uses object-fit:cover so it fills without distortion.
-    Change the ratio here to suit your thumbnails (e.g. "4/3", "1/1").
-  */
-  aspect-ratio: 16 / 9;
+  height: 180px;
+  flex-shrink: 0;
   overflow: hidden;
   background: ${({ theme }) => theme.colors.bgTertiary};
-`;
-
-const zoomIn = keyframes`
-  from { transform: scale(1); }
-  to   { transform: scale(1.08); }
-`;
-
-const zoomOut = keyframes`
-  from { transform: scale(1.08); }
-  to   { transform: scale(1); }
 `;
 
 const ProjectImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Use object-position to keep the focal point centred */
   object-position: center top;
   display: block;
   transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   will-change: transform;
 
-  /* Zoom in when parent card is hovered */
   ${CardLink}:hover & {
     transform: scale(1.08);
   }
 `;
 
-/* Dark gradient over image bottom â€” for text legibility */
 const ImageOverlay = styled.div`
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    transparent 50%,
-    rgba(13, 15, 20, 0.55) 100%
-  );
+  background: linear-gradient(to bottom, transparent 50%, rgba(13, 15, 20, 0.55) 100%);
   pointer-events: none;
   transition: opacity 0.3s ease;
 
@@ -997,7 +987,6 @@ const ImageOverlay = styled.div`
   }
 `;
 
-/* Category badge floating over image bottom-left */
 const CategoryBadge = styled.span`
   position: absolute;
   bottom: 0.65rem;
@@ -1015,9 +1004,14 @@ const CategoryBadge = styled.span`
   backdrop-filter: blur(8px);
 `;
 
-/* â”€â”€ Card body â”€â”€ */
+/* Body takes remaining height and uses flex to push arrow to bottom */
 const CardBody = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   padding: 1.25rem 1.25rem 1.5rem;
+  /* Clip anything that overflows â€” belt-and-suspenders */
+  overflow: hidden;
 `;
 
 const Title = styled.h3`
@@ -1026,6 +1020,11 @@ const Title = styled.h3`
   color: ${({ theme }) => theme.colors.textPrimary};
   margin-bottom: 0.5rem;
   line-height: 1.25;
+  /* Always 2 lines max so titles don't push content down */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   transition: color 0.2s ease;
 
   ${CardLink}:hover & {
@@ -1038,9 +1037,9 @@ const Desc = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   margin-bottom: 1rem;
   line-height: 1.6;
-  /* Clamp to 2 lines so all cards have consistent height */
+  /* Always exactly 3 lines â€” long or short descriptions look identical */
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 `;
@@ -1064,15 +1063,17 @@ const MoreTags = styled.span`
   color: ${({ theme }) => theme.colors.textTertiary};
 `;
 
+/* margin-top: auto pushes this to the bottom of CardBody regardless of content above */
 const ArrowChip = styled(motion.span)`
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  margin-top: 1rem;
+  margin-top: auto;
   padding: 0.35rem 0.9rem;
   border-radius: 999px;
   font-size: 0.78rem;
   font-weight: 600;
+  align-self: flex-start;
   background: linear-gradient(90deg, rgba(255, 45, 107, 0.1), rgba(59, 130, 246, 0.1));
   border: 1px solid rgba(255, 45, 107, 0.2);
   color: ${({ theme }) => theme.colors.gradientPinkBlue};
@@ -1133,40 +1134,26 @@ export default ComicGrid;
 
 ```
 // src/components/effects/FloatingShapes.jsx
-import styled, { keyframes } from 'styled-components';
-import { useMousePosition } from '../../hooks/useMousePosition';
-import { useSpring, animated } from '@react-spring/web';
+//
+// Props:
+//   hideOnMobile={true}  â€” default, hides on touch devices
+//   hideOnMobile={false} â€” shows on mobile with:
+//                          â€¢ slow auto-spin CSS animation when idle
+//                          â€¢ gyroscope tilt moves shapes (Android auto, iOS needs first tap)
+//                          â€¢ touchmove fallback if no gyro
 
-const float = (y1, y2, r1, r2) => keyframes`
-  0%   { transform: translateY(0px) rotate(${r1}deg); }
-  33%  { transform: translateY(${y1}px) rotate(${r2}deg); }
-  66%  { transform: translateY(${y2}px) rotate(${r1 + 4}deg); }
-  100% { transform: translateY(0px) rotate(${r1}deg); }
+import { useEffect, useRef } from 'react';
+import styled, { keyframes } from 'styled-components';
+
+const IS_TOUCH = typeof window !== 'undefined' &&
+  window.matchMedia('(pointer: coarse)').matches;
+
+// Slow idle spin â€” only plays on mobile, stops when gyro/touch takes over
+const spinSlow = keyframes`
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 `;
 
-const AnimatedShape = ({ shape, mouse }) => {
-  const spring = useSpring({
-    x: mouse.x * shape.depth * 80,
-    y: mouse.y * shape.depth * 80,
-    config: { mass: 1, tension: 120, friction: 26 },
-  });
-
-  return (
-    <animated.div
-      style={{
-        position: 'absolute',
-        left: shape.x,
-        top: shape.y,
-        filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
-        opacity: shape.opacity,
-        transform: spring.x.to((x) => `translate(${x}px, ${spring.y.get()}px)`),
-        willChange: 'transform',
-      }}
-    >
-      {shape.svg}
-    </animated.div>
-  );
-};
 const ShapeWrap = styled.div`
   position: fixed;
   inset: 0;
@@ -1175,18 +1162,21 @@ const ShapeWrap = styled.div`
   overflow: hidden;
 `;
 
-// CUTOUT STYLE: drop-shadow makes them feel like physical cutouts
-const Shape = styled.div`
+const ShapeEl = styled.div`
   position: absolute;
-  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-  animation: ${({ $kf }) => $kf} ${({ $dur }) => $dur}s ease-in-out infinite;
-  animation-delay: ${({ $delay }) => $delay}s;
   will-change: transform;
   opacity: ${({ $opacity }) => $opacity};
-  transition: transform 0.1s ease-out;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+
+  /* Auto-spin SVG on mobile when idle â€” JS transform overrides this once input arrives */
+  svg {
+    ${IS_TOUCH ? `
+      animation: ${spinSlow} ${({ $spinDuration }) => $spinDuration || '12s'} linear infinite;
+      transform-origin: center;
+    ` : ''}
+  }
 `;
 
-// SVG shapes that look like comic panel decorations
 const shapes = [
   {
     svg: (
@@ -1197,8 +1187,7 @@ const shapes = [
           stroke="rgba(255,45,107,0.2)" strokeWidth="1" fill="none" />
       </svg>
     ),
-    x: '4%', y: '18%', depth: 0.018, dur: 22, delay: 0, opacity: 0.85,
-    kf: float(-18, -8, -3, 5),
+    x: '4%', y: '18%', depth: 0.018, opacity: 0.85, spinDuration: '14s',
   },
   {
     svg: (
@@ -1209,8 +1198,7 @@ const shapes = [
         <line x1="2" y1="30" x2="58" y2="30" stroke="rgba(0,232,157,0.15)" strokeWidth="0.8" />
       </svg>
     ),
-    x: '88%', y: '20%', depth: 0.025, dur: 18, delay: 2, opacity: 0.9,
-    kf: float(-22, -12, 4, -6),
+    x: '88%', y: '20%', depth: 0.025, opacity: 0.9, spinDuration: '10s',
   },
   {
     svg: (
@@ -1221,8 +1209,7 @@ const shapes = [
           stroke="rgba(59,130,246,0.2)" strokeWidth="0.8" fill="none" />
       </svg>
     ),
-    x: '82%', y: '62%', depth: 0.012, dur: 28, delay: 4, opacity: 0.8,
-    kf: float(-15, -28, 2, 8),
+    x: '82%', y: '62%', depth: 0.012, opacity: 0.8, spinDuration: '18s',
   },
   {
     svg: (
@@ -1235,13 +1222,11 @@ const shapes = [
           transform="rotate(20 25 25)" />
       </svg>
     ),
-    x: '6%', y: '75%', depth: 0.02, dur: 24, delay: 1, opacity: 0.85,
-    kf: float(-20, -10, -5, 3),
+    x: '6%', y: '75%', depth: 0.02, opacity: 0.85, spinDuration: '8s',
   },
   {
     svg: (
       <svg width="100" height="60" viewBox="0 0 100 60" fill="none">
-        {/* Comic speed lines / star burst */}
         {[0,30,60,90,120,150,180,210,240,270,300,330].map((deg, i) => (
           <line key={i}
             x1="50" y1="30"
@@ -1254,20 +1239,144 @@ const shapes = [
         <circle cx="50" cy="30" r="8" stroke="rgba(255,45,107,0.4)" strokeWidth="1.5" fill="rgba(255,45,107,0.08)" />
       </svg>
     ),
-    x: '48%', y: '85%', depth: 0.008, dur: 32, delay: 6, opacity: 0.6,
-    kf: float(-10, -18, 0, 360),
+    x: '48%', y: '85%', depth: 0.008, opacity: 0.6, spinDuration: '20s',
   },
 ];
 
-const FloatingShapes = () => {
-  const mousePos = useMousePosition();
+const FloatingShapes = ({ hideOnMobile = true }) => {
+  const elRefs     = useRef([]);
+  const targetRef  = useRef({ x: 0, y: 0 });
+  const currentRef = useRef(shapes.map(() => ({ x: 0, y: 0 })));
+  const frameRef   = useRef(null);
+  // Track if user has interacted â€” used to pause CSS spin once JS takes over
+  const interactedRef = useRef(false);
+
+  // â”€â”€ Input listeners â”€â”€
+  useEffect(() => {
+    if (hideOnMobile && IS_TOUCH) return;
+
+    if (!IS_TOUCH) {
+      const onMouseMove = (e) => {
+        targetRef.current = {
+          x: e.clientX / window.innerWidth  - 0.5,
+          y: e.clientY / window.innerHeight - 0.5,
+        };
+      };
+      window.addEventListener('mousemove', onMouseMove, { passive: true });
+      return () => window.removeEventListener('mousemove', onMouseMove);
+    }
+
+    // Mobile touchmove â€” stops CSS spin, JS takes over position
+    const touchMoveHandler = (e) => {
+      if (!e.touches.length) return;
+      if (!interactedRef.current) {
+        interactedRef.current = true;
+        // Pause CSS spin animation on all SVGs so JS transform is clean
+        elRefs.current.forEach((el) => {
+          if (el) {
+            const svg = el.querySelector('svg');
+            if (svg) svg.style.animationPlayState = 'paused';
+          }
+        });
+      }
+      targetRef.current = {
+        x: e.touches[0].clientX / window.innerWidth  - 0.5,
+        y: e.touches[0].clientY / window.innerHeight - 0.5,
+      };
+    };
+
+    const gyroHandler = (e) => {
+      if (!interactedRef.current) {
+        interactedRef.current = true;
+        elRefs.current.forEach((el) => {
+          if (el) {
+            const svg = el.querySelector('svg');
+            if (svg) svg.style.animationPlayState = 'paused';
+          }
+        });
+      }
+      targetRef.current = {
+        x: Math.max(-1, Math.min(1, (e.gamma || 0) / 30)),
+        y: Math.max(-1, Math.min(1, ((e.beta  || 0) - 45) / 30)),
+      };
+    };
+
+    window.addEventListener('touchmove', touchMoveHandler, { passive: true });
+
+    const tryGyro = async () => {
+      if (typeof DeviceOrientationEvent?.requestPermission === 'function') {
+        try {
+          const result = await DeviceOrientationEvent.requestPermission();
+          if (result === 'granted') {
+            window.addEventListener('deviceorientation', gyroHandler, { passive: true });
+          }
+        } catch (_) {}
+      } else {
+        window.addEventListener('deviceorientation', gyroHandler, { passive: true });
+      }
+    };
+
+    window.addEventListener('touchstart', tryGyro, { once: true });
+
+    return () => {
+      window.removeEventListener('touchmove', touchMoveHandler);
+      window.removeEventListener('deviceorientation', gyroHandler);
+      window.removeEventListener('touchstart', tryGyro);
+    };
+  }, [hideOnMobile]);
+
+  // â”€â”€ RAF loop â”€â”€
+  useEffect(() => {
+    if (hideOnMobile && IS_TOUCH) return;
+
+    const STIFFNESS = IS_TOUCH ? 0.04 : 0.08;
+    const DAMPING   = IS_TOUCH ? 0.85 : 0.82;
+    const velocity  = shapes.map(() => ({ x: 0, y: 0 }));
+
+    const tick = () => {
+      const tx = targetRef.current.x;
+      const ty = targetRef.current.y;
+
+      shapes.forEach((shape, i) => {
+        const el = elRefs.current[i];
+        if (!el) return;
+
+        const targetX = tx * shape.depth * 1200;
+        const targetY = ty * shape.depth * 1200;
+
+        velocity[i].x += (targetX - currentRef.current[i].x) * STIFFNESS;
+        velocity[i].y += (targetY - currentRef.current[i].y) * STIFFNESS;
+        velocity[i].x *= DAMPING;
+        velocity[i].y *= DAMPING;
+        currentRef.current[i].x += velocity[i].x;
+        currentRef.current[i].y += velocity[i].y;
+
+        el.style.transform = `translate(${currentRef.current[i].x.toFixed(2)}px, ${currentRef.current[i].y.toFixed(2)}px)`;
+      });
+
+      frameRef.current = requestAnimationFrame(tick);
+    };
+
+    frameRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameRef.current);
+  }, [hideOnMobile]);
+
+  const hidden = hideOnMobile && IS_TOUCH;
 
   return (
-    <ShapeWrap>
-    {shapes.map((s, i) => (
-      <AnimatedShape key={i} shape={s} mouse={mousePos} />
-    ))}
-  </ShapeWrap>
+    <ShapeWrap style={{ display: hidden ? 'none' : 'block' }}>
+      {shapes.map((s, i) => (
+        <ShapeEl
+          key={i}
+          ref={(el) => (elRefs.current[i] = el)}
+          $opacity={s.opacity}
+          $spinDuration={s.spinDuration}
+          style={{ left: s.x, top: s.y }}
+        >
+          {s.svg}
+        </ShapeEl>
+      ))}
+    </ShapeWrap>
   );
 };
 
@@ -1355,35 +1464,16 @@ export default SectionWave;
 
 ```
 // src/components/effects/WaterWaves.jsx
-import { useEffect, useRef } from 'react';
-import styled, { keyframes } from 'styled-components';
+// PERFORMANCE FIXES:
+// 1. Reduced from 5 layers to 3 â€” each SVG path is a full GPU layer
+// 2. CSS animations removed from Wave styled component â€” only JS RAF drives motion
+//    (mixing CSS animation + JS setAttribute on same element causes double work)
+// 3. overflow: hidden on wrapper â€” prevents SVG width:200% from causing
+//    horizontal scroll / layout recalculation
+// 4. Touch support added (touchmove)
 
-/* â”€â”€ ambient drift animations (baseline motion when cursor is idle) â”€â”€ */
-const drift1 = keyframes`
-  0%   { transform: translateX(0)     scaleY(1);    }
-  50%  { transform: translateX(-60px) scaleY(1.06); }
-  100% { transform: translateX(0)     scaleY(1);    }
-`;
-const drift2 = keyframes`
-  0%   { transform: translateX(0)    scaleY(1);    }
-  50%  { transform: translateX(50px) scaleY(0.96); }
-  100% { transform: translateX(0)    scaleY(1);    }
-`;
-const drift3 = keyframes`
-  0%   { transform: translateX(0)     scaleY(1);    }
-  50%  { transform: translateX(-30px) scaleY(1.03); }
-  100% { transform: translateX(0)     scaleY(1);    }
-`;
-const drift4 = keyframes`
-  0%   { transform: translateX(0)    scaleY(1);    }
-  50%  { transform: translateX(70px) scaleY(0.98); }
-  100% { transform: translateX(0)    scaleY(1);    }
-`;
-const drift5 = keyframes`
-  0%   { transform: translateX(0)     scaleY(1);   }
-  50%  { transform: translateX(-45px) scaleY(1.04);}
-  100% { transform: translateX(0)     scaleY(1);   }
-`;
+import { useEffect, useRef } from 'react';
+import styled from 'styled-components';
 
 const WaveWrap = styled.div`
   position: fixed;
@@ -1393,115 +1483,93 @@ const WaveWrap = styled.div`
   height: 120px;
   pointer-events: none;
   z-index: 10;
-  overflow: hidden;
+  overflow: hidden; /* FIXED: prevents 200%-width SVG from causing h-scroll */
 `;
 
+// No CSS animation here â€” JS RAF drives everything
+// Mixing CSS keyframe + JS setAttribute on same element = double paint
 const Wave = styled.svg`
   position: absolute;
   bottom: 0;
   width: 200%;
   height: 100%;
-  will-change: transform, opacity, d;
+  will-change: transform;
   opacity: ${({ $opacity }) => $opacity};
-
-  animation: ${({ $drift }) => $drift} ${({ $speed }) => $speed}s
-    ease-in-out infinite;
-  animation-delay: ${({ $delay }) => $delay}s;
 `;
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-/*  Wave path generators                                        */
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-
-/**
- * Build an SVG "d" string for a sine-like wave path.
- * @param {number} amp      â€“ peak-to-trough amplitude in px
- * @param {number} phase    â€“ horizontal phase offset (0-1 of wave width)
- * @param {number} freq     â€“ number of full cycles across the 1440 unit viewBox
- * @param {number} baseline â€“ vertical centre of the wave in the 80-unit viewBox
- */
 function buildWavePath(amp, phase, freq, baseline = 40, height = 80) {
   const W = 1440;
-  const pts = 120; // control point resolution
+  const pts = 80; // FIXED: reduced from 120 â€” 80 points is visually identical but faster
   let d = `M0,${baseline + amp * Math.sin(phase * Math.PI * 2)} `;
-
   for (let i = 1; i <= pts; i++) {
     const x = (i / pts) * W;
     const y = baseline + amp * Math.sin((i / pts) * freq * Math.PI * 2 + phase * Math.PI * 2);
     d += `L${x.toFixed(1)},${y.toFixed(1)} `;
   }
-
   d += `L${W},${height} L0,${height} Z`;
   return d;
 }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-/*  Layer config                                               */
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+// FIXED: 3 layers instead of 5 â€” halves SVG paint cost
 const LAYERS = [
-  // [drift-anim, speed, delay, opacity, fill, amp, freq, baseline, cursorInfluence]
-  { drift: drift5, speed: 14, delay: -5,  opacity: 0.12, fill: 'url(#wg5)', amp: 14, freq: 1.5, baseline: 30, influence: 0.6 },
-  { drift: drift4, speed: 12, delay: -3,  opacity: 0.15, fill: 'url(#wg4)', amp: 18, freq: 2,   baseline: 35, influence: 0.8 },
-  { drift: drift2, speed: 10, delay: -2,  opacity: 0.20, fill: 'url(#wg2)', amp: 14, freq: 2.5, baseline: 38, influence: 1.0 },
-  // { drift: drift3, speed:  8, delay: -1,  opacity: 0.28, fill: 'url(#wg3)', amp: 10, freq: 3,   baseline: 42, influence: 1.2 },
-  // { drift: drift1, speed:  6, delay:  0,  opacity: 0.32, fill: 'url(#wg1)', amp:  8, freq: 3.5, baseline: 46, influence: 1.5 },
+  { speed: 0.055, opacity: 0.13, fill: 'url(#wg1)', amp: 16, freq: 1.8, baseline: 32, influence: 0.6 },
+  { speed: 0.045, opacity: 0.18, fill: 'url(#wg2)', amp: 12, freq: 2.4, baseline: 38, influence: 1.0 },
+  { speed: 0.035, opacity: 0.22, fill: 'url(#wg3)', amp:  8, freq: 3.0, baseline: 44, influence: 1.4 },
 ];
 
-/* gradient stop pairs [top-color, bottom-color] per layer */
 const GRADIENTS = [
   ['#FF2D6B', '#0D0F14'],
   ['#0F2A4A', '#0D0F14'],
   ['#FF2D6B', '#0D0F14'],
-  ['#1A2E50', '#0D0F14'],
-  ['#FF2D6B',  '#0D0F14'],
 ];
-const GRAD_IDS = ['wg5','wg4','wg2','wg3','wg1'];
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-/*  Component                                                  */
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 const WaterWaves = () => {
   const pathRefs  = useRef([]);
   const phaseRefs = useRef(LAYERS.map(() => 0));
-  const cursorRef = useRef({ x: 0.5, vy: 0 }); // normalised x (0-1), vertical velocity
+  const cursorRef = useRef({ x: 0.5, vy: 0 });
   const frameRef  = useRef(null);
   const lastY     = useRef(null);
 
-  /* track cursor */
   useEffect(() => {
-    const onMove = (e) => {
+    const onMouseMove = (e) => {
       const nx = e.clientX / window.innerWidth;
       const ny = e.clientY / window.innerHeight;
       const prevY = lastY.current ?? ny;
-      cursorRef.current = {
-        x:  nx,
-        vy: (ny - prevY) * 60, // amplify vertical delta
-      };
+      cursorRef.current = { x: nx, vy: (ny - prevY) * 60 };
       lastY.current = ny;
     };
 
-    window.addEventListener('mousemove', onMove, { passive: true });
-    return () => window.removeEventListener('mousemove', onMove);
+    const onTouchMove = (e) => {
+      if (!e.touches.length) return;
+      const t = e.touches[0];
+      const nx = t.clientX / window.innerWidth;
+      const ny = t.clientY / window.innerHeight;
+      const prevY = lastY.current ?? ny;
+      cursorRef.current = { x: nx, vy: (ny - prevY) * 40 };
+      lastY.current = ny;
+    };
+
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    window.addEventListener('touchmove', onTouchMove,  { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('touchmove', onTouchMove);
+    };
   }, []);
 
-  /* animation loop */
   useEffect(() => {
     let lastTime = performance.now();
 
     const tick = (now) => {
-      const dt = Math.min((now - lastTime) / 1000, 0.05); // seconds, capped
+      const dt = Math.min((now - lastTime) / 1000, 0.05);
       lastTime = now;
-
       const { x: cx, vy } = cursorRef.current;
 
       LAYERS.forEach((layer, i) => {
-        // advance phase: base speed + cursor horizontal nudge
-        const cursorNudge = (cx - 0.5) * layer.influence * 0.4;
-        phaseRefs.current[i] += dt * (0.06 + Math.abs(cursorNudge) * 0.08) + cursorNudge * dt;
+        const nudge = (cx - 0.5) * layer.influence * 0.3;
+        phaseRefs.current[i] += dt * (layer.speed + Math.abs(nudge) * 0.06) + nudge * dt;
 
-        // amplitude breathes with cursor vertical velocity
-        const dynAmp = layer.amp + vy * layer.influence * 1.2;
-
+        const dynAmp = layer.amp + vy * layer.influence * 0.8;
         const d = buildWavePath(dynAmp, phaseRefs.current[i], layer.freq, layer.baseline);
 
         const el = pathRefs.current[i];
@@ -1517,12 +1585,11 @@ const WaterWaves = () => {
 
   return (
     <WaveWrap>
-      {/* Shared gradient defs (rendered once inside first SVG) */}
       <svg style={{ position: 'absolute', width: 0, height: 0 }}>
         <defs>
           {GRADIENTS.map(([top, bot], i) => (
-            <linearGradient key={GRAD_IDS[i]} id={GRAD_IDS[i]} x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%"   stopColor={top} stopOpacity={i === 4 ? '0.35' : '0.55'} />
+            <linearGradient key={i} id={`wg${i + 1}`} x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%"   stopColor={top} stopOpacity="0.55" />
               <stop offset="100%" stopColor={bot} stopOpacity="1" />
             </linearGradient>
           ))}
@@ -1530,15 +1597,7 @@ const WaterWaves = () => {
       </svg>
 
       {LAYERS.map((layer, i) => (
-        <Wave
-          key={i}
-          $drift={layer.drift}
-          $speed={layer.speed}
-          $delay={layer.delay}
-          $opacity={layer.opacity}
-          viewBox="0 0 1440 80"
-          preserveAspectRatio="none"
-        >
+        <Wave key={i} $opacity={layer.opacity} viewBox="0 0 1440 80" preserveAspectRatio="none">
           <path
             ref={(el) => (pathRefs.current[i] = el)}
             d={buildWavePath(layer.amp, 0, layer.freq, layer.baseline)}
@@ -2646,6 +2705,7 @@ export default Timeline;
 import styled, { keyframes } from "styled-components";
 import { Link } from "react-router-dom";
 import { Github, Linkedin, Twitter, Mail } from "lucide-react";
+import { personalInfo } from "../../data/siteData";
 
 const NAV = [
   { label: "Home",          to: "/" },
@@ -2655,10 +2715,10 @@ const NAV = [
 ];
 
 const SOCIALS = [
-  { icon: Github,   href: "https://github.com/darshanagrawal",       label: "GitHub" },
-  { icon: Linkedin, href: "https://linkedin.com/in/darshanagrawal",   label: "LinkedIn" },
-  { icon: Twitter,  href: "https://twitter.com/darshanagrawal",       label: "Twitter" },
-  { icon: Mail,     href: "mailto:hello@darshanagrawal.dev",           label: "Email" },
+  { icon: Github,   href: `${personalInfo.socials.github}`,       label: "GitHub" },
+  { icon: Linkedin, href: `${personalInfo.socials.linkedin}`,   label: "LinkedIn" },
+  { icon: Twitter,  href: `${personalInfo.socials.twitter}`,       label: "Twitter" },
+  { icon: Mail,     href: `mailto:${personalInfo.email}`,           label: "Email" },
 ];
 
 const Footer = () => (
@@ -2669,8 +2729,8 @@ const Footer = () => (
     <Inner>
       {/* Brand */}
       <Brand>
-        <BrandName>Darshan Agrawal</BrandName>
-        <BrandSub>Full Stack Engineer Â· 4 Years Building the Future</BrandSub>
+        <BrandName>{personalInfo.name} {personalInfo.lastName}</BrandName>
+        <BrandSub>Full Stack Engineer Â¦ 4 Years Building the Future</BrandSub>
         <AvailBadge>
           <PulseDot />
           Open to opportunities
@@ -2705,15 +2765,15 @@ const Footer = () => (
             </SocialBtn>
           ))}
         </SocialRow>
-        <EmailText href="mailto:hello@darshanagrawal.dev">
-          hello@darshanagrawal.dev
+        <EmailText href={`mailto:${personalInfo.email}`}>
+          {personalInfo.email}
         </EmailText>
       </SocialsBlock>
     </Inner>
 
     {/* Bottom strip */}
     <BottomStrip>
-      <Copyright>Â© {new Date().getFullYear()} Darshan Agrawal. Built with React + Flask.</Copyright>
+      <Copyright>Â© {new Date().getFullYear()} {personalInfo.name} {personalInfo.lastName}. Built with React + Flask.</Copyright>
       <MadeWith>
         Made with <Heart>â™¥</Heart> and too much coffee
       </MadeWith>
@@ -2922,158 +2982,107 @@ const Nav = styled.nav`
   justify-content: space-between;
   transition: background 0.4s ease, backdrop-filter 0.3s ease, border-color 0.3s ease;
 
-  /* Use theme token so light/dark toggle works */
   background: ${({ $scrolled, theme }) =>
-    $scrolled
-      ? theme.colors.bgGlass          /* <- was hardcoded rgba(13,15,20,0.72) */
-      : 'transparent'};
-
+    $scrolled ? theme.colors.bgGlass : 'transparent'};
   backdrop-filter: ${({ $scrolled }) => $scrolled ? 'blur(20px)' : 'none'};
-
   border-bottom: 1px solid ${({ $scrolled, theme }) =>
     $scrolled ? theme.colors.borderDefault : 'transparent'};
 `;
-
 
 const Logo = styled(Link)`
   font-family: ${({ theme }) => theme.fonts.heading};
   font-size: 1.25rem;
   font-weight: 700;
-  color: ${({ theme }) => theme.colors.textPrimary};  /* theme-aware now */
+  color: ${({ theme }) => theme.colors.textPrimary};
   letter-spacing: -0.02em;
 `;
-
 
 const DesktopLinks = styled(motion.div)`
   display: flex;
   align-items: center;
   gap: 2rem;
-
   @media (max-width: 768px) { display: none; }
 `;
+
 const NavAnchor = styled(Link)`
   position: relative;
-
   font-family: ${({ theme }) => theme.fonts.body};
   font-weight: 500;
   font-size: 0.9rem;
-
   padding: 0.5rem 0;
-
   color: ${({ $active, theme }) =>
     $active ? theme.colors.gradientPinkBlue : theme.colors.textSecondary};
-
   transition: color ${({ theme }) => theme.transitions.fast};
 
   &::after {
     content: "";
     position: absolute;
-
-    bottom: 0;
-    left: 0;
-
-    width: 100%;
-    height: 2px;
-
+    bottom: 0; left: 0;
+    width: 100%; height: 2px;
     background: ${({ theme }) => theme.colors.gradientPinkBlue};
-
     transform: scaleX(${({ $active }) => ($active ? 1 : 0)});
     transform-origin: ${({ $active }) => ($active ? "left" : "right")};
-
     transition: transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
   }
 
   &:hover {
     color: ${({ theme }) => theme.colors.textPrimary};
-
-    &::after {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
-  }
-`;
-
-const DashboardLink = styled(Link)`
-  font-family: ${({ theme }) => theme.fonts.body};
-  font-size: 0.9rem;
- 
-  color: ${({ $active, theme }) =>
-    $active ? theme.colors.gradientPinkBlue : theme.colors.textSecondary};
-
-  transition: color ${({ theme }) => theme.transitions.fast};
-
-  &::after {
-    content: "";
-    position: absolute;
-
-    bottom: 0;
-    left: 0;
-
-    width: 100%;
-    height: 2px;
-
-    background: ${({ theme }) => theme.colors.gradientPinkBlue};
-
-    transform: scaleX(${({ $active }) => ($active ? 1 : 0)});
-    transform-origin: ${({ $active }) => ($active ? "left" : "right")};
-
-    transition: transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
-  }
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.textPrimary};
-
-    &::after {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
+    &::after { transform: scaleX(1); transform-origin: left; }
   }
 `;
 
 const LogoutButton = styled.button`
   padding: 0.35rem 0.8rem;
-
   font-size: 0.75rem;
   font-weight: 600;
-
   border-radius: 999px;
-
-  border: 1px solid  ${({ theme }) => theme.colors.textWhite};
+  border: 1px solid ${({ theme }) => theme.colors.textWhite};
   color: ${({ theme }) => theme.colors.textWhite};
-
   background: transparent;
   cursor: pointer;
-
   transition: ${({ theme }) => theme.transitions.fast};
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.gradientPinkBlue};
-  }
+  &:hover { background: ${({ theme }) => theme.colors.gradientPinkBlue}; }
 `;
 
 const Hamburger = styled.button`
   display: none;
-
   flex-direction: column;
-  gap: 6px;
-
+  gap: 5px;
   background: none;
   border: none;
   cursor: pointer;
-
-  ${media.tablet} {
-    display: flex;
-  }
+  padding: 4px;
+  z-index: 201;
+  ${media.tablet} { display: flex; }
 `;
 
 const Line = styled.span`
+  display: block;
   width: 24px;
   height: 2px;
   background: ${({ theme }) => theme.colors.textPrimary};
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+
+  &:nth-child(1) {
+    transform: ${({ $open }) => $open ? 'translateY(7px) rotate(45deg)' : 'none'};
+  }
+  &:nth-child(2) {
+    opacity: ${({ $open }) => $open ? '0' : '1'};
+    transform: ${({ $open }) => $open ? 'scaleX(0)' : 'none'};
+  }
+  &:nth-child(3) {
+    transform: ${({ $open }) => $open ? 'translateY(-7px) rotate(-45deg)' : 'none'};
+  }
 `;
 
+const Backdrop = styled(motion.div)`
+  position: fixed;
+  inset: 0;
+  z-index: 198;
+  background: rgba(0, 0, 0, 0.5);
+`;
 
-// Replace Hamburger + MobileMenu with panel slide:
 const MobileMenu = styled(motion.div)`
   position: fixed;
   top: 0; right: 0;
@@ -3083,115 +3092,165 @@ const MobileMenu = styled(motion.div)`
   border-left: 1px solid ${({ theme }) => theme.colors.borderDefault};
   display: flex;
   flex-direction: column;
-  padding: 5rem 2rem 2rem;
-  gap: 1.5rem;
+  padding: 5rem 1.5rem 2rem;
+  gap: 0.25rem;
   z-index: 200;
   backdrop-filter: blur(20px);
+  overflow-y: auto;
 `;
 
 const MobileLink = styled(Link)`
   font-family: ${({ theme }) => theme.fonts.body};
-  font-size: 0.9rem;
-  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: 1rem;
+  font-weight: 500;
+  color: ${({ $active, theme }) =>
+    $active ? theme.colors.gradientPinkBlue : theme.colors.textSecondary};
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  border: 1px solid ${({ $active, theme }) =>
+    $active ? 'rgba(255,45,107,0.2)' : 'transparent'};
+  background: ${({ $active }) => $active ? 'rgba(255,45,107,0.06)' : 'transparent'};
+  transition: all 0.2s ease;
+  display: block;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.gradientPinkBlue};
+    color: ${({ theme }) => theme.colors.textPrimary};
+    background: ${({ theme }) => theme.colors.bgGlassLight};
   }
 `;
 
-// Stagger children on mount:
+const MobileDivider = styled.div`
+  height: 1px;
+  background: ${({ theme }) => theme.colors.borderDefault};
+  margin: 0.5rem 0;
+`;
+
 const linksContainerVariants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.08, delayChildren: 0.3 } }
+  show: { transition: { staggerChildren: 0.07, delayChildren: 0.1 } }
 };
 
 const linkVariants = {
-  hidden: { y: -10, opacity: 0 },
-  show:   { y: 0,   opacity: 1, transition: { duration: 0.4 } }
+  hidden: { x: 20, opacity: 0 },
+  show:   { x: 0,  opacity: 1, transition: { duration: 0.28 } }
 };
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-
   const location = useLocation();
   const { isAdmin, logout } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
-
     window.addEventListener("scroll", onScroll, { passive: true });
-
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  /* Close on route change */
   useEffect(() => {
     setMobileOpen(false);
   }, [location.pathname]);
 
+  /* Lock scroll when open */
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
+
+  /* FIXED: closes menu and scrolls to top if already on that page */
+  const handleMobileLinkClick = (path) => {
+    setMobileOpen(false);
+    if (location.pathname === path) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <Nav $scrolled={scrolled}>
-      <Logo to="/">DARSHAN.DEV</Logo>
+      <Logo to="/" onClick={() => setMobileOpen(false)}>DARSHAN.DEV</Logo>
 
-     <DesktopLinks variants={linksContainerVariants} initial="hidden" animate="show">
-        {navLinks.map((link) => {
-          const isActive = location.pathname === link.path;
-
-          return (
-            <NavAnchor
-              key={link.path}
-              to={link.path}
-              $active={isActive}
-            >
-              {link.label}
-            </NavAnchor>
-          );
-        })}
-
-       
+      <DesktopLinks variants={linksContainerVariants} initial="hidden" animate="show">
+        {navLinks.map((link) => (
+          <NavAnchor key={link.path} to={link.path} $active={location.pathname === link.path}>
+            {link.label}
+          </NavAnchor>
+        ))}
         {isAdmin && (
           <>
-            <NavAnchor
-              to="/admin"
-              $active={location.pathname === "/admin"}
-            >
-              Dashboard
-            </NavAnchor>
+            <NavAnchor to="/admin" $active={location.pathname === "/admin"}>Dashboard</NavAnchor>
             <LogoutButton onClick={logout}>Logout</LogoutButton>
           </>
         )}
         <ThemeToggle />
       </DesktopLinks>
 
-      <Hamburger onClick={() => setMobileOpen(!mobileOpen)}>
-        <Line />
-        <Line />
-        <Line />
+      <Hamburger onClick={() => setMobileOpen(p => !p)} aria-label="Toggle menu">
+        <Line $open={mobileOpen} />
+        <Line $open={mobileOpen} />
+        <Line $open={mobileOpen} />
       </Hamburger>
 
       <AnimatePresence>
         {mobileOpen && (
-          // MobileMenu animation:
+          <>
+            <Backdrop
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setMobileOpen(false)}
+            />
             <MobileMenu
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             >
-            {navLinks.map((link) => (
-              <MobileLink key={link.path} to={link.path}>
-                {link.label}
-              </MobileLink>
-            ))}
+              <motion.div variants={linksContainerVariants} initial="hidden" animate="show">
+                {navLinks.map((link) => (
+                  <motion.div key={link.path} variants={linkVariants}>
+                    {/* FIXED: onClick fires even on active page */}
+                    <MobileLink
+                      to={link.path}
+                      $active={location.pathname === link.path}
+                      onClick={() => handleMobileLinkClick(link.path)}
+                    >
+                      {link.label}
+                    </MobileLink>
+                  </motion.div>
+                ))}
 
-            {isAdmin && (
-              <>
-                <MobileLink to="/admin">Dashboard</MobileLink>
-                <LogoutButton onClick={logout}>Logout</LogoutButton>
-              </>
-            )}
-            <ThemeToggle />
-          </MobileMenu>
+                {isAdmin && (
+                  <>
+                    <MobileDivider />
+                    <motion.div variants={linkVariants}>
+                      <MobileLink
+                        to="/admin"
+                        $active={location.pathname === "/admin"}
+                        onClick={() => handleMobileLinkClick('/admin')}
+                      >
+                        Dashboard
+                      </MobileLink>
+                    </motion.div>
+                    <motion.div variants={linkVariants}>
+                      <LogoutButton
+                        style={{ marginLeft: '1rem', marginTop: '0.5rem' }}
+                        onClick={() => { logout(); setMobileOpen(false); }}
+                      >
+                        Logout
+                      </LogoutButton>
+                    </motion.div>
+                  </>
+                )}
+
+                <MobileDivider />
+                <motion.div variants={linkVariants} style={{ paddingLeft: '1rem', paddingTop: '0.5rem' }}>
+                  <ThemeToggle />
+                </motion.div>
+              </motion.div>
+            </MobileMenu>
+          </>
         )}
       </AnimatePresence>
     </Nav>
@@ -3229,55 +3288,53 @@ export default NoiseOverlay;
 ### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\layout\PageTransition.jsx
 
 ```
+// src/components/layout/PageTransition.jsx
+// ROOT CAUSE OF GLITCH:
+// 1. filter:blur() triggers full-layer repaint on EVERY animation frame â€” extremely expensive
+// 2. clip-path animation while blur is active = double repaint cost
+// 3. AnimatePresence "wait" mode means old page stays mounted during exit,
+//    new page mounts after â€” both pages fighting for same RAF budget
+//
+// FIX: Remove all blur(), use a fast opacity+translateY fade,
+// keep clip-path only on desktop where GPU is strong enough.
+
 import { motion } from 'framer-motion';
 
-const pageVariants = {
-  initial: { opacity: 0, y: 30, filter: 'blur(4px)' },
-  animate: {
-    opacity: 1, y: 0, filter: 'blur(0px)',
-    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
-  },
-  exit: {
-    opacity: 0, y: -20, filter: 'blur(4px)',
-    transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] },
-  },
-};
-
-const comicPageVariants = {
+// Smooth fade-up â€” works perfectly on both desktop and mobile
+// No blur = no repaint = buttery smooth
+const fadeUpVariants = {
   initial: {
     opacity: 0,
-    clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)',
-    filter: 'blur(2px)',
+    y: 16,
   },
   animate: {
     opacity: 1,
-    clipPath: 'polygon(0 0%, 100% 0%, 100% 100%, 0 100%)',
-    filter: 'blur(0px)',
+    y: 0,
     transition: {
-      duration: 0.55,
-      ease: [0.76, 0, 0.24, 1],
-      clipPath: { duration: 0.55, ease: [0.76, 0, 0.24, 1] },
-      opacity: { duration: 0.3 },
+      duration: 0.35,
+      ease: [0.25, 0.46, 0.45, 0.94],
     },
   },
   exit: {
     opacity: 0,
-    clipPath: 'polygon(0 0%, 100% 0%, 100% 0%, 0 0%)',
-    filter: 'blur(4px)',
+    y: -12,
     transition: {
-      duration: 0.35,
-      ease: [0.76, 0, 0.24, 1],
+      duration: 0.2,
+      ease: [0.25, 0.46, 0.45, 0.94],
     },
   },
 };
 
 const PageTransition = ({ children }) => (
   <motion.div
-    variants={comicPageVariants}
+    variants={fadeUpVariants}
     initial="initial"
     animate="animate"
     exit="exit"
-    style={{ willChange: 'clip-path, opacity' }}
+    style={{
+      // Only tell GPU about opacity + transform â€” NOT filter or clip-path
+      willChange: 'opacity, transform',
+    }}
   >
     {children}
   </motion.div>
@@ -3317,18 +3374,14 @@ export default ScrollProgress;
 ### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\layout\ScrollToTop.jsx
 
 ```
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
 
-  useEffect(() => {
-    /*
-      "instant" is critical here â€” if you use "smooth", the scroll
-      animation fights the page-flip transition animation and looks jittery.
-    */
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
   }, [pathname]);
 
   return null;
@@ -4128,6 +4181,83 @@ const BottomRule = styled.div`
 ```
 
 
+### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\ui\PageLoader.jsx
+
+```
+// src/components/ui/PageLoader.jsx
+// Full-screen loading state for pages that are fetching API data.
+// Uses 100vh so it fills the entire viewport, not just the content area.
+// Used by: Blog, CaseStudies, Admin dashboard
+
+import styled, { keyframes } from "styled-components";
+
+const spin = keyframes`
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+`;
+
+const pulse = keyframes`
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+`;
+
+const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  gap: 1.5rem;
+`;
+
+const Ring = styled.div`
+  position: relative;
+  width: 52px;
+  height: 52px;
+
+  /* Outer track */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid ${({ theme }) => theme.colors.borderDefault};
+  }
+
+  /* Spinning arc */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-top-color: ${({ theme }) => theme.colors.accentPink};
+    border-right-color: ${({ theme }) => theme.colors.accentBlue};
+    animation: ${spin} 0.8s cubic-bezier(0.6, 0.2, 0.4, 0.8) infinite;
+  }
+`;
+
+const Label = styled.p`
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.textTertiary};
+  animation: ${pulse} 1.6s ease-in-out infinite;
+`;
+
+const PageLoader = ({ label = "Loadingâ€¦" }) => (
+  <Wrap>
+    <Ring />
+    <Label>{label}</Label>
+  </Wrap>
+);
+
+export default PageLoader;
+```
+
+
 ### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\ui\RichEditor.jsx
 
 ```
@@ -4622,13 +4752,13 @@ export const personalInfo = {
     'Remote-First Builder',
   ],
   bio: "I'm a full-stack engineer with 4+ years of experience building performant, scalable web applications. I thrive at the intersection of clean code and intuitive design, specializing in React ecosystems and Python backends.",
-  email: 'darshan@example.com',
+  email: 'darshanagrawal007@gmail.com',
   location: 'Seattle, WA (Remote)',
   resumeUrl: '/resume.pdf',
   socials: {
-    github: 'https://github.com/darshanagrawal',
-    linkedin: 'https://linkedin.com/in/darshanagrawal',
-    twitter: 'https://twitter.com/darshanagrawal',
+    github: 'https://github.com/darshan12-code/',
+    linkedin: 'https://www.linkedin.com/in/darshan-agrawal-012/',
+    twitter: 'https://twitter.com',
   },
 };
 
@@ -4763,6 +4893,135 @@ export const filterCategories = [
   { key: 'frontend', label: 'Frontend' },
   { key: 'backend', label: 'Backend' },
 ];
+```
+
+
+### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\hooks\useApiData.jsx
+
+```
+// src/hooks/useApiData.js
+// Centralized React Query hooks for all public API calls.
+// These replace the manual useState + useEffect + fetch patterns in each page.
+//
+// WHY: When each page manages its own state with useEffect, navigating away
+// unmounts the component and destroys the data. Navigating back = fresh fetch.
+// React Query caches the result globally, so returning to a page = instant render.
+
+import { useQuery } from "@tanstack/react-query";
+import { blogAPI, caseStudyAPI } from "../services/apis";
+
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+   QUERY KEYS â€” centralised so all components
+   share the same cache entries
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+export const QUERY_KEYS = {
+  blogs:          ["blogs"],
+  blogDetail:     (slug) => ["blog", slug],
+  caseStudies:    ["case-studies"],
+  caseStudyDetail:(slug) => ["case-study", slug],
+  featuredWork:   ["featured-work"],
+};
+
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+   BLOGS LIST
+   Used by: Blog page
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+export function useBlogs() {
+  return useQuery({
+    queryKey: QUERY_KEYS.blogs,
+    queryFn: async () => {
+      const res = await blogAPI.getAll(1, 100);
+      return res.data.data.map((blog) => ({
+        id:       blog.id,
+        title:    blog.title,
+        excerpt:  blog.excerpt,
+        category: blog.category || "Article",
+        readTime: blog.read_time,
+        date:     new Date(blog.created_at).toLocaleDateString(),
+        link:     `/blog/${blog.slug}`,
+      }));
+    },
+    // Keep fresh for 5 minutes â€” blog posts don't change often
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+   BLOG DETAIL
+   Used by: BlogDetails page
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+export function useBlogDetail(slug) {
+  return useQuery({
+    queryKey: QUERY_KEYS.blogDetail(slug),
+    queryFn:  async () => {
+      const res = await blogAPI.getBySlug(slug);
+      return res.data;
+    },
+    enabled: !!slug,
+    // Detail pages stay fresh longer â€” content rarely changes mid-session
+    staleTime: 10 * 60 * 1000,
+  });
+}
+
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+   CASE STUDIES LIST
+   Used by: CaseStudies page
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+export function useCaseStudies() {
+  return useQuery({
+    queryKey: QUERY_KEYS.caseStudies,
+    queryFn: async () => {
+      const res = await caseStudyAPI.getAll();
+      return res.data.data.map((item) => ({
+        id:          item.id,
+        title:       item.title,
+        description: item.summary,
+        image:       item.thumbnail || null,
+        tags:        item.tech_stack ? item.tech_stack.split(",") : [],
+        link:        `/case-studies/${item.slug}`,
+      }));
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+   CASE STUDY DETAIL
+   Used by: CaseStudyDetails page
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+export function useCaseStudyDetail(slug) {
+  return useQuery({
+    queryKey: QUERY_KEYS.caseStudyDetail(slug),
+    queryFn:  async () => {
+      const res = await caseStudyAPI.getBySlug(slug);
+      return res.data;
+    },
+    enabled: !!slug,
+    staleTime: 10 * 60 * 1000,
+  });
+}
+
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+   FEATURED WORK
+   Used by: FeaturedProjects (Home page)
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+export function useFeaturedWork() {
+  return useQuery({
+    queryKey: QUERY_KEYS.featuredWork,
+    queryFn: async () => {
+      const res = await caseStudyAPI.getFeatured();
+      return res.data.data.map((item) => ({
+        id:          item.id,
+        title:       item.title,
+        description: item.summary,
+        image:       item.thumbnail || null,
+        tags:        item.tech_stack ? item.tech_stack.split(",") : [],
+        link:        `/case-studies/${item.slug}`,
+      }));
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+}
 ```
 
 
@@ -6183,27 +6442,32 @@ export default AdminLogin;
 ### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\pages\Blog.jsx
 
 ```
-import { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import SectionHeader from '../components/ui/SectionHeader';
-import BlogCard from '../components/cards/BlogCard';
-import { blogAPI } from '../services/apis';
-import { media } from '../../media';
+// src/pages/Blog.jsx
+import { useState } from "react";
+import styled from "styled-components";
+import BlogCard from "../components/cards/BlogCard";
+import PageLoader from "../components/ui/PageLoader";
 import PageHero from "../components/ui/PageHero";
+import { useBlogs } from "../hooks/useApiData";
+
+const INITIAL_COUNT = 6;
+const LOAD_MORE_COUNT = 6;
+
 const Page = styled.div`
-  padding: 4rem 4rem ${({ theme }) => theme.spacing.section};
-  max-width: 900px;
+  padding: 4rem 4rem 6rem;
+  /* Removed max-width constraint â€” now full width with inner grid */
+  max-width: 1200px;
   margin: 0 auto;
   min-height: 100vh;
 
-  ${media.tablet} {
-    padding: 8rem 2rem;
+  @media (max-width: 768px) {
+    padding: 8rem 1.5rem 4rem;
   }
 `;
 
 const SearchInput = styled.input`
   width: 100%;
-  max-width: 400px;
+  max-width: 460px;
   padding: 0.75rem 1.25rem;
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: 0.9rem;
@@ -6212,56 +6476,104 @@ const SearchInput = styled.input`
   border: 1px solid ${({ theme }) => theme.colors.borderDefault};
   border-radius: ${({ theme }) => theme.borderRadius.full};
   outline: none;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
   transition: border-color 0.3s;
 
   &:focus {
     border-color: ${({ theme }) => theme.colors.accentPink};
   }
-
   &::placeholder {
     color: ${({ theme }) => theme.colors.textTertiary};
   }
 `;
 
-const List = styled.div`
+// 2-column grid on desktop, 1-column on mobile
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+`;
+
+const EmptyState = styled.p`
+  color: ${({ theme }) => theme.colors.textTertiary};
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 3rem 0;
+  grid-column: 1 / -1;
+`;
+
+const LoadMoreWrap = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 3rem;
+`;
+
+const LoadMoreBtn = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  border-radius: 999px;
+  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  background: transparent;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.accentPink};
+    color: ${({ theme }) => theme.colors.textPrimary};
+    background: rgba(255, 45, 107, 0.06);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+`;
+
+const CountLabel = styled.span`
+  font-size: 0.78rem;
+  color: ${({ theme }) => theme.colors.textTertiary};
 `;
 
 const Blog = () => {
-  const [posts, setPosts] = useState([]);
-  const [search, setSearch] = useState('');
+  const [search, setSearch]     = useState("");
+  const [visible, setVisible]   = useState(INITIAL_COUNT);
 
-  useEffect(() => {
-    fetchBlogs();
-  }, []);
+  const { data: posts = [], isLoading } = useBlogs();
 
-  const fetchBlogs = async () => {
-    try {
-      const res = await blogAPI.getAll();
+  if (isLoading) return <PageLoader label="Loading postsâ€¦" />;
 
-      const formatted = res.data.data.map((blog) => ({
-              id: blog.id,
-              title: blog.title,
-              excerpt: blog.excerpt,
-              category: blog.category || "Article",
-              readTime: blog.read_time,
-              date: new Date(blog.created_at).toLocaleDateString(),
-              link: `/blog/${blog.slug}`
-            }));
-      setPosts(formatted);
+  const filtered = posts.filter(
+    (p) =>
+      p.title.toLowerCase().includes(search.toLowerCase()) ||
+      (p.category || "").toLowerCase().includes(search.toLowerCase())
+  );
 
-    } catch (err) {
-      console.error("Error loading blogs", err);
-    }
+  const shown      = filtered.slice(0, visible);
+  const hasMore    = visible < filtered.length;
+  const remaining  = filtered.length - visible;
+
+  const handleLoadMore = () => {
+    setVisible((v) => v + LOAD_MORE_COUNT);
   };
 
-  const filtered = posts.filter((p) =>
-    p.title.toLowerCase().includes(search.toLowerCase()) ||
-    p.category.toLowerCase().includes(search.toLowerCase())
-  );
+  // Reset visible count when search changes
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+    setVisible(INITIAL_COUNT);
+  };
 
   return (
     <Page>
@@ -6277,14 +6589,29 @@ const Blog = () => {
       <SearchInput
         placeholder="Search posts..."
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={handleSearch}
       />
 
-      <List>
-        {filtered.map((post) => (
-          <BlogCard key={post.id} post={post} />
-        ))}
-      </List>
+      <Grid>
+        {shown.length === 0 ? (
+          <EmptyState>No posts found.</EmptyState>
+        ) : (
+          shown.map((post) => (
+            <BlogCard key={post.id} post={post} />
+          ))
+        )}
+      </Grid>
+
+      {hasMore && (
+        <LoadMoreWrap>
+          <LoadMoreBtn onClick={handleLoadMore}>
+            Load more â†“
+          </LoadMoreBtn>
+          <CountLabel>
+            Showing {shown.length} of {filtered.length}
+          </CountLabel>
+        </LoadMoreWrap>
+      )}
     </Page>
   );
 };
@@ -6296,14 +6623,15 @@ export default Blog;
 ### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\pages\BlogDetails.jsx
 
 ```
-import styled from 'styled-components';
-import { blogAPI } from '../services/apis';
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ArrowLeft, Clock, Tag as TagIcon } from 'lucide-react';
-import { getCategoryColor } from '../utils/categoryColors';
-import LoadingScreen from '../components/ui/LoadingScreen';
+// src/pages/BlogDetails.jsx
+import styled from "styled-components";
+import { useParams, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { ArrowLeft, Clock } from "lucide-react";
+import { getCategoryColor } from "../utils/categoryColors";
+import { useBlogDetail } from "../hooks/useApiData";
+import PageLoader from "../components/ui/PageLoader";
+
 
 const Page = styled.div`
   min-height: 100vh;
@@ -6330,8 +6658,8 @@ const BackBtn = styled.button`
   transition: all 0.2s ease;
 
   &:hover {
-    border-color: ${({ theme }) => theme.colors.gradientPinkBlue};
-    color: ${({ theme }) => theme.colors.gradientPinkBlue};
+    border-color: ${({ theme }) => theme.colors.accentPink};
+    color: ${({ theme }) => theme.colors.accentPink};
     transform: translateX(-3px);
   }
 `;
@@ -6374,7 +6702,7 @@ const MetaRow = styled.div`
   }
 
   &::after {
-    content: '';
+    content: "";
     display: block;
     width: 100%;
     height: 1px;
@@ -6396,33 +6724,20 @@ const Content = styled(motion.div)`
     position: relative;
     padding-left: 1rem;
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       left: 0; top: 0; bottom: 0;
       width: 3px;
-      background: ${({ theme }) => theme.colors.gradientPinkBlue};
+      background: ${({ theme }) => theme.colors.accentPink};
       border-radius: 2px;
     }
   }
-
-  h3 {
-    font-size: 1.2rem;
-    margin: 2rem 0 0.75rem;
-    color: ${({ theme }) => theme.colors.textPrimary};
-  }
-
-  p { margin-bottom: 1.4rem; }
-
+  h3 { font-size: 1.2rem; margin: 2rem 0 0.75rem; color: ${({ theme }) => theme.colors.textPrimary}; }
+  p  { margin-bottom: 1.4rem; }
   strong { color: ${({ theme }) => theme.colors.textPrimary}; }
-
-  a {
-    color: ${({ theme }) => theme.colors.accentBlue};
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
+  a  { color: ${({ theme }) => theme.colors.accentBlue}; text-decoration: underline; text-underline-offset: 3px; }
   blockquote {
-    border-left: 3px solid ${({ theme }) => theme.colors.gradientPinkBlue};
+    border-left: 3px solid ${({ theme }) => theme.colors.accentPink};
     padding: 0.75rem 1.5rem;
     margin: 2rem 0;
     font-style: italic;
@@ -6430,7 +6745,6 @@ const Content = styled(motion.div)`
     background: ${({ theme }) => theme.colors.bgGlassLight};
     border-radius: 0 8px 8px 0;
   }
-
   pre {
     background: ${({ theme }) => theme.colors.bgTertiary};
     padding: 1.25rem;
@@ -6440,69 +6754,35 @@ const Content = styled(motion.div)`
     margin: 1.75rem 0;
     border: 1px solid ${({ theme }) => theme.colors.borderDefault};
   }
-
   code {
     background: rgba(255, 45, 107, 0.1);
-    color: ${({ theme }) => theme.colors.gradientPinkBlue};
+    color: ${({ theme }) => theme.colors.accentPink};
     padding: 2px 7px;
     border-radius: 4px;
     font-size: 0.875em;
   }
-
-  pre code {
-    background: none;
-    color: inherit;
-    padding: 0;
-  }
-
-  img {
-    max-width: 100%;
-    border-radius: 10px;
-    margin: 1.5rem 0;
-    border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  }
-
-  ul, ol {
-    padding-left: 1.5rem;
-    margin-bottom: 1.4rem;
-    li { margin-bottom: 0.5rem; }
-  }
-
-  hr {
-    border: none;
-    border-top: 1px solid ${({ theme }) => theme.colors.borderDefault};
-    margin: 2.5rem 0;
-  }
+  pre code { background: none; color: inherit; padding: 0; }
+  img { max-width: 100%; border-radius: 10px; margin: 1.5rem 0; border: 1px solid ${({ theme }) => theme.colors.borderDefault}; }
+  ul, ol { padding-left: 1.5rem; margin-bottom: 1.4rem; li { margin-bottom: 0.5rem; } }
+  hr { border: none; border-top: 1px solid ${({ theme }) => theme.colors.borderDefault}; margin: 2.5rem 0; }
 `;
 
 const BlogDetail = () => {
   const navigate = useNavigate();
   const { slug } = useParams();
-  const [blog, setBlog] = useState(null);
 
-  useEffect(() => { loadBlog(); }, [slug]);
+  // Reads from React Query cache â€” no API call if visited before within staleTime
+  const { data: blog, isLoading } = useBlogDetail(slug);
 
-  const loadBlog = async () => {
-    const res = await blogAPI.getBySlug(slug);
-    setBlog(res.data);
-  };
-
-  if (!blog) return (
-    <Page>
-      <Inner>
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <LoadingScreen/>
-        </motion.div>
-      </Inner>
-    </Page>
-  );
+  if (isLoading) return <PageLoader label="Loading postâ€¦" />;
+  if (!blog)     return <Page><Inner><p>Post not found.</p></Inner></Page>;
 
   const catColors = getCategoryColor(blog.category);
 
   return (
     <Page>
       <Inner>
-        <BackBtn onClick={() => navigate('/blog')}>
+        <BackBtn onClick={() => navigate("/blog")}>
           <ArrowLeft size={14} /> Back to Blog
         </BackBtn>
 
@@ -6524,11 +6804,12 @@ const BlogDetail = () => {
           </Title>
 
           <MetaRow>
+            <span><Clock size={13} />{blog.read_time || "5 min read"}</span>
             <span>
-              <Clock size={13} />
-              {blog.read_time || '5 min read'}
+              {new Date(blog.created_at).toLocaleDateString("en-US", {
+                year: "numeric", month: "long", day: "numeric",
+              })}
             </span>
-            <span>{new Date(blog.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
           </MetaRow>
 
           <Content
@@ -6536,7 +6817,7 @@ const BlogDetail = () => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            {blog.content_type === 'text'
+            {blog.content_type === "text"
               ? <p>{blog.content}</p>
               : <div dangerouslySetInnerHTML={{ __html: blog.content }} />
             }
@@ -6554,55 +6835,90 @@ export default BlogDetail;
 ### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\pages\CaseStudies.jsx
 
 ```
-import { useState, useEffect } from "react";
+// src/pages/CaseStudies.jsx
+import { useState } from "react";
 import styled from "styled-components";
-import SectionHeader from "../components/ui/SectionHeader";
 import ProjectCard from "../components/cards/ProjectCard";
-import { caseStudyAPI } from "../services/apis";
-import { media } from "../../media";
 import PageHero from "../components/ui/PageHero";
+import { useCaseStudies } from "../hooks/useApiData";
+import PageLoader from "../components/ui/PageLoader";
+
+const INITIAL_COUNT = 6;
+const LOAD_MORE_COUNT = 6;
 
 const Page = styled.div`
-  padding: 4rem 4rem;
-  max-width: 1100px;
-  margin: auto;
+  padding: 4rem 4rem 6rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
 
-  ${media.tablet} {
-    padding: 6rem 2rem;
+  @media (max-width: 768px) {
+    padding: 6rem 1.5rem 4rem;
   }
 `;
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const LoadMoreWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 3rem;
+`;
+
+const LoadMoreBtn = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  border-radius: 999px;
+  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  background: transparent;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.accentPink};
+    color: ${({ theme }) => theme.colors.textPrimary};
+    background: rgba(255, 45, 107, 0.06);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+`;
+
+const CountLabel = styled.span`
+  font-size: 0.78rem;
+  color: ${({ theme }) => theme.colors.textTertiary};
 `;
 
 const CaseStudies = () => {
+  const [visible, setVisible] = useState(INITIAL_COUNT);
 
-  const [projects,setProjects] = useState([]);
+  const { data: projects = [], isLoading } = useCaseStudies();
 
-  useEffect(()=>{
-    fetchCaseStudies();
-  },[]);
+  if (isLoading) return <PageLoader label="Loading projectsâ€¦" />;
 
-const fetchCaseStudies = async () => {
-  const res = await caseStudyAPI.getAll();
+  const shown   = projects.slice(0, visible);
+  const hasMore = visible < projects.length;
 
-  const formatted = res.data.data.map(item => ({
-    id: item.id,
-    title: item.title,
-    description: item.summary,
-    image: item.thumbnail || null,   // â† just use directly, no parsing
-    tags: item.tech_stack ? item.tech_stack.split(",") : [],
-    link: `/case-studies/${item.slug}`
-  }));
-
-  setProjects(formatted);
-};
   return (
     <Page>
-
       <PageHero
         number="02"
         eyebrow="Mission Dossier"
@@ -6613,16 +6929,21 @@ const fetchCaseStudies = async () => {
       />
 
       <Grid>
-
-        {projects.map(p => (
-          <ProjectCard
-            key={p.id}
-            project={p}
-          />
+        {shown.map((p) => (
+          <ProjectCard key={p.id} project={p} />
         ))}
-
       </Grid>
 
+      {hasMore && (
+        <LoadMoreWrap>
+          <LoadMoreBtn onClick={() => setVisible((v) => v + LOAD_MORE_COUNT)}>
+            Load more â†“
+          </LoadMoreBtn>
+          <CountLabel>
+            Showing {shown.length} of {projects.length}
+          </CountLabel>
+        </LoadMoreWrap>
+      )}
     </Page>
   );
 };
@@ -6634,15 +6955,16 @@ export default CaseStudies;
 ### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\pages\CaseStudyDetails.jsx
 
 ```
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import { caseStudyAPI } from '../services/apis';
-import { getCategoryColor } from '../utils/categoryColors';
-import { ArrowLeft, Github, ExternalLink } from 'lucide-react';
-import Tag from '../components/ui/Tag';
-import LoadingScreen from '../components/ui/LoadingScreen';
+// src/pages/CaseStudyDetails.jsx
+import { useParams, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { motion } from "framer-motion";
+import { getCategoryColor } from "../utils/categoryColors";
+import { ArrowLeft, Github, ExternalLink } from "lucide-react";
+import Tag from "../components/ui/Tag";
+import PageLoader from "../components/ui/PageLoader";
+import { useCaseStudyDetail } from "../hooks/useApiData";
+
 
 const Page = styled.div`
   min-height: 100vh;
@@ -6669,14 +6991,10 @@ const BackBtn = styled.button`
   transition: all 0.2s ease;
 
   &:hover {
-    border-color: ${({ theme }) => theme.colors.gradientPinkBlue};
-    color: ${({ theme }) => theme.colors.gradientPinkBlue};
+    border-color: ${({ theme }) => theme.colors.accentPink};
+    color: ${({ theme }) => theme.colors.accentPink};
     transform: translateX(-3px);
   }
-`;
-
-const Header = styled(motion.div)`
-  margin-bottom: 2.5rem;
 `;
 
 const CategoryBadge = styled.span`
@@ -6725,13 +7043,6 @@ const TechRow = styled.div`
   margin-bottom: 3rem;
 `;
 
-const Divider = styled.div`
-  width: 100%;
-  height: 1px;
-  background: ${({ theme }) => theme.colors.borderDefault};
-  margin: 2rem 0;
-`;
-
 const Content = styled(motion.div)`
   line-height: 1.85;
   font-size: clamp(0.95rem, 2vw, 1.05rem);
@@ -6745,26 +7056,18 @@ const Content = styled(motion.div)`
     position: relative;
     padding-left: 1rem;
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       left: 0; top: 0; bottom: 0;
       width: 3px;
-      background: linear-gradient(180deg, #FF2D6B, #3B82F6);
+      background: ${({ theme }) => theme.colors.accentPink};
       border-radius: 2px;
     }
   }
-
   h3 { font-size: 1.2rem; margin: 2rem 0 0.75rem; color: ${({ theme }) => theme.colors.textPrimary}; }
-  p { margin-bottom: 1.4rem; }
+  p  { margin-bottom: 1.4rem; }
   strong { color: ${({ theme }) => theme.colors.textPrimary}; }
-
-  img {
-    max-width: 100%;
-    border-radius: 10px;
-    margin: 1.5rem 0;
-    border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  }
-
+  img { max-width: 100%; border-radius: 10px; margin: 1.5rem 0; border: 1px solid ${({ theme }) => theme.colors.borderDefault}; }
   pre {
     background: ${({ theme }) => theme.colors.bgTertiary};
     padding: 1.25rem;
@@ -6774,22 +7077,15 @@ const Content = styled(motion.div)`
     margin: 1.75rem 0;
     border: 1px solid ${({ theme }) => theme.colors.borderDefault};
   }
-
   code {
     background: rgba(255, 45, 107, 0.1);
-    color: ${({ theme }) => theme.colors.gradientPinkBlue};
+    color: ${({ theme }) => theme.colors.accentPink};
     padding: 2px 7px;
     border-radius: 4px;
     font-size: 0.875em;
   }
-
   pre code { background: none; color: inherit; padding: 0; }
-
-  ul, ol {
-    padding-left: 1.5rem;
-    margin-bottom: 1.4rem;
-    li { margin-bottom: 0.5rem; }
-  }
+  ul, ol { padding-left: 1.5rem; margin-bottom: 1.4rem; li { margin-bottom: 0.5rem; } }
 `;
 
 const LinkRow = styled.div`
@@ -6810,28 +7106,23 @@ const LinkBtn = styled.a`
   font-size: 0.875rem;
   font-weight: 600;
   text-decoration: none;
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(90deg, #FF2D6B 0%, #3B82F6 100%);
+  background: linear-gradient(90deg, #ff2d6b 0%, #3b82f6 100%);
   color: #fff;
-  border: none;
   cursor: pointer;
   transition: box-shadow 0.3s ease, transform 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(255, 45, 107, 0.3), 0 4px 15px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 8px 30px rgba(255, 45, 107, 0.3);
   }
 
   &.outline {
     background: transparent;
     border: 1px solid ${({ theme }) => theme.colors.borderDefault};
     color: ${({ theme }) => theme.colors.textSecondary};
-
     &:hover {
-      border-color: ${({ theme }) => theme.colors.gradientPinkBlue};
+      border-color: ${({ theme }) => theme.colors.accentPink};
       color: ${({ theme }) => theme.colors.textPrimary};
-      box-shadow: 0 4px 20px rgba(255, 45, 107, 0.15);
     }
   }
 `;
@@ -6839,28 +7130,26 @@ const LinkBtn = styled.a`
 const CaseStudyDetails = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const [data, setData] = useState(null);
 
-  useEffect(() => { fetchCase(); }, [slug]);
+  // Reads from React Query cache â€” no API call if visited before within staleTime
+  const { data, isLoading } = useCaseStudyDetail(slug);
 
-  const fetchCase = async () => {
-    const res = await caseStudyAPI.getBySlug(slug);
-    setData(res.data);
-  };
+  if (isLoading) return <PageLoader label="Loading projectâ€¦" />;
+  if (!data)     return <Page><Inner><p>Project not found.</p></Inner></Page>;
 
-  if (!data) return <Page><Inner><LoadingScreen/></Inner></Page>;
-
-  const tags = data.tech_stack ? data.tech_stack.split(',').map(t => t.trim()) : [];
+  const tags = data.tech_stack
+    ? data.tech_stack.split(",").map((t) => t.trim())
+    : [];
   const catColors = getCategoryColor(data.category);
 
   return (
     <Page>
       <Inner>
-        <BackBtn onClick={() => navigate('/case-studies')}>
+        <BackBtn onClick={() => navigate("/case-studies")}>
           <ArrowLeft size={14} /> Back to Case Studies
         </BackBtn>
 
-        <Header
+        <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -6870,11 +7159,12 @@ const CaseStudyDetails = () => {
           )}
           <Title>{data.title}</Title>
           <Summary>{data.summary}</Summary>
-
           <TechRow>
-            {tags.map((tag, i) => <Tag key={i}>{tag}</Tag>)}
+            {tags.map((tag, i) => (
+              <Tag key={i}>{tag}</Tag>
+            ))}
           </TechRow>
-        </Header>
+        </motion.div>
 
         {data.thumbnail && (
           <Thumbnail
@@ -6900,7 +7190,7 @@ const CaseStudyDetails = () => {
             </LinkBtn>
           )}
           {data.live_url && (
-            <LinkBtn href={data.live_url} target="_blank" rel="noreferrer">
+            <LinkBtn href={data.live_url} target="_blank" rel="noreferrer" className="outline">
               <ExternalLink size={15} /> Live Site
             </LinkBtn>
           )}
@@ -6924,13 +7214,14 @@ import { FloatingInput, FloatingTextArea } from "../components/ui/FloatingInput"
 import MagneticButton from "../components/ui/MagneticButton";
 import { contactAPI } from "../services/apis";
 import { Github, Linkedin, Twitter, Mail, MapPin, Clock, ArrowRight } from "lucide-react";
+import { personalInfo } from "../data/siteData";
 
 /* â”€â”€â”€ Data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 const SOCIALS = [
-  { icon: Github,   label: "GitHub",    href: "https://github.com/darshanagrawal",   handle: "@darshanagrawal" },
-  { icon: Linkedin, label: "LinkedIn",  href: "https://linkedin.com/in/darshanagrawal", handle: "Darshan Agrawal" },
-  { icon: Twitter,  label: "Twitter",   href: "https://twitter.com/darshanagrawal",  handle: "@darshanagrawal" },
-  { icon: Mail,     label: "Email",     href: "mailto:hello@darshanagrawal.dev",      handle: "hello@darshanagrawal.dev" },
+  { icon: Github,   label: "GitHub",    href: `${personalInfo.socials.github}`,   handle: "@darshan12-code" },
+  { icon: Linkedin, label: "LinkedIn",  href: `${personalInfo.socials.linkedin}`, handle: "darshan-agrawal-012" },
+  { icon: Twitter,  label: "Twitter",   href: `${personalInfo.socials.twitter}`,  handle: "@darshan_agrawal" },
+  { icon: Mail,     label: "Email",     href: `mailto:${personalInfo.email}`,      handle: `${personalInfo.email}` },
 ];
 
 const AVAILABILITY = [
@@ -6994,6 +7285,21 @@ const Contact = () => {
         </HeaderInner>
       </Header>
 
+      {/* â”€â”€ Toast â”€â”€ */}
+      <AnimatePresence>
+        {toast && (
+          <Toast
+            $type={toast.type}
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 20, opacity: 0 }}
+            transition={{ duration: 0.25 }}
+          >
+            <ToastIcon>{toast.type === "success" ? "âœ“" : "âœ•"}</ToastIcon>
+            {toast.msg}
+          </Toast>
+        )}
+      </AnimatePresence>
       {/* â”€â”€ Two-col layout â”€â”€ */}
       <BodyGrid>
 
@@ -7101,21 +7407,6 @@ const Contact = () => {
         </FormCol>
       </BodyGrid>
 
-      {/* â”€â”€ Toast â”€â”€ */}
-      <AnimatePresence>
-        {toast && (
-          <Toast
-            $type={toast.type}
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 20, opacity: 0 }}
-            transition={{ duration: 0.25 }}
-          >
-            <ToastIcon>{toast.type === "success" ? "âœ“" : "âœ•"}</ToastIcon>
-            {toast.msg}
-          </Toast>
-        )}
-      </AnimatePresence>
     </Page>
   );
 };
@@ -7215,7 +7506,7 @@ const BodyGrid = styled.div`
   grid-template-columns: 1fr 1.4fr;
   gap: 2.5rem;
   padding: clamp(2.5rem, 5vh, 4rem) clamp(1.5rem, 6vw, 5rem);
-  max-width: 1200px;
+  max-width: 100vw;
 
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
@@ -7606,10 +7897,47 @@ export default api;
 ```
 
 
+### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\services\queryClient.jsx
+
+```
+// src/queryClient.js
+// Centralized React Query client with caching config.
+// staleTime: how long cached data is considered fresh (no refetch)
+// gcTime:    how long unused cache stays in memory before garbage collected
+//
+// With these settings:
+// - Navigating Blog â†’ Case Studies â†’ Blog: NO API call, instant render
+// - Data refreshes only after staleTime expires (5 min for lists, 10 min for details)
+// - If user leaves tab and comes back, no unnecessary refetch
+
+import { QueryClient } from "@tanstack/react-query";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // Data stays "fresh" for 5 minutes â€” no refetch on re-mount/navigation
+      staleTime: 5 * 60 * 1000,
+      // Keep unused cache for 15 minutes (survives page navigation)
+      gcTime: 15 * 60 * 1000,
+      // Don't refetch when user switches back to the tab
+      refetchOnWindowFocus: false,
+      // Don't refetch on reconnect unless data is stale
+      refetchOnReconnect: "always",
+      // Retry failed requests once
+      retry: 1,
+      // Don't refetch on component remount if data is fresh
+      refetchOnMount: false,
+    },
+  },
+});
+
+export default queryClient;
+```
+
+
 ### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\styles\globalStyles.js
 
 ```
-
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
@@ -7619,15 +7947,20 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
-@media (max-width: 768px) {
-  #root { max-width: 100%; padding: 0; }
-}
-
+  /* FIXED: #root was getting max-width:1280px + padding:2rem from App.css
+     on desktop which is fine, but on mobile we reset it to prevent 
+     the extra right-side space */
+  #root {
+    max-width: 100%;
+    padding: 0;
+    overflow-x: hidden;
+  }
 
   html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 
   body {
@@ -7655,27 +7988,25 @@ const GlobalStyles = createGlobalStyle`
   img { max-width: 100%; display: block; }
 
   /* Keyboard nav focus rings */
-:focus-visible {
-  outline: 2px solid ${({ theme }) => theme.colors.gradientPinkBlue};
-  outline-offset: 3px;
-  border-radius: 4px;
-}
+  :focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.gradientPinkBlue};
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
 
-/* Remove ugly default focus on mouse clicks */
-:focus:not(:focus-visible) {
-  outline: none;
-}
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
 
-/* Interactive elements */
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible {
-  outline: 2px solid ${({ theme }) => theme.colors.gradientPinkBlue};
-  outline-offset: 3px;
-  box-shadow: 0 0 0 4px ${({ theme }) => theme.colors.gradientPinkBlueGlow};
-}
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.gradientPinkBlue};
+    outline-offset: 3px;
+    box-shadow: 0 0 0 4px ${({ theme }) => theme.colors.gradientPinkBlueGlow};
+  }
 `;
 
 export default GlobalStyles;

@@ -17,7 +17,7 @@ const SOCIALS = [
 
 const AVAILABILITY = [
   { label: "Status",    value: "Open to work",         color: "#00E89D" },
-  { label: "Type",      value: "Full-time / Freelance", color: "#3B82F6" },
+  { label: "Type",      value: "Full-time / Freelance / Contract", color: "#3B82F6" },
   { label: "Location",  value: "Remote Worldwide",      color: "#FF2D6B" },
   { label: "Response",  value: "Within 24 hours",       color: "#FF9F4A" },
 ];
