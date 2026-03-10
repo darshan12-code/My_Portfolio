@@ -8,6 +8,7 @@ import Tag from "../components/ui/Tag";
 import PageLoader from "../components/ui/PageLoader";
 import { useCaseStudyDetail } from "../hooks/useApiData";
 
+
 const Page = styled.div`
   min-height: 100vh;
   padding: clamp(5rem, 10vh, 8rem) clamp(1.25rem, 5vw, 2rem) 5rem;

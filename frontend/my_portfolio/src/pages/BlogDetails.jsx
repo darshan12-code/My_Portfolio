@@ -4,8 +4,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, Clock } from "lucide-react";
 import { getCategoryColor } from "../utils/categoryColors";
-import PageLoader from "../components/ui/PageLoader";
 import { useBlogDetail } from "../hooks/useApiData";
+import PageLoader from "../components/ui/PageLoader";
+
 
 const Page = styled.div`
   min-height: 100vh;

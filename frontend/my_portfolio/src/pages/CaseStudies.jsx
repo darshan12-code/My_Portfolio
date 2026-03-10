@@ -1,9 +1,9 @@
 // src/pages/CaseStudies.jsx
 import styled from "styled-components";
 import ProjectCard from "../components/cards/ProjectCard";
+import PageHero from "../components/ui/PageHero";
 import { useCaseStudies } from "../hooks/useApiData";
 import PageLoader from "../components/ui/PageLoader";
-import PageHero from "../components/ui/PageHero";
 
 const Page = styled.div`
   padding: 4rem 4rem 6rem;

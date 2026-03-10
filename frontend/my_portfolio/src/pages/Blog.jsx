@@ -2,9 +2,9 @@
 import { useState } from "react";
 import styled from "styled-components";
 import BlogCard from "../components/cards/BlogCard";
-import { useBlogs } from "../hooks/useApiData";
 import PageLoader from "../components/ui/PageLoader";
 import PageHero from "../components/ui/PageHero";
+import { useBlogs } from "../hooks/useApiData";
 
 const Page = styled.div`
   padding: 4rem 4rem 6rem;
