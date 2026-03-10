@@ -8,8 +8,7 @@
 //                          • touchmove fallback if no gyro
 
 import { useEffect, useRef } from 'react';
-import styled, { keyframes } from 'styled-components';
-
+import styled, { keyframes, css } from 'styled-components';
 const IS_TOUCH = typeof window !== 'undefined' &&
   window.matchMedia('(pointer: coarse)').matches;
 
@@ -26,19 +25,19 @@ const ShapeWrap = styled.div`
   pointer-events: none;
   overflow: hidden;
 `;
-
 const ShapeEl = styled.div`
   position: absolute;
   will-change: transform;
   opacity: ${({ $opacity }) => $opacity};
-  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5))
+          drop-shadow(0 2px 4px rgba(0,0,0,0.3));
 
-  /* Auto-spin SVG on mobile when idle — JS transform overrides this once input arrives */
   svg {
-    ${IS_TOUCH ? `
-      animation: ${spinSlow} ${({ $spinDuration }) => $spinDuration || '12s'} linear infinite;
+    ${IS_TOUCH &&
+    css`
+      animation: ${spinSlow} ${({ $spinDuration }) => $spinDuration || "12s"} linear infinite;
       transform-origin: center;
-    ` : ''}
+    `}
   }
 `;
 
