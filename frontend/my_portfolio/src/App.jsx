@@ -4,7 +4,7 @@ import { AnimatePresence } from "framer-motion";
 import { QueryClientProvider } from "@tanstack/react-query";
 
 // CHANGED: import the configured client instead of creating inline with no options
-import queryClient from "./services/queryClient.jsx";
+import queryClient from "./services/Queryclient";
 
 import GlobalStyles from "./styles/globalStyles";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
