@@ -1,18 +1,19 @@
-import { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import SectionHeader from '../components/ui/SectionHeader';
-import BlogCard from '../components/cards/BlogCard';
-import { blogAPI } from '../services/apis';
-import { media } from '../../media';
+// src/pages/Blog.jsx
+import { useState } from "react";
+import styled from "styled-components";
+import BlogCard from "../components/cards/BlogCard";
+import { useBlogs } from "../hooks/useApiData";
+import PageLoader from "../components/ui/PageLoader";
 import PageHero from "../components/ui/PageHero";
+
 const Page = styled.div`
-  padding: 4rem 4rem ${({ theme }) => theme.spacing.section};
+  padding: 4rem 4rem 6rem;
   max-width: 900px;
   margin: 0 auto;
   min-height: 100vh;
 
-  ${media.tablet} {
-    padding: 8rem 2rem;
+  @media (max-width: 768px) {
+    padding: 8rem 2rem 4rem;
   }
 `;
 
@@ -33,7 +34,6 @@ const SearchInput = styled.input`
   &:focus {
     border-color: ${({ theme }) => theme.colors.accentPink};
   }
-
   &::placeholder {
     color: ${({ theme }) => theme.colors.textTertiary};
   }
@@ -45,37 +45,26 @@ const List = styled.div`
   gap: 1.25rem;
 `;
 
+const EmptyState = styled.p`
+  color: ${({ theme }) => theme.colors.textTertiary};
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 3rem 0;
+`;
+
 const Blog = () => {
-  const [posts, setPosts] = useState([]);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    fetchBlogs();
-  }, []);
+  // Reads from React Query cache — no API call if navigated back within staleTime
+  const { data: posts = [], isLoading } = useBlogs();
 
-  const fetchBlogs = async () => {
-    try {
-      const res = await blogAPI.getAll();
+  // Show full-screen loader while first fetch is in flight
+  if (isLoading) return <PageLoader label="Loading posts…" />;
 
-      const formatted = res.data.data.map((blog) => ({
-              id: blog.id,
-              title: blog.title,
-              excerpt: blog.excerpt,
-              category: blog.category || "Article",
-              readTime: blog.read_time,
-              date: new Date(blog.created_at).toLocaleDateString(),
-              link: `/blog/${blog.slug}`
-            }));
-      setPosts(formatted);
-
-    } catch (err) {
-      console.error("Error loading blogs", err);
-    }
-  };
-
-  const filtered = posts.filter((p) =>
-    p.title.toLowerCase().includes(search.toLowerCase()) ||
-    p.category.toLowerCase().includes(search.toLowerCase())
+  const filtered = posts.filter(
+    (p) =>
+      p.title.toLowerCase().includes(search.toLowerCase()) ||
+      p.category.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -95,11 +84,15 @@ const Blog = () => {
         onChange={(e) => setSearch(e.target.value)}
       />
 
-      <List>
-        {filtered.map((post) => (
-          <BlogCard key={post.id} post={post} />
-        ))}
-      </List>
+      {filtered.length === 0 ? (
+        <EmptyState>No posts found.</EmptyState>
+      ) : (
+        <List>
+          {filtered.map((post) => (
+            <BlogCard key={post.id} post={post} />
+          ))}
+        </List>
+      )}
     </Page>
   );
 };

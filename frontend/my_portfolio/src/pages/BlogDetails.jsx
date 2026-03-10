@@ -1,11 +1,11 @@
-import styled from 'styled-components';
-import { blogAPI } from '../services/apis';
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ArrowLeft, Clock, Tag as TagIcon } from 'lucide-react';
-import { getCategoryColor } from '../utils/categoryColors';
-import LoadingScreen from '../components/ui/LoadingScreen';
+// src/pages/BlogDetails.jsx
+import styled from "styled-components";
+import { useParams, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { ArrowLeft, Clock } from "lucide-react";
+import { getCategoryColor } from "../utils/categoryColors";
+import PageLoader from "../components/ui/PageLoader";
+import { useBlogDetail } from "../hooks/useApiData";
 
 const Page = styled.div`
   min-height: 100vh;
@@ -32,8 +32,8 @@ const BackBtn = styled.button`
   transition: all 0.2s ease;
 
   &:hover {
-    border-color: ${({ theme }) => theme.colors.gradientPinkBlue};
-    color: ${({ theme }) => theme.colors.gradientPinkBlue};
+    border-color: ${({ theme }) => theme.colors.accentPink};
+    color: ${({ theme }) => theme.colors.accentPink};
     transform: translateX(-3px);
   }
 `;
@@ -76,7 +76,7 @@ const MetaRow = styled.div`
   }
 
   &::after {
-    content: '';
+    content: "";
     display: block;
     width: 100%;
     height: 1px;
@@ -98,33 +98,20 @@ const Content = styled(motion.div)`
     position: relative;
     padding-left: 1rem;
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       left: 0; top: 0; bottom: 0;
       width: 3px;
-      background: ${({ theme }) => theme.colors.gradientPinkBlue};
+      background: ${({ theme }) => theme.colors.accentPink};
       border-radius: 2px;
     }
   }
-
-  h3 {
-    font-size: 1.2rem;
-    margin: 2rem 0 0.75rem;
-    color: ${({ theme }) => theme.colors.textPrimary};
-  }
-
-  p { margin-bottom: 1.4rem; }
-
+  h3 { font-size: 1.2rem; margin: 2rem 0 0.75rem; color: ${({ theme }) => theme.colors.textPrimary}; }
+  p  { margin-bottom: 1.4rem; }
   strong { color: ${({ theme }) => theme.colors.textPrimary}; }
-
-  a {
-    color: ${({ theme }) => theme.colors.accentBlue};
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
+  a  { color: ${({ theme }) => theme.colors.accentBlue}; text-decoration: underline; text-underline-offset: 3px; }
   blockquote {
-    border-left: 3px solid ${({ theme }) => theme.colors.gradientPinkBlue};
+    border-left: 3px solid ${({ theme }) => theme.colors.accentPink};
     padding: 0.75rem 1.5rem;
     margin: 2rem 0;
     font-style: italic;
@@ -132,7 +119,6 @@ const Content = styled(motion.div)`
     background: ${({ theme }) => theme.colors.bgGlassLight};
     border-radius: 0 8px 8px 0;
   }
-
   pre {
     background: ${({ theme }) => theme.colors.bgTertiary};
     padding: 1.25rem;
@@ -142,69 +128,35 @@ const Content = styled(motion.div)`
     margin: 1.75rem 0;
     border: 1px solid ${({ theme }) => theme.colors.borderDefault};
   }
-
   code {
     background: rgba(255, 45, 107, 0.1);
-    color: ${({ theme }) => theme.colors.gradientPinkBlue};
+    color: ${({ theme }) => theme.colors.accentPink};
     padding: 2px 7px;
     border-radius: 4px;
     font-size: 0.875em;
   }
-
-  pre code {
-    background: none;
-    color: inherit;
-    padding: 0;
-  }
-
-  img {
-    max-width: 100%;
-    border-radius: 10px;
-    margin: 1.5rem 0;
-    border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  }
-
-  ul, ol {
-    padding-left: 1.5rem;
-    margin-bottom: 1.4rem;
-    li { margin-bottom: 0.5rem; }
-  }
-
-  hr {
-    border: none;
-    border-top: 1px solid ${({ theme }) => theme.colors.borderDefault};
-    margin: 2.5rem 0;
-  }
+  pre code { background: none; color: inherit; padding: 0; }
+  img { max-width: 100%; border-radius: 10px; margin: 1.5rem 0; border: 1px solid ${({ theme }) => theme.colors.borderDefault}; }
+  ul, ol { padding-left: 1.5rem; margin-bottom: 1.4rem; li { margin-bottom: 0.5rem; } }
+  hr { border: none; border-top: 1px solid ${({ theme }) => theme.colors.borderDefault}; margin: 2.5rem 0; }
 `;
 
 const BlogDetail = () => {
   const navigate = useNavigate();
   const { slug } = useParams();
-  const [blog, setBlog] = useState(null);
 
-  useEffect(() => { loadBlog(); }, [slug]);
+  // Reads from React Query cache — no API call if visited before within staleTime
+  const { data: blog, isLoading } = useBlogDetail(slug);
 
-  const loadBlog = async () => {
-    const res = await blogAPI.getBySlug(slug);
-    setBlog(res.data);
-  };
-
-  if (!blog) return (
-    <Page>
-      <Inner>
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <LoadingScreen/>
-        </motion.div>
-      </Inner>
-    </Page>
-  );
+  if (isLoading) return <PageLoader label="Loading post…" />;
+  if (!blog)     return <Page><Inner><p>Post not found.</p></Inner></Page>;
 
   const catColors = getCategoryColor(blog.category);
 
   return (
     <Page>
       <Inner>
-        <BackBtn onClick={() => navigate('/blog')}>
+        <BackBtn onClick={() => navigate("/blog")}>
           <ArrowLeft size={14} /> Back to Blog
         </BackBtn>
 
@@ -226,11 +178,12 @@ const BlogDetail = () => {
           </Title>
 
           <MetaRow>
+            <span><Clock size={13} />{blog.read_time || "5 min read"}</span>
             <span>
-              <Clock size={13} />
-              {blog.read_time || '5 min read'}
+              {new Date(blog.created_at).toLocaleDateString("en-US", {
+                year: "numeric", month: "long", day: "numeric",
+              })}
             </span>
-            <span>{new Date(blog.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
           </MetaRow>
 
           <Content
@@ -238,7 +191,7 @@ const BlogDetail = () => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            {blog.content_type === 'text'
+            {blog.content_type === "text"
               ? <p>{blog.content}</p>
               : <div dangerouslySetInnerHTML={{ __html: blog.content }} />
             }

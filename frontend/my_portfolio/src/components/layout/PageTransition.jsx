@@ -1,52 +1,50 @@
+// src/components/layout/PageTransition.jsx
+// ROOT CAUSE OF GLITCH:
+// 1. filter:blur() triggers full-layer repaint on EVERY animation frame — extremely expensive
+// 2. clip-path animation while blur is active = double repaint cost
+// 3. AnimatePresence "wait" mode means old page stays mounted during exit,
+//    new page mounts after — both pages fighting for same RAF budget
+//
+// FIX: Remove all blur(), use a fast opacity+translateY fade,
+// keep clip-path only on desktop where GPU is strong enough.
+
 import { motion } from 'framer-motion';
 
-const pageVariants = {
-  initial: { opacity: 0, y: 30, filter: 'blur(4px)' },
-  animate: {
-    opacity: 1, y: 0, filter: 'blur(0px)',
-    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
-  },
-  exit: {
-    opacity: 0, y: -20, filter: 'blur(4px)',
-    transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] },
-  },
-};
-
-const comicPageVariants = {
+// Smooth fade-up — works perfectly on both desktop and mobile
+// No blur = no repaint = buttery smooth
+const fadeUpVariants = {
   initial: {
     opacity: 0,
-    clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)',
-    filter: 'blur(2px)',
+    y: 16,
   },
   animate: {
     opacity: 1,
-    clipPath: 'polygon(0 0%, 100% 0%, 100% 100%, 0 100%)',
-    filter: 'blur(0px)',
+    y: 0,
     transition: {
-      duration: 0.55,
-      ease: [0.76, 0, 0.24, 1],
-      clipPath: { duration: 0.55, ease: [0.76, 0, 0.24, 1] },
-      opacity: { duration: 0.3 },
+      duration: 0.35,
+      ease: [0.25, 0.46, 0.45, 0.94],
     },
   },
   exit: {
     opacity: 0,
-    clipPath: 'polygon(0 0%, 100% 0%, 100% 0%, 0 0%)',
-    filter: 'blur(4px)',
+    y: -12,
     transition: {
-      duration: 0.35,
-      ease: [0.76, 0, 0.24, 1],
+      duration: 0.2,
+      ease: [0.25, 0.46, 0.45, 0.94],
     },
   },
 };
 
 const PageTransition = ({ children }) => (
   <motion.div
-    variants={comicPageVariants}
+    variants={fadeUpVariants}
     initial="initial"
     animate="animate"
     exit="exit"
-    style={{ willChange: 'clip-path, opacity' }}
+    style={{
+      // Only tell GPU about opacity + transform — NOT filter or clip-path
+      willChange: 'opacity, transform',
+    }}
   >
     {children}
   </motion.div>

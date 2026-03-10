@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import { caseStudyAPI } from '../services/apis';
-import { getCategoryColor } from '../utils/categoryColors';
-import { ArrowLeft, Github, ExternalLink } from 'lucide-react';
-import Tag from '../components/ui/Tag';
-import LoadingScreen from '../components/ui/LoadingScreen';
+// src/pages/CaseStudyDetails.jsx
+import { useParams, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { motion } from "framer-motion";
+import { getCategoryColor } from "../utils/categoryColors";
+import { ArrowLeft, Github, ExternalLink } from "lucide-react";
+import Tag from "../components/ui/Tag";
+import PageLoader from "../components/ui/PageLoader";
+import { useCaseStudyDetail } from "../hooks/useApiData";
 
 const Page = styled.div`
   min-height: 100vh;
@@ -33,14 +33,10 @@ const BackBtn = styled.button`
   transition: all 0.2s ease;
 
   &:hover {
-    border-color: ${({ theme }) => theme.colors.gradientPinkBlue};
-    color: ${({ theme }) => theme.colors.gradientPinkBlue};
+    border-color: ${({ theme }) => theme.colors.accentPink};
+    color: ${({ theme }) => theme.colors.accentPink};
     transform: translateX(-3px);
   }
-`;
-
-const Header = styled(motion.div)`
-  margin-bottom: 2.5rem;
 `;
 
 const CategoryBadge = styled.span`
@@ -89,13 +85,6 @@ const TechRow = styled.div`
   margin-bottom: 3rem;
 `;
 
-const Divider = styled.div`
-  width: 100%;
-  height: 1px;
-  background: ${({ theme }) => theme.colors.borderDefault};
-  margin: 2rem 0;
-`;
-
 const Content = styled(motion.div)`
   line-height: 1.85;
   font-size: clamp(0.95rem, 2vw, 1.05rem);
@@ -109,26 +98,18 @@ const Content = styled(motion.div)`
     position: relative;
     padding-left: 1rem;
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       left: 0; top: 0; bottom: 0;
       width: 3px;
-      background: linear-gradient(180deg, #FF2D6B, #3B82F6);
+      background: ${({ theme }) => theme.colors.accentPink};
       border-radius: 2px;
     }
   }
-
   h3 { font-size: 1.2rem; margin: 2rem 0 0.75rem; color: ${({ theme }) => theme.colors.textPrimary}; }
-  p { margin-bottom: 1.4rem; }
+  p  { margin-bottom: 1.4rem; }
   strong { color: ${({ theme }) => theme.colors.textPrimary}; }
-
-  img {
-    max-width: 100%;
-    border-radius: 10px;
-    margin: 1.5rem 0;
-    border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  }
-
+  img { max-width: 100%; border-radius: 10px; margin: 1.5rem 0; border: 1px solid ${({ theme }) => theme.colors.borderDefault}; }
   pre {
     background: ${({ theme }) => theme.colors.bgTertiary};
     padding: 1.25rem;
@@ -138,22 +119,15 @@ const Content = styled(motion.div)`
     margin: 1.75rem 0;
     border: 1px solid ${({ theme }) => theme.colors.borderDefault};
   }
-
   code {
     background: rgba(255, 45, 107, 0.1);
-    color: ${({ theme }) => theme.colors.gradientPinkBlue};
+    color: ${({ theme }) => theme.colors.accentPink};
     padding: 2px 7px;
     border-radius: 4px;
     font-size: 0.875em;
   }
-
   pre code { background: none; color: inherit; padding: 0; }
-
-  ul, ol {
-    padding-left: 1.5rem;
-    margin-bottom: 1.4rem;
-    li { margin-bottom: 0.5rem; }
-  }
+  ul, ol { padding-left: 1.5rem; margin-bottom: 1.4rem; li { margin-bottom: 0.5rem; } }
 `;
 
 const LinkRow = styled.div`
@@ -174,28 +148,23 @@ const LinkBtn = styled.a`
   font-size: 0.875rem;
   font-weight: 600;
   text-decoration: none;
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(90deg, #FF2D6B 0%, #3B82F6 100%);
+  background: linear-gradient(90deg, #ff2d6b 0%, #3b82f6 100%);
   color: #fff;
-  border: none;
   cursor: pointer;
   transition: box-shadow 0.3s ease, transform 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(255, 45, 107, 0.3), 0 4px 15px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 8px 30px rgba(255, 45, 107, 0.3);
   }
 
   &.outline {
     background: transparent;
     border: 1px solid ${({ theme }) => theme.colors.borderDefault};
     color: ${({ theme }) => theme.colors.textSecondary};
-
     &:hover {
-      border-color: ${({ theme }) => theme.colors.gradientPinkBlue};
+      border-color: ${({ theme }) => theme.colors.accentPink};
       color: ${({ theme }) => theme.colors.textPrimary};
-      box-shadow: 0 4px 20px rgba(255, 45, 107, 0.15);
     }
   }
 `;
@@ -203,28 +172,26 @@ const LinkBtn = styled.a`
 const CaseStudyDetails = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const [data, setData] = useState(null);
 
-  useEffect(() => { fetchCase(); }, [slug]);
+  // Reads from React Query cache — no API call if visited before within staleTime
+  const { data, isLoading } = useCaseStudyDetail(slug);
 
-  const fetchCase = async () => {
-    const res = await caseStudyAPI.getBySlug(slug);
-    setData(res.data);
-  };
+  if (isLoading) return <PageLoader label="Loading project…" />;
+  if (!data)     return <Page><Inner><p>Project not found.</p></Inner></Page>;
 
-  if (!data) return <Page><Inner><LoadingScreen/></Inner></Page>;
-
-  const tags = data.tech_stack ? data.tech_stack.split(',').map(t => t.trim()) : [];
+  const tags = data.tech_stack
+    ? data.tech_stack.split(",").map((t) => t.trim())
+    : [];
   const catColors = getCategoryColor(data.category);
 
   return (
     <Page>
       <Inner>
-        <BackBtn onClick={() => navigate('/case-studies')}>
+        <BackBtn onClick={() => navigate("/case-studies")}>
           <ArrowLeft size={14} /> Back to Case Studies
         </BackBtn>
 
-        <Header
+        <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -234,11 +201,12 @@ const CaseStudyDetails = () => {
           )}
           <Title>{data.title}</Title>
           <Summary>{data.summary}</Summary>
-
           <TechRow>
-            {tags.map((tag, i) => <Tag key={i}>{tag}</Tag>)}
+            {tags.map((tag, i) => (
+              <Tag key={i}>{tag}</Tag>
+            ))}
           </TechRow>
-        </Header>
+        </motion.div>
 
         {data.thumbnail && (
           <Thumbnail
@@ -264,7 +232,7 @@ const CaseStudyDetails = () => {
             </LinkBtn>
           )}
           {data.live_url && (
-            <LinkBtn href={data.live_url} target="_blank" rel="noreferrer">
+            <LinkBtn href={data.live_url} target="_blank" rel="noreferrer" className="outline">
               <ExternalLink size={15} /> Live Site
             </LinkBtn>
           )}

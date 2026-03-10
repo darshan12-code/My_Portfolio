@@ -1,58 +1,37 @@
 // src/components/effects/FloatingShapes.jsx
-import styled, { keyframes } from 'styled-components';
-import { useMousePosition } from '../../hooks/useMousePosition';
-import { useSpring, animated } from '@react-spring/web';
+// PERFORMANCE FIXES:
+// 1. One shared RAF loop drives ALL shapes — was spawning a loop per shape
+// 2. spring interpolation done manually in shared tick — no @react-spring overhead per frame
+// 3. Direct style mutation via refs instead of re-rendering React state
+// 4. CSS float animation removed — only JS drives position
+// 5. Gyroscope support on mobile (tilt to move shapes)
+// 6. Hidden on ≤480px screens
 
-const float = (y1, y2, r1, r2) => keyframes`
-  0%   { transform: translateY(0px) rotate(${r1}deg); }
-  33%  { transform: translateY(${y1}px) rotate(${r2}deg); }
-  66%  { transform: translateY(${y2}px) rotate(${r1 + 4}deg); }
-  100% { transform: translateY(0px) rotate(${r1}deg); }
-`;
+import { useEffect, useRef } from 'react';
+import styled from 'styled-components';
 
-const AnimatedShape = ({ shape, mouse }) => {
-  const spring = useSpring({
-    x: mouse.x * shape.depth * 80,
-    y: mouse.y * shape.depth * 80,
-    config: { mass: 1, tension: 120, friction: 26 },
-  });
+const IS_TOUCH = typeof window !== 'undefined' &&
+  window.matchMedia('(pointer: coarse)').matches;
 
-  return (
-    <animated.div
-      style={{
-        position: 'absolute',
-        left: shape.x,
-        top: shape.y,
-        filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
-        opacity: shape.opacity,
-        transform: spring.x.to((x) => `translate(${x}px, ${spring.y.get()}px)`),
-        willChange: 'transform',
-      }}
-    >
-      {shape.svg}
-    </animated.div>
-  );
-};
 const ShapeWrap = styled.div`
   position: fixed;
   inset: 0;
   z-index: 3;
   pointer-events: none;
   overflow: hidden;
+
+  @media (max-width: 480px) {
+    display: none;
+  }
 `;
 
-// CUTOUT STYLE: drop-shadow makes them feel like physical cutouts
-const Shape = styled.div`
+const ShapeEl = styled.div`
   position: absolute;
   filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-  animation: ${({ $kf }) => $kf} ${({ $dur }) => $dur}s ease-in-out infinite;
-  animation-delay: ${({ $delay }) => $delay}s;
   will-change: transform;
   opacity: ${({ $opacity }) => $opacity};
-  transition: transform 0.1s ease-out;
 `;
 
-// SVG shapes that look like comic panel decorations
 const shapes = [
   {
     svg: (
@@ -63,8 +42,7 @@ const shapes = [
           stroke="rgba(255,45,107,0.2)" strokeWidth="1" fill="none" />
       </svg>
     ),
-    x: '4%', y: '18%', depth: 0.018, dur: 22, delay: 0, opacity: 0.85,
-    kf: float(-18, -8, -3, 5),
+    x: '4%', y: '18%', depth: 0.018, opacity: 0.85,
   },
   {
     svg: (
@@ -75,8 +53,7 @@ const shapes = [
         <line x1="2" y1="30" x2="58" y2="30" stroke="rgba(0,232,157,0.15)" strokeWidth="0.8" />
       </svg>
     ),
-    x: '88%', y: '20%', depth: 0.025, dur: 18, delay: 2, opacity: 0.9,
-    kf: float(-22, -12, 4, -6),
+    x: '88%', y: '20%', depth: 0.025, opacity: 0.9,
   },
   {
     svg: (
@@ -87,8 +64,7 @@ const shapes = [
           stroke="rgba(59,130,246,0.2)" strokeWidth="0.8" fill="none" />
       </svg>
     ),
-    x: '82%', y: '62%', depth: 0.012, dur: 28, delay: 4, opacity: 0.8,
-    kf: float(-15, -28, 2, 8),
+    x: '82%', y: '62%', depth: 0.012, opacity: 0.8,
   },
   {
     svg: (
@@ -101,13 +77,11 @@ const shapes = [
           transform="rotate(20 25 25)" />
       </svg>
     ),
-    x: '6%', y: '75%', depth: 0.02, dur: 24, delay: 1, opacity: 0.85,
-    kf: float(-20, -10, -5, 3),
+    x: '6%', y: '75%', depth: 0.02, opacity: 0.85,
   },
   {
     svg: (
       <svg width="100" height="60" viewBox="0 0 100 60" fill="none">
-        {/* Comic speed lines / star burst */}
         {[0,30,60,90,120,150,180,210,240,270,300,330].map((deg, i) => (
           <line key={i}
             x1="50" y1="30"
@@ -120,20 +94,104 @@ const shapes = [
         <circle cx="50" cy="30" r="8" stroke="rgba(255,45,107,0.4)" strokeWidth="1.5" fill="rgba(255,45,107,0.08)" />
       </svg>
     ),
-    x: '48%', y: '85%', depth: 0.008, dur: 32, delay: 6, opacity: 0.6,
-    kf: float(-10, -18, 0, 360),
+    x: '48%', y: '85%', depth: 0.008, opacity: 0.6,
   },
 ];
 
 const FloatingShapes = () => {
-  const mousePos = useMousePosition();
+  const wrapRef   = useRef(null);
+  const elRefs    = useRef([]);        // DOM refs for each shape div
+  const targetRef = useRef({ x: 0, y: 0 }); // raw pointer/gyro target
+  const currentRef= useRef(
+    shapes.map(() => ({ x: 0, y: 0 })) // per-shape spring current position
+  );
+  const frameRef  = useRef(null);
+
+  /* ── Pointer / gyro input ── */
+  useEffect(() => {
+    if (!IS_TOUCH) {
+      const onMove = (e) => {
+        targetRef.current = {
+          x: (e.clientX / window.innerWidth  - 0.5),
+          y: (e.clientY / window.innerHeight - 0.5),
+        };
+      };
+      window.addEventListener('mousemove', onMove, { passive: true });
+      return () => window.removeEventListener('mousemove', onMove);
+    } else {
+      // Gyroscope for mobile
+      const handler = (e) => {
+        targetRef.current = {
+          x: Math.max(-1, Math.min(1, (e.gamma || 0) / 30)),
+          y: Math.max(-1, Math.min(1, ((e.beta  || 0) - 45) / 30)),
+        };
+      };
+      if (typeof DeviceOrientationEvent?.requestPermission === 'function') {
+        window.addEventListener('touchstart', async () => {
+          try {
+            if (await DeviceOrientationEvent.requestPermission() === 'granted') {
+              window.addEventListener('deviceorientation', handler, { passive: true });
+            }
+          } catch (_) {}
+        }, { once: true });
+      } else {
+        window.addEventListener('deviceorientation', handler, { passive: true });
+        return () => window.removeEventListener('deviceorientation', handler);
+      }
+    }
+  }, []);
+
+  /* ── Single shared RAF loop — FIXED: was one loop per shape ── */
+  useEffect(() => {
+    // Spring config
+    const STIFFNESS = IS_TOUCH ? 0.04 : 0.08; // how fast it catches up
+    const DAMPING   = IS_TOUCH ? 0.85 : 0.82; // how much it overshoots (1 = no overshoot)
+
+    // Per-shape velocity for spring physics
+    const velocity = shapes.map(() => ({ x: 0, y: 0 }));
+
+    const tick = () => {
+      const tx = targetRef.current.x;
+      const ty = targetRef.current.y;
+
+      shapes.forEach((shape, i) => {
+        const el = elRefs.current[i];
+        if (!el) return;
+
+        const targetX = tx * shape.depth * 80;
+        const targetY = ty * shape.depth * 80;
+
+        // Simple spring: velocity += (target - current) * stiffness; current += velocity; velocity *= damping
+        velocity[i].x  += (targetX - currentRef.current[i].x) * STIFFNESS;
+        velocity[i].y  += (targetY - currentRef.current[i].y) * STIFFNESS;
+        velocity[i].x  *= DAMPING;
+        velocity[i].y  *= DAMPING;
+        currentRef.current[i].x += velocity[i].x;
+        currentRef.current[i].y += velocity[i].y;
+
+        el.style.transform = `translate(${currentRef.current[i].x.toFixed(2)}px, ${currentRef.current[i].y.toFixed(2)}px)`;
+      });
+
+      frameRef.current = requestAnimationFrame(tick);
+    };
+
+    frameRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameRef.current);
+  }, []);
 
   return (
-    <ShapeWrap>
-    {shapes.map((s, i) => (
-      <AnimatedShape key={i} shape={s} mouse={mousePos} />
-    ))}
-  </ShapeWrap>
+    <ShapeWrap ref={wrapRef}>
+      {shapes.map((s, i) => (
+        <ShapeEl
+          key={i}
+          ref={(el) => (elRefs.current[i] = el)}
+          $opacity={s.opacity}
+          style={{ left: s.x, top: s.y }}
+        >
+          {s.svg}
+        </ShapeEl>
+      ))}
+    </ShapeWrap>
   );
 };
 

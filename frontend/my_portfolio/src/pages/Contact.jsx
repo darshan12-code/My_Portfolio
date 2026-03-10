@@ -296,7 +296,7 @@ const BodyGrid = styled.div`
   grid-template-columns: 1fr 1.4fr;
   gap: 2.5rem;
   padding: clamp(2.5rem, 5vh, 4rem) clamp(1.5rem, 6vw, 5rem);
-  max-width: 1200px;
+  max-width: 100vw;
 
   @media (max-width: 900px) {
     grid-template-columns: 1fr;

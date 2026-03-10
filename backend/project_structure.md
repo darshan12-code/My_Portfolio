@@ -1,66 +1,33 @@
 ﻿## Project Structure
 
-Folder PATH listing for volume Data
-Volume serial number is F8CC-00EB
-D:.
-|   .env
-|   app.py
-|   config.py
-|   extensions.py
-|   project_structure.md
-|   requirements.txt
-|   structure.txt
-|   
-+---models
-|   |   blog.py
-|   |   case_study.py
-|   |   message.py
-|   |   user.py
-|   |   __init__.py
-|   |   
-|   \---__pycache__
-|           blog.cpython-314.pyc
-|           case_study.cpython-314.pyc
-|           message.cpython-314.pyc
-|           user.cpython-314.pyc
-|           __init__.cpython-314.pyc
-|           
-+---routes
-|   |   auth.py
-|   |   blogs.py
-|   |   case_studies.py
-|   |   contact.py
-|   |   upload.py
-|   |   __init__.py
-|   |   
-|   \---__pycache__
-|           auth.cpython-314.pyc
-|           blogs.cpython-314.pyc
-|           case_studies.cpython-314.pyc
-|           contact.cpython-314.pyc
-|           upload.cpython-314.pyc
-|           __init__.cpython-314.pyc
-|           
-+---services
-|   |   email_service.py
-|   |   seed.py
-|   |   
-|   \---__pycache__
-|           email_service.cpython-314.pyc
-|           seed.cpython-314.pyc
-|           
-+---uploads
-+---utils
-|   |   decorators.py
-|   |   helpers.py
-|   |   
-|   \---__pycache__
-|           decorators.cpython-314.pyc
-|           helpers.cpython-314.pyc
-|           
-+---venv
-
-        
+|-- models/
+|   |-- blog.py
+|   |-- case_study.py
+|   |-- message.py
+|   |-- user.py
+|   |-- __init__.py
+|-- routes/
+|   |-- auth.py
+|   |-- blogs.py
+|   |-- case_studies.py
+|   |-- contact.py
+|   |-- upload.py
+|   |-- __init__.py
+|-- services/
+|   |-- email_service.py
+|   |-- seed.py
+|-- uploads/
+|-- utils/
+|   |-- decorators.py
+|   |-- helpers.py
+|-- .env
+|-- app.py
+|-- config.py
+|-- extensions.py
+|-- Procfile
+|-- project_structure.md
+|-- requirements.txt
+|-- runtime.txt
 
 ## File Contents
 
@@ -68,9 +35,12 @@ D:.
 ### D:\Darshan\Projects\My Portfolio\backend\.env
 
 ```
-DATABASE_URL=postgresql://postgres:1234@localhost:5432/portfolio_db
+# DATABASE_URL=postgresql://postgres:1234@localhost:5432/portfolio_db
+DATABASE_URL=postgresql://postgres.tkzejgpedeycvlopdoqy:Portfolio2024Dx@aws-1-ap-south-1.pooler.supabase.com:6543/postgres
+# DATABASE_URL=postgresql://postgres:Portfolio2024Dx@aws-0-ap-south-1.pooler.supabase.com:6543/postgres
 SECRET_KEY=supersecretkey
 FLASK_ENV=development
+
 
 CLOUDINARY_CLOUD_NAME=dsihbznoc
 CLOUDINARY_API_KEY=111695531584429
@@ -115,7 +85,11 @@ def create_app():
 
     # Register routes
     register_routes(app)
-
+    
+    @app.route('/health')
+    def health():
+        return {'status': 'ok'}, 200
+    
     # # Serve uploaded images
     # @app.route("/uploads/<path:filename>")
     # def uploaded_file(filename):
@@ -176,12 +150,20 @@ jwt = JWTManager()
 ```
 
 
+### D:\Darshan\Projects\My Portfolio\backend\Procfile
+
+```
+web: gunicorn app:app --workers 2 --bind 0.0.0.0:$PORT
+```
+
+
 ### D:\Darshan\Projects\My Portfolio\backend\requirements.txt
 
 ```
 bcrypt==5.0.0
 blinker==1.9.0
 certifi==2026.2.25
+charset-normalizer==3.4.5
 click==8.3.1
 cloudinary==1.44.1
 colorama==0.4.6
@@ -190,82 +172,29 @@ flask-cors==6.0.2
 Flask-JWT-Extended==4.7.1
 Flask-SQLAlchemy==3.1.1
 greenlet==3.3.2
+gunicorn==25.1.0
+idna==3.11
 itsdangerous==2.2.0
 Jinja2==3.1.6
 MarkupSafe==3.0.3
+packaging==26.0
 psycopg2-binary==2.9.11
 PyJWT==2.11.0
 python-dotenv==1.2.2
+requests==2.32.5
+resend==2.23.0
 six==1.17.0
 SQLAlchemy==2.0.47
 typing_extensions==4.15.0
 urllib3==2.6.3
 Werkzeug==3.1.6
-resend==2.23.0
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\structure.txt
+### D:\Darshan\Projects\My Portfolio\backend\runtime.txt
 
 ```
-Folder PATH listing for volume Data
-Volume serial number is F8CC-00EB
-D:.
-|   .env
-|   app.py
-|   config.py
-|   extensions.py
-|   requirements.txt
-|   structure.txt
-|   
-+---models
-|   |   blog.py
-|   |   case_study.py
-|   |   message.py
-|   |   user.py
-|   |   __init__.py
-|   |   
-|   \---__pycache__
-|           blog.cpython-314.pyc
-|           case_study.cpython-314.pyc
-|           message.cpython-314.pyc
-|           user.cpython-314.pyc
-|           __init__.cpython-314.pyc
-|           
-+---routes
-|   |   auth.py
-|   |   blogs.py
-|   |   case_studies.py
-|   |   contact.py
-|   |   upload.py
-|   |   __init__.py
-|   |   
-|   \---__pycache__
-|           auth.cpython-314.pyc
-|           blogs.cpython-314.pyc
-|           case_studies.cpython-314.pyc
-|           contact.cpython-314.pyc
-|           upload.cpython-314.pyc
-|           __init__.cpython-314.pyc
-|           
-+---services
-|   |   email_service.py
-|   |   seed.py
-|   |   
-|   \---__pycache__
-|           email_service.cpython-314.pyc
-|           seed.cpython-314.pyc
-|           
-+---uploads
-+---utils
-|   |   decorators.py
-|   |   helpers.py
-|   |   
-|   \---__pycache__
-|           decorators.cpython-314.pyc
-|           helpers.cpython-314.pyc
-|           
-+---venv
+python-3.11.0
 ```
 
 
@@ -451,7 +380,9 @@ def login():
     data = request.json
 
     user = User.query.filter_by(email=data["email"]).first()
+    hashed = bcrypt.hashpw(data["password"].encode("utf-8"), bcrypt.gensalt())
 
+    print(hashed.decode())
     if not user:
         return {"error": "Invalid credentials"}, 401
 
@@ -1239,3 +1170,10 @@ def generate_slug(title):
     return slug.strip("-")
 ```
 
+
+### D:\Darshan\Projects\My Portfolio\backend\venv\.gitignore
+
+```
+# Created by venv; see https://docs.python.org/3/library/venv.html
+*
+```

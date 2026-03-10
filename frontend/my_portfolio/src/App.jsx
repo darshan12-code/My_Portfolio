@@ -1,6 +1,10 @@
-import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
+// src/App.jsx
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
+
+// CHANGED: import the configured client instead of creating inline with no options
+import queryClient from "./services/Queryclient";
 
 import GlobalStyles from "./styles/globalStyles";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
@@ -31,89 +35,42 @@ import CaseStudyDetails from "./pages/CaseStudyDetails";
 import CustomCursor from "./components/ui/CustomCursor";
 import ComicGrid from "./components/effects/ComicGrid";
 
-const queryClient = new QueryClient();
-
-/* ── Protected route ──────────────────────────────────── */
 const ProtectedRoute = ({ children }) => {
   const { isAdmin, loading } = useAuth();
   if (loading) return <LoadingScreen />;
   return isAdmin ? children : <Navigate to="/admin/login" replace />;
 };
 
-/* ── All routes with transitions ─────────────────────── */
 const AnimatedRoutes = () => {
   const location = useLocation();
-
   return (
     <>
-      {/*
-        ScrollToTop MUST be here — inside the Router context (so it can
-        read useLocation) but OUTSIDE AnimatePresence (so it fires
-        immediately on pathname change, before the exit animation starts).
-      */}
       <ScrollToTop />
-
-      <AnimatePresence mode="wait" initial={false}>
-        {/*
-          KEY = location.pathname tells AnimatePresence which child changed.
-          "wait" mode means: fully finish exit animation, THEN start enter.
-          This is what gives the clean comic-page-flip feel.
-        */}
-        <PageTransition key={location.pathname} locationKey={location.pathname}>
-        <Routes location={location} key={location.pathname}>
-
-          <Route path="/"
-            element={<Home />}
-          />
-
-          <Route path="/case-studies"
-            element={<CaseStudies />}
-          />
-
-          <Route path="/case-studies/:slug"
-            element={<CaseStudyDetails />}
-          />
-
-          <Route path="/blog"
-            element={<Blog />}
-          />
-
-          <Route path="/blog/:slug"
-            element={<BlogDetail />}
-          />
-
-          <Route path="/contact"
-            element={<Contact />}
-          />
-
-          <Route path="/admin/login"
-            element={<AdminLogin />}
-          />
-
-          <Route path="/admin"
-            element={
-              <ProtectedRoute>
-                <Admin />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route path="*" element={<NotFound />} />
-
-        </Routes>
+      <AnimatePresence mode="sync" initial={false}>
+        <PageTransition key={location.pathname}>
+          <Routes location={location} key={location.pathname}>
+            <Route path="/"                   element={<Home />} />
+            <Route path="/case-studies"       element={<CaseStudies />} />
+            <Route path="/case-studies/:slug" element={<CaseStudyDetails />} />
+            <Route path="/blog"               element={<Blog />} />
+            <Route path="/blog/:slug"         element={<BlogDetail />} />
+            <Route path="/contact"            element={<Contact />} />
+            <Route path="/admin/login"        element={<AdminLogin />} />
+            <Route path="/admin"
+              element={<ProtectedRoute><Admin /></ProtectedRoute>}
+            />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </PageTransition>
       </AnimatePresence>
     </>
   );
 };
 
-/* ── Themed shell (no Router here — BrowserRouter is in App) ── */
 const ThemedApp = () => {
   const { isDark } = useTheme();
-  const activeTheme = isDark ? darkTheme : lightTheme;
-
   return (
-    <StyledProvider theme={activeTheme}>
+    <StyledProvider theme={isDark ? darkTheme : lightTheme}>
       <GlobalStyles />
       <CustomCursor />
       <NoiseOverlay />
@@ -128,18 +85,15 @@ const ThemedApp = () => {
   );
 };
 
-/* ── Root — BrowserRouter lives HERE and ONLY here ──────── */
 function App() {
   return (
-  
-      <ThemeProvider>
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <ThemedApp />
-          </AuthProvider>
-        </QueryClientProvider>
-      </ThemeProvider>
-  
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <ThemedApp />
+        </AuthProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }
 

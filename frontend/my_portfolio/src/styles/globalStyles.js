@@ -1,4 +1,3 @@
-
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
@@ -8,15 +7,20 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
-@media (max-width: 768px) {
-  #root { max-width: 100%; padding: 0; }
-}
-
+  /* FIXED: #root was getting max-width:1280px + padding:2rem from App.css
+     on desktop which is fine, but on mobile we reset it to prevent 
+     the extra right-side space */
+  #root {
+    max-width: 100%;
+    padding: 0;
+    overflow-x: hidden;
+  }
 
   html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 
   body {
@@ -44,27 +48,25 @@ const GlobalStyles = createGlobalStyle`
   img { max-width: 100%; display: block; }
 
   /* Keyboard nav focus rings */
-:focus-visible {
-  outline: 2px solid ${({ theme }) => theme.colors.gradientPinkBlue};
-  outline-offset: 3px;
-  border-radius: 4px;
-}
+  :focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.gradientPinkBlue};
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
 
-/* Remove ugly default focus on mouse clicks */
-:focus:not(:focus-visible) {
-  outline: none;
-}
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
 
-/* Interactive elements */
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible {
-  outline: 2px solid ${({ theme }) => theme.colors.gradientPinkBlue};
-  outline-offset: 3px;
-  box-shadow: 0 0 0 4px ${({ theme }) => theme.colors.gradientPinkBlueGlow};
-}
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.gradientPinkBlue};
+    outline-offset: 3px;
+    box-shadow: 0 0 0 4px ${({ theme }) => theme.colors.gradientPinkBlueGlow};
+  }
 `;
 
 export default GlobalStyles;
