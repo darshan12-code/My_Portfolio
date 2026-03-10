@@ -1,102 +1,252 @@
-import styled from "styled-components"
-import { blogAPI } from "../services/apis"
-import { useEffect, useState } from "react"
-import { useParams, useNavigate } from "react-router-dom"
-import { ArrowLeft } from "lucide-react"
+import styled from 'styled-components';
+import { blogAPI } from '../services/apis';
+import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { ArrowLeft, Clock, Tag as TagIcon } from 'lucide-react';
+import { getCategoryColor } from '../utils/categoryColors';
+import LoadingScreen from '../components/ui/LoadingScreen';
 
-const Container = styled.div`
-max-width:800px;
-margin:auto;
-padding:8rem 2rem;
-`
+const Page = styled.div`
+  min-height: 100vh;
+  padding: clamp(5rem, 10vh, 8rem) clamp(1.25rem, 5vw, 2rem) 4rem;
+`;
 
-const Title = styled.h1`
-font-size:2rem;
-margin-bottom:1rem;
-`
+const Inner = styled.div`
+  max-width: 740px;
+  margin: 0 auto;
+`;
 
-const Meta = styled.div`
-color:#999;
-margin-bottom:2rem;
-`
-
-const Content = styled.div`
-line-height:1.7;
-
-pre{
-background:#111;
-padding:1rem;
-overflow:auto;
-}
-
-img{
-max-width:100%;
-}
-`
-const BackButton = styled.button`
-  margin-bottom: 2rem;
-  background: transparent;
+const BackBtn = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2.5rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
   border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  color: ${({ theme }) => theme.colors.textPrimary};
-  padding: 0.5rem 1rem;
-  border-radius: ${({ theme }) => theme.borderRadius.full};
-  cursor: pointer;
+  background: transparent;
+  color: ${({ theme }) => theme.colors.textSecondary};
   font-size: 0.85rem;
-  transition: all 0.25s ease;
+  cursor: pointer;
+  transition: all 0.2s ease;
 
   &:hover {
-    border-color: ${({ theme }) => theme.colors.accentPink};
-    color: ${({ theme }) => theme.colors.accentPink};
+    border-color: ${({ theme }) => theme.colors.gradientPinkBlue};
+    color: ${({ theme }) => theme.colors.gradientPinkBlue};
+    transform: translateX(-3px);
   }
 `;
+
+const CategoryBadge = styled.span`
+  display: inline-block;
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: ${({ $c }) => $c.bg};
+  border: 1px solid ${({ $c }) => $c.border};
+  color: ${({ $c }) => $c.text};
+  margin-bottom: 1.25rem;
+`;
+
+const Title = styled(motion.h1)`
+  font-family: ${({ theme }) => theme.fonts.heading};
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  line-height: 1.08;
+  color: ${({ theme }) => theme.colors.textPrimary};
+  margin-bottom: 1.25rem;
+`;
+
+const MetaRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+  font-size: 0.82rem;
+  color: ${({ theme }) => theme.colors.textTertiary};
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: ${({ theme }) => theme.colors.borderDefault};
+    margin-top: 1rem;
+  }
+`;
+
+const Content = styled(motion.div)`
+  line-height: 1.85;
+  font-size: clamp(0.95rem, 2vw, 1.05rem);
+  color: ${({ theme }) => theme.colors.textSecondary};
+
+  h2 {
+    font-family: ${({ theme }) => theme.fonts.heading};
+    font-size: clamp(1.4rem, 3vw, 1.75rem);
+    margin: 3rem 0 1rem;
+    color: ${({ theme }) => theme.colors.textPrimary};
+    position: relative;
+    padding-left: 1rem;
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: ${({ theme }) => theme.colors.gradientPinkBlue};
+      border-radius: 2px;
+    }
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    margin: 2rem 0 0.75rem;
+    color: ${({ theme }) => theme.colors.textPrimary};
+  }
+
+  p { margin-bottom: 1.4rem; }
+
+  strong { color: ${({ theme }) => theme.colors.textPrimary}; }
+
+  a {
+    color: ${({ theme }) => theme.colors.accentBlue};
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  blockquote {
+    border-left: 3px solid ${({ theme }) => theme.colors.gradientPinkBlue};
+    padding: 0.75rem 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: ${({ theme }) => theme.colors.textTertiary};
+    background: ${({ theme }) => theme.colors.bgGlassLight};
+    border-radius: 0 8px 8px 0;
+  }
+
+  pre {
+    background: ${({ theme }) => theme.colors.bgTertiary};
+    padding: 1.25rem;
+    border-radius: 10px;
+    overflow-x: auto;
+    font-size: 0.875rem;
+    margin: 1.75rem 0;
+    border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  }
+
+  code {
+    background: rgba(255, 45, 107, 0.1);
+    color: ${({ theme }) => theme.colors.gradientPinkBlue};
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 0.875em;
+  }
+
+  pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+  }
+
+  img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin: 1.5rem 0;
+    border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  }
+
+  ul, ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1.4rem;
+    li { margin-bottom: 0.5rem; }
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid ${({ theme }) => theme.colors.borderDefault};
+    margin: 2.5rem 0;
+  }
+`;
+
 const BlogDetail = () => {
-const navigate = useNavigate()
-const {slug} = useParams()
+  const navigate = useNavigate();
+  const { slug } = useParams();
+  const [blog, setBlog] = useState(null);
 
-const [blog,setBlog] = useState(null)
+  useEffect(() => { loadBlog(); }, [slug]);
 
-useEffect(()=>{
-loadBlog()
-},[slug])
+  const loadBlog = async () => {
+    const res = await blogAPI.getBySlug(slug);
+    setBlog(res.data);
+  };
 
-const loadBlog = async ()=>{
+  if (!blog) return (
+    <Page>
+      <Inner>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <LoadingScreen/>
+        </motion.div>
+      </Inner>
+    </Page>
+  );
 
-const res = await blogAPI.getBySlug(slug)
+  const catColors = getCategoryColor(blog.category);
 
-setBlog(res.data)
-console.log(res.data);
+  return (
+    <Page>
+      <Inner>
+        <BackBtn onClick={() => navigate('/blog')}>
+          <ArrowLeft size={14} /> Back to Blog
+        </BackBtn>
 
-}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          {blog.category && (
+            <CategoryBadge $c={catColors}>{blog.category}</CategoryBadge>
+          )}
 
-if(!blog) return <p>Loading...</p>
+          <Title
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.55, delay: 0.1 }}
+          >
+            {blog.title}
+          </Title>
 
-return (
+          <MetaRow>
+            <span>
+              <Clock size={13} />
+              {blog.read_time || '5 min read'}
+            </span>
+            <span>{new Date(blog.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+          </MetaRow>
 
-<Container>
-<BackButton onClick={() => navigate("/blog")}>
-  <ArrowLeft size={16} /> Back
-</BackButton>
-<Title>{blog.title}</Title>
+          <Content
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            {blog.content_type === 'text'
+              ? <p>{blog.content}</p>
+              : <div dangerouslySetInnerHTML={{ __html: blog.content }} />
+            }
+          </Content>
+        </motion.div>
+      </Inner>
+    </Page>
+  );
+};
 
-<Meta>
-{blog.category} • {new Date(blog.created_at).toDateString()}
-</Meta>
-
-{blog.content_type === "text" ? (
-  <Content>
-    {blog.content}
-  </Content>
-) : (
-  <Content
-    dangerouslySetInnerHTML={{
-      __html: blog.content
-    }}
-  />
-)}
-</Container>
-
-)
-
-}
-
-export default BlogDetail
+export default BlogDetail;

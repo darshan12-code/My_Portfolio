@@ -4,24 +4,21 @@ import { useTypewriter } from '../../hooks/useTypewriter';
 import { personalInfo } from '../../data/siteData';
 import MagneticButton from '../ui/MagneticButton';
 import { media } from '../../../media';
-import photo from '../../assets/myphoto_cutout.png';
+import photo from '../../assets/myphoto_cutout2.png';
 const Section = styled.section`
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6rem 4rem 4rem;
-  position: relative;
-  background: ${({ theme }) => theme.colors.gradientHero};
+  padding: 6rem clamp(1.25rem, 5vw, 4rem) 4rem;
 
-  ${media.tablet} {
-    flex-direction: column;
+  @media (max-width: 768px) {
+    flex-direction: column-reverse;  /* photo on top on mobile */
     text-align: center;
-    padding: 6rem 2rem 4rem;
-    gap: 3rem;
+    gap: 2rem;
+    padding-top: 5rem;
   }
 `;
-
 const Left = styled.div`
   flex: 1;
   max-width: 600px;
@@ -35,12 +32,22 @@ const Name = styled(motion.h1)`
   line-height: 0.95;
   letter-spacing: -0.03em;
   text-transform: uppercase;
+   ${'' /* font-size: clamp(2.8rem, 7vw, 5rem);  */}
+    font-weight: 800; 
+    line-height: 1.0;
+  letter-spacing: -0.04em;  
+  margin-bottom: 1.1rem;
+  &:nth-of-type(2) {
+    background: ${({ theme }) => theme.colors.gradientPinkBlue};
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 `;
 
 const RoleText = styled.span`
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSizes.heroRole};
-  color: ${({ theme }) => theme.colors.accentPink};
+  color: ${({ theme }) => theme.colors.gradientPinkBlue};
   font-weight: 500;
   display: block;
   margin: 1.5rem 0 2rem;
@@ -56,21 +63,35 @@ const RoleText = styled.span`
   }
 `;
 
+
 const Buttons = styled.div`
   display: flex;
-  gap: 1rem;
-  ${media.tablet} { justify-content: center; }
-`;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 
+  ${media.tablet} {
+    justify-content: center;
+    gap: 0.65rem;
+  }
+
+  ${media.mobile} {
+    /* Stack vertically on very small screens, full-width buttons */
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+`;
 const Right = styled.div`
   flex-shrink: 0;
 `;
 
-const PhotoWrapper = styled(motion.div)`
-  position: relative;
-  width: clamp(280px, 30vw, 400px);
-  height: clamp(350px, 38vw, 500px);
-`;
+// const PhotoWrapper = styled(motion.div)`
+//   position: relative;
+//   width: clamp(280px, 30vw, 400px);
+//   height: clamp(350px, 38vw, 500px);
+// `;
 
 const GlowRing = styled.div`
   position: absolute;
@@ -142,6 +163,108 @@ const fadeUp = {
   visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] } },
 };
 
+const PhotoWrapper = styled(motion.div)`
+  position: relative;
+  width: clamp(280px, 28vw, 380px);
+  height: clamp(340px, 36vw, 480px);
+
+  @media (max-width: 768px) {
+    width: clamp(180px, 60vw, 280px);
+    height: clamp(220px, 75vw, 340px);
+  }
+
+  /* Comic cutout effect */
+  filter:
+    drop-shadow(-4px 8px 0px rgba(255,45,107,0.4))
+    drop-shadow(4px -4px 0px rgba(59,130,246,0.3))
+    drop-shadow(0 20px 40px rgba(0,0,0,0.6));
+`;
+
+// PhotoCutout stays the same but add:
+const InkFrame = styled.div`
+  position: absolute;
+  inset: 0;
+  border-radius: ${({ theme }) => theme.borderRadius.xl};
+  background: transparent;
+  z-index: 2;
+  pointer-events: none;
+
+  /* Comic panel corner marks */
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-color: ${({ theme }) => theme.colors.gradientPinkBlue};
+    border-style: solid;
+    opacity: 0.6;
+  }
+  &::before {
+    top: 8px; left: 8px;
+    border-width: 2px 0 0 2px;
+    border-radius: 4px 0 0 0;
+  }
+  &::after {
+    bottom: 8px; right: 8px;
+    border-width: 0 2px 2px 0;
+    border-radius: 0 0 4px 0;
+  }
+`;
+
+// Add link to your resume PDF (put resume.pdf in /public folder)
+const ResumeBtn = styled(motion.a)`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-weight: 600;
+  font-size: ${({ theme }) => theme.fontSizes.small};
+  color: ${({ theme }) => theme.colors.textWhite};
+  background: transparent;
+  border: 1px solid rgba(255, 45, 107, 0.4);
+  border-radius: ${({ theme }) => theme.borderRadius.full};
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  white-space: nowrap;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, #FF2D6B 0%, #3B82F6 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  & span { position: relative; z-index: 1; }
+
+  &:hover {
+    border-color: transparent;
+    box-shadow: 0 0 30px rgba(255, 45, 107, 0.3), 0 0 60px rgba(59, 130, 246, 0.15);
+    &::before { opacity: 1; }
+  }
+
+  /* On touch: show gradient immediately since there's no hover */
+  @media (hover: none) {
+    border-color: rgba(255, 45, 107, 0.5);
+    &::before { opacity: 0.15; }
+    &:active {
+      border-color: transparent;
+      &::before { opacity: 1; }
+    }
+  }
+
+  ${media.mobile} {
+    padding: 0.8rem 1.5rem;
+    width: 100%;
+    justify-content: center;
+  }
+`;
 const Hero = () => {
   const role = useTypewriter(personalInfo.roles);
 
@@ -155,10 +278,22 @@ const Hero = () => {
             <RoleText>{role}</RoleText>
           </motion.div>
           <motion.div variants={fadeUp}>
-            <Buttons>
-              <MagneticButton>View Work →</MagneticButton>
-              <MagneticButton variant="outline">Contact</MagneticButton>
-            </Buttons>
+         <Buttons>
+            <MagneticButton as="a" href="/case-studies" style={{ whiteSpace: 'nowrap' }}>
+              View Work →
+            </MagneticButton>
+            <ResumeBtn
+              href="/resume.pdf"
+              download="Darshan_Agrawal_Resume.pdf"
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              <span>↓ Resume</span>
+            </ResumeBtn>
+            <MagneticButton variant="outline" as="a" href="/contact" style={{ whiteSpace: 'nowrap' }}>
+              Contact
+            </MagneticButton>
+          </Buttons>
           </motion.div>
         </motion.div>
       </Left>
@@ -168,7 +303,8 @@ const Hero = () => {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          <GlowRing />
+          {/* <GlowRing /> */}
+          <InkFrame />
           <PhotoCutout>
             {/* Replace with your transparent PNG */}
             <img src={photo} alt="Darshan Agrawal" />

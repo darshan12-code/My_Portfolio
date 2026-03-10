@@ -146,7 +146,7 @@ const ToolBtn = styled.button`
   border-radius: 4px;
   cursor: pointer;
   background: ${({ active, theme }) =>
-    active ? theme.colors.accentPink : "transparent"};
+    active ? theme.colors.gradientPinkBlue : "transparent"};
   color: ${({ active, theme }) =>
     active ? "#fff" : theme.colors.textSecondary};
 
@@ -178,7 +178,7 @@ const EditorArea = styled.div`
     h3 { font-size: 1.2rem; margin: 1.2rem 0 0.5rem; }
     ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
     blockquote {
-      border-left: 3px solid ${({ theme }) => theme.colors.accentPink};
+      border-left: 3px solid ${({ theme }) => theme.colors.gradientPinkBlue};
       padding-left: 1rem;
       color: ${({ theme }) => theme.colors.textSecondary};
       margin: 1rem 0;
@@ -206,7 +206,7 @@ const EditorArea = styled.div`
       border-radius: 8px;
       margin: 1rem 0;
     }
-    a { color: ${({ theme }) => theme.colors.accentPink}; text-decoration: underline; }
+    a { color: ${({ theme }) => theme.colors.gradientPinkBlue}; text-decoration: underline; }
     hr { border: none; border-top: 1px solid ${({ theme }) => theme.colors.borderDefault}; margin: 1.5rem 0; }
     p.is-editor-empty:first-child::before {
       content: attr(data-placeholder);

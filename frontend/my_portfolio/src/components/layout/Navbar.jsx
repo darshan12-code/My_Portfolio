@@ -5,49 +5,47 @@ import { motion, AnimatePresence } from "framer-motion";
 import { navLinks } from "../../data/siteData";
 import { useAuth } from "../../contexts/AuthContext";
 import { media } from "../../../media";
+import ThemeToggle from "../ui/ThemeToggle";
 
 const Nav = styled.nav`
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   z-index: ${({ theme }) => theme.zIndex.navbar};
   padding: 1rem 2rem;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: background 0.4s ease, backdrop-filter 0.3s ease, border-color 0.3s ease;
 
-  transition: ${({ theme }) => theme.transitions.default};
+  /* Use theme token so light/dark toggle works */
+  background: ${({ $scrolled, theme }) =>
+    $scrolled
+      ? theme.colors.bgGlass          /* <- was hardcoded rgba(13,15,20,0.72) */
+      : 'transparent'};
 
-  background: ${({ $scrolled }) =>
-    $scrolled ? "rgba(13,15,20,0.72)" : "transparent"};
+  backdrop-filter: ${({ $scrolled }) => $scrolled ? 'blur(20px)' : 'none'};
 
-  backdrop-filter: ${({ $scrolled }) =>
-    $scrolled ? "blur(20px)" : "none"};
-
-  border-bottom: 1px solid
-    ${({ $scrolled }) =>
-      $scrolled ? "rgba(255,255,255,0.06)" : "transparent"};
+  border-bottom: 1px solid ${({ $scrolled, theme }) =>
+    $scrolled ? theme.colors.borderDefault : 'transparent'};
 `;
+
 
 const Logo = styled(Link)`
   font-family: ${({ theme }) => theme.fonts.heading};
   font-size: 1.25rem;
   font-weight: 700;
-  color: ${({ theme }) => theme.colors.textWhite};
+  color: ${({ theme }) => theme.colors.textPrimary};  /* theme-aware now */
+  letter-spacing: -0.02em;
 `;
 
-const DesktopLinks = styled.div`
+
+const DesktopLinks = styled(motion.div)`
   display: flex;
   align-items: center;
   gap: 2rem;
 
-  ${media.tablet} {
-    display: none;
-  }
+  @media (max-width: 768px) { display: none; }
 `;
-
 const NavAnchor = styled(Link)`
   position: relative;
 
@@ -58,7 +56,7 @@ const NavAnchor = styled(Link)`
   padding: 0.5rem 0;
 
   color: ${({ $active, theme }) =>
-    $active ? theme.colors.accentPink : theme.colors.textSecondary};
+    $active ? theme.colors.gradientPinkBlue : theme.colors.textSecondary};
 
   transition: color ${({ theme }) => theme.transitions.fast};
 
@@ -93,10 +91,37 @@ const NavAnchor = styled(Link)`
 const DashboardLink = styled(Link)`
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: 0.9rem;
-  color: ${({ theme }) => theme.colors.accentGreen};
+ 
+  color: ${({ $active, theme }) =>
+    $active ? theme.colors.gradientPinkBlue : theme.colors.textSecondary};
+
+  transition: color ${({ theme }) => theme.transitions.fast};
+
+  &::after {
+    content: "";
+    position: absolute;
+
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    height: 2px;
+
+    background: ${({ theme }) => theme.colors.gradientPinkBlue};
+
+    transform: scaleX(${({ $active }) => ($active ? 1 : 0)});
+    transform-origin: ${({ $active }) => ($active ? "left" : "right")};
+
+    transition: transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
 
   &:hover {
-    color: ${({ theme }) => theme.colors.accentPink};
+    color: ${({ theme }) => theme.colors.textPrimary};
+
+    &::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
   }
 `;
 
@@ -108,8 +133,8 @@ const LogoutButton = styled.button`
 
   border-radius: 999px;
 
-  border: 1px solid rgba(255,80,80,0.4);
-  color: #ff4d4d;
+  border: 1px solid  ${({ theme }) => theme.colors.textWhite};
+  color: ${({ theme }) => theme.colors.textWhite};
 
   background: transparent;
   cursor: pointer;
@@ -117,7 +142,7 @@ const LogoutButton = styled.button`
   transition: ${({ theme }) => theme.transitions.fast};
 
   &:hover {
-    background: rgba(255,80,80,0.1);
+    background: ${({ theme }) => theme.colors.gradientPinkBlue};
   }
 `;
 
@@ -142,28 +167,21 @@ const Line = styled.span`
   background: ${({ theme }) => theme.colors.textPrimary};
 `;
 
+
+// Replace Hamburger + MobileMenu with panel slide:
 const MobileMenu = styled(motion.div)`
-  position: absolute;
-
-  top: 100%;
-  left: 0;
-  right: 0;
-
+  position: fixed;
+  top: 0; right: 0;
+  width: min(320px, 85vw);
+  height: 100vh;
+  background: ${({ theme }) => theme.colors.bgTertiary};
+  border-left: 1px solid ${({ theme }) => theme.colors.borderDefault};
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-
-  padding: 2rem 0;
-
-  background: rgba(13,15,20,0.95);
+  padding: 5rem 2rem 2rem;
+  gap: 1.5rem;
+  z-index: 200;
   backdrop-filter: blur(20px);
-
-  border-bottom: 1px solid ${({ theme }) => theme.colors.borderDefault};
-
-  ${media.desktop} {
-    display: none;
-  }
 `;
 
 const MobileLink = styled(Link)`
@@ -172,9 +190,20 @@ const MobileLink = styled(Link)`
   color: ${({ theme }) => theme.colors.textSecondary};
 
   &:hover {
-    color: ${({ theme }) => theme.colors.accentPink};
+    color: ${({ theme }) => theme.colors.gradientPinkBlue};
   }
 `;
+
+// Stagger children on mount:
+const linksContainerVariants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08, delayChildren: 0.3 } }
+};
+
+const linkVariants = {
+  hidden: { y: -10, opacity: 0 },
+  show:   { y: 0,   opacity: 1, transition: { duration: 0.4 } }
+};
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -199,7 +228,7 @@ const Navbar = () => {
     <Nav $scrolled={scrolled}>
       <Logo to="/">DARSHAN.DEV</Logo>
 
-      <DesktopLinks>
+     <DesktopLinks variants={linksContainerVariants} initial="hidden" animate="show">
         {navLinks.map((link) => {
           const isActive = location.pathname === link.path;
 
@@ -214,12 +243,19 @@ const Navbar = () => {
           );
         })}
 
+       
         {isAdmin && (
           <>
-            <DashboardLink to="/admin">Dashboard</DashboardLink>
+            <NavAnchor
+              to="/admin"
+              $active={location.pathname === "/admin"}
+            >
+              Dashboard
+            </NavAnchor>
             <LogoutButton onClick={logout}>Logout</LogoutButton>
           </>
         )}
+        <ThemeToggle />
       </DesktopLinks>
 
       <Hamburger onClick={() => setMobileOpen(!mobileOpen)}>
@@ -230,11 +266,13 @@ const Navbar = () => {
 
       <AnimatePresence>
         {mobileOpen && (
-          <MobileMenu
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-          >
+          // MobileMenu animation:
+            <MobileMenu
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            >
             {navLinks.map((link) => (
               <MobileLink key={link.path} to={link.path}>
                 {link.label}
@@ -247,6 +285,7 @@ const Navbar = () => {
                 <LogoutButton onClick={logout}>Logout</LogoutButton>
               </>
             )}
+            <ThemeToggle />
           </MobileMenu>
         )}
       </AnimatePresence>

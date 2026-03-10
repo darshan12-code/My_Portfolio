@@ -17,13 +17,13 @@ const Input = styled.input`
   outline: none;
   transition: border-color 0.3s;
 
-  &:focus { border-color: ${({ theme }) => theme.colors.accentPink}; }
+  &:focus { border-color: ${({ theme }) => theme.colors.gradientPinkBlue}; }
 
   &:focus + label,
   &:not(:placeholder-shown) + label {
     top: 0.5rem;
     font-size: 0.7rem;
-    color: ${({ theme }) => theme.colors.accentPink};
+    color: ${({ theme }) => theme.colors.gradientPinkBlue};
   }
 `;
 
@@ -51,12 +51,12 @@ const TextArea = styled.textarea`
   resize: vertical;
   transition: border-color 0.3s;
 
-  &:focus { border-color: ${({ theme }) => theme.colors.accentPink}; }
+  &:focus { border-color: ${({ theme }) => theme.colors.gradientPinkBlue}; }
   &:focus + label,
   &:not(:placeholder-shown) + label {
     top: 0.5rem;
     font-size: 0.7rem;
-    color: ${({ theme }) => theme.colors.accentPink};
+    color: ${({ theme }) => theme.colors.gradientPinkBlue};
   }
 `;
 

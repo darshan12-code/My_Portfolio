@@ -6,9 +6,11 @@ import SectionHeader from '../ui/SectionHeader';
 import ProjectCard from '../cards/ProjectCard';
 import { caseStudyAPI } from '../../services/apis';
 import { media } from '../../../media';
+import SectionWave from '../effects/SectionWave';
+import { useScrollReveal } from '../../hooks/useScrollReveal';
 
 const Section = styled.section`
-  padding: ${({ theme }) => theme.spacing.section} 4rem;
+  padding: ${({ theme }) => theme.spacing.section} clamp(1.25rem, 5vw, 4rem);;
   max-width: 1100px;
   margin: 0 auto;
   ${media.tablet} { padding: ${({ theme }) => theme.spacing.section} 2rem; }
@@ -58,7 +60,7 @@ const itemVariants = {
 
 const FeaturedProjects = () => {
   const [projects, setProjects] = useState([]);
-
+  const { ref, inView } = useScrollReveal();
   useEffect(() => {
     fetchFeatured();
   }, []);
@@ -83,13 +85,15 @@ const FeaturedProjects = () => {
   if (!projects.length) return null;
 
   return (
-    <Section>
+    <Section  ref={ref}>
+    {/* <SectionWave /> */}
       <SectionHeader number="04" title="FEATURED WORK" />
 
       <motion.div
         variants={containerVariants}
         initial="hidden"
         whileInView="show"
+         animate={inView ? "show" : "hidden"}
         viewport={{ once: true }}
       >
         <Grid>

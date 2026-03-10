@@ -767,7 +767,7 @@ const Tags = styled.div`
 const Arrow = styled.span`
   display: inline-block;
   margin-top: 1rem;
-  color: ${({ theme }) => theme.colors.accentPink};
+  color: ${({ theme }) => theme.colors.gradientPinkBlue};
   font-size: 1.2rem;
   cursor: pointer;
 
@@ -972,7 +972,7 @@ import { personalInfo, aboutTraits } from '../../data/siteData';
 import { media } from '../../../media';
 
 const Section = styled.section`
-  padding: ${({ theme }) => theme.spacing.section} 4rem;
+  padding: ${({ theme }) => theme.spacing.section} clamp(1.25rem, 5vw, 4rem);;
   max-width: 1100px;
   margin: 0 auto;
   ${media.tablet} { padding: ${({ theme }) => theme.spacing.section} 2rem; }
@@ -1056,7 +1056,7 @@ import { counters } from '../../data/siteData';
 import { media } from '../../../media';
 
 const Section = styled.section`
-  padding: ${({ theme }) => theme.spacing.section} 4rem;
+  padding: ${({ theme }) => theme.spacing.section} clamp(1.25rem, 5vw, 4rem);;
   max-width: 1100px;
   margin: 0 auto;
   ${media.tablet} { padding: ${({ theme }) => theme.spacing.section} 2rem; }
@@ -1134,7 +1134,7 @@ import { caseStudyAPI } from '../../services/apis';
 import { media } from '../../../media';
 
 const Section = styled.section`
-  padding: ${({ theme }) => theme.spacing.section} 4rem;
+  padding: ${({ theme }) => theme.spacing.section} clamp(1.25rem, 5vw, 4rem);;
   max-width: 1100px;
   margin: 0 auto;
   ${media.tablet} { padding: ${({ theme }) => theme.spacing.section} 2rem; }
@@ -1283,7 +1283,7 @@ const Name = styled(motion.h1)`
 const RoleText = styled.span`
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSizes.heroRole};
-  color: ${({ theme }) => theme.colors.accentPink};
+  color: ${({ theme }) => theme.colors.gradientPinkBlue};
   font-weight: 500;
   display: block;
   margin: 1.5rem 0 2rem;
@@ -1504,7 +1504,7 @@ import { experience } from '../../data/siteData';
 import { media } from '../../../media';
 
 const Section = styled.section`
-  padding: ${({ theme }) => theme.spacing.section} 4rem;
+  padding: ${({ theme }) => theme.spacing.section} clamp(1.25rem, 5vw, 4rem);;
   max-width: 1100px;
   margin: 0 auto;
   ${media.tablet} { padding: ${({ theme }) => theme.spacing.section} 2rem; }
@@ -1548,7 +1548,7 @@ const Dot = styled.div`
   top: 2.5rem;
   width: 14px; height: 14px;
   border-radius: 50%;
-  background: ${({ theme }) => theme.colors.accentPink};
+  background: ${({ theme }) => theme.colors.gradientPinkBlue};
   box-shadow: ${({ theme }) => theme.colors.shadowGlowPink};
   transform: translateX(-50%);
 
@@ -1571,7 +1571,7 @@ const Role = styled.h3`
   font-size: ${({ theme }) => theme.fontSizes.h3};
 `;
 const Company = styled.span`
-  color: ${({ theme }) => theme.colors.accentPink};
+  color: ${({ theme }) => theme.colors.gradientPinkBlue};
   font-weight: 600;
 `;
 const Period = styled.p`
@@ -1642,7 +1642,7 @@ const Socials = styled.div`
   a {
     color: ${({ theme }) => theme.colors.textSecondary};
     transition: color ${({ theme }) => theme.transitions.fast};
-    &:hover { color: ${({ theme }) => theme.colors.accentPink}; }
+    &:hover { color: ${({ theme }) => theme.colors.gradientPinkBlue}; }
   }
 `;
 
@@ -1724,7 +1724,7 @@ const NavAnchor = styled(Link)`
   padding: 0.5rem 0;
 
   color: ${({ $active, theme }) =>
-    $active ? theme.colors.accentPink : theme.colors.textSecondary};
+    $active ? theme.colors.gradientPinkBlue : theme.colors.textSecondary};
 
   transition: color ${({ theme }) => theme.transitions.fast};
 
@@ -1762,7 +1762,7 @@ const DashboardLink = styled(Link)`
   color: ${({ theme }) => theme.colors.accentGreen};
 
   &:hover {
-    color: ${({ theme }) => theme.colors.accentPink};
+    color: ${({ theme }) => theme.colors.gradientPinkBlue};
   }
 `;
 
@@ -1838,7 +1838,7 @@ const MobileLink = styled(Link)`
   color: ${({ theme }) => theme.colors.textSecondary};
 
   &:hover {
-    color: ${({ theme }) => theme.colors.accentPink};
+    color: ${({ theme }) => theme.colors.gradientPinkBlue};
   }
 `;
 
@@ -2013,8 +2013,8 @@ const Tab = styled.button`
   font-size: ${({ theme }) => theme.fontSizes.small};
   font-weight: 500;
   color: ${({ $active, theme }) => $active ? theme.colors.textWhite : theme.colors.textTertiary};
-  background: ${({ $active, theme }) => $active ? theme.colors.accentPink : 'transparent'};
-  border: 1px solid ${({ $active, theme }) => $active ? theme.colors.accentPink : theme.colors.borderDefault};
+  background: ${({ $active, theme }) => $active ? theme.colors.gradientPinkBlue : 'transparent'};
+  border: 1px solid ${({ $active, theme }) => $active ? theme.colors.gradientPinkBlue : theme.colors.borderDefault};
   border-radius: ${({ theme }) => theme.borderRadius.full};
   cursor: pointer;
   transition: ${({ theme }) => theme.transitions.fast};
@@ -2055,13 +2055,13 @@ const Input = styled.input`
   outline: none;
   transition: border-color 0.3s;
 
-  &:focus { border-color: ${({ theme }) => theme.colors.accentPink}; }
+  &:focus { border-color: ${({ theme }) => theme.colors.gradientPinkBlue}; }
 
   &:focus + label,
   &:not(:placeholder-shown) + label {
     top: 0.5rem;
     font-size: 0.7rem;
-    color: ${({ theme }) => theme.colors.accentPink};
+    color: ${({ theme }) => theme.colors.gradientPinkBlue};
   }
 `;
 
@@ -2089,12 +2089,12 @@ const TextArea = styled.textarea`
   resize: vertical;
   transition: border-color 0.3s;
 
-  &:focus { border-color: ${({ theme }) => theme.colors.accentPink}; }
+  &:focus { border-color: ${({ theme }) => theme.colors.gradientPinkBlue}; }
   &:focus + label,
   &:not(:placeholder-shown) + label {
     top: 0.5rem;
     font-size: 0.7rem;
-    color: ${({ theme }) => theme.colors.accentPink};
+    color: ${({ theme }) => theme.colors.gradientPinkBlue};
   }
 `;
 
@@ -2143,7 +2143,7 @@ const Btn = styled(motion.button)`
       case "ghost":
         return "transparent";
       default:
-        return theme.colors.accentPink;
+        return theme.colors.gradientPinkBlue;
     }
   }};
 
@@ -2412,7 +2412,7 @@ const ToolBtn = styled.button`
   border-radius: 4px;
   cursor: pointer;
   background: ${({ active, theme }) =>
-    active ? theme.colors.accentPink : "transparent"};
+    active ? theme.colors.gradientPinkBlue : "transparent"};
   color: ${({ active, theme }) =>
     active ? "#fff" : theme.colors.textSecondary};
 
@@ -2444,7 +2444,7 @@ const EditorArea = styled.div`
     h3 { font-size: 1.2rem; margin: 1.2rem 0 0.5rem; }
     ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
     blockquote {
-      border-left: 3px solid ${({ theme }) => theme.colors.accentPink};
+      border-left: 3px solid ${({ theme }) => theme.colors.gradientPinkBlue};
       padding-left: 1rem;
       color: ${({ theme }) => theme.colors.textSecondary};
       margin: 1rem 0;
@@ -2472,7 +2472,7 @@ const EditorArea = styled.div`
       border-radius: 8px;
       margin: 1rem 0;
     }
-    a { color: ${({ theme }) => theme.colors.accentPink}; text-decoration: underline; }
+    a { color: ${({ theme }) => theme.colors.gradientPinkBlue}; text-decoration: underline; }
     hr { border: none; border-top: 1px solid ${({ theme }) => theme.colors.borderDefault}; margin: 1.5rem 0; }
     p.is-editor-empty:first-child::before {
       content: attr(data-placeholder);
@@ -2499,7 +2499,7 @@ const Wrapper = styled(motion.div)`
 const Label = styled.span`
   font-family: ${({ theme }) => theme.fonts.mono};
   font-size: ${({ theme }) => theme.fontSizes.xs};
-  color: ${({ theme }) => theme.colors.accentPink};
+  color: ${({ theme }) => theme.colors.gradientPinkBlue};
   text-transform: uppercase;
   letter-spacing: 0.2em;
 `;
@@ -3526,7 +3526,7 @@ const Welcome = styled.p`
 `;
 
 const Accent = styled.span`
-  color: ${({ theme }) => theme.colors.accentPink};
+  color: ${({ theme }) => theme.colors.gradientPinkBlue};
 `;
 
 const CardGrid = styled.div`
@@ -3585,7 +3585,7 @@ const Input = styled.input`
   color: ${({ theme }) => theme.colors.textPrimary};
 
   &:focus {
-    border-color: ${({ theme }) => theme.colors.accentPink};
+    border-color: ${({ theme }) => theme.colors.gradientPinkBlue};
     outline: none;
   }
 `;
@@ -3628,12 +3628,12 @@ const RadioRow = styled.div`
     border: 1px solid ${({ theme }) => theme.colors.borderDefault};
 
     &:hover {
-      border-color: ${({ theme }) => theme.colors.accentPink};
+      border-color: ${({ theme }) => theme.colors.gradientPinkBlue};
     }
   }
 
   input {
-    accent-color: ${({ theme }) => theme.colors.accentPink};
+    accent-color: ${({ theme }) => theme.colors.gradientPinkBlue};
   }
 `;
 const ThumbnailPreview = styled.div`
@@ -3907,7 +3907,7 @@ const Input = styled.input`
   outline: none;
 
   &:focus {
-    border-color: ${({ theme }) => theme.colors.accentPink};
+    border-color: ${({ theme }) => theme.colors.gradientPinkBlue};
   }
 `;
 
@@ -4035,7 +4035,7 @@ const SearchInput = styled.input`
   transition: border-color 0.3s;
 
   &:focus {
-    border-color: ${({ theme }) => theme.colors.accentPink};
+    border-color: ${({ theme }) => theme.colors.gradientPinkBlue};
   }
 
   &::placeholder {
@@ -4155,8 +4155,8 @@ const BackButton = styled.button`
   transition: all 0.25s ease;
 
   &:hover {
-    border-color: ${({ theme }) => theme.colors.accentPink};
-    color: ${({ theme }) => theme.colors.accentPink};
+    border-color: ${({ theme }) => theme.colors.gradientPinkBlue};
+    color: ${({ theme }) => theme.colors.gradientPinkBlue};
   }
 `;
 const BlogDetail = () => {
@@ -4801,8 +4801,8 @@ export const theme = {
     textWhite: '#FFFFFF',
     accentNavy: '#1E3A5F',
     accentNavyLight: '#2A5A8F',
-    accentPink: '#FF2D6B',
-    accentPinkGlow: 'rgba(255, 45, 107, 0.35)',
+    gradientPinkBlue: '#FF2D6B',
+    gradientPinkBlueGlow: 'rgba(255, 45, 107, 0.35)',
     accentGreen: '#00E89D',
     accentGreenGlow: 'rgba(0, 232, 157, 0.25)',
     accentCoral: '#FF6B4A',

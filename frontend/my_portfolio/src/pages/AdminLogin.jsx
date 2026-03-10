@@ -14,11 +14,32 @@ const Page = styled.div`
 
 background: ${({ theme }) => theme.colors.gradientHero};
 `;
+const ScanLine = styled(motion.div)`
+  position: absolute;
+  top: -10px;
+  left: 0;
+  right: 0;
 
+  height: 2px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    ${({ theme }) => theme.colors.accentCoral},
+    transparent
+  );
+
+  box-shadow: 
+  0 0 8px ${({ theme }) => theme.colors.accentCoral},
+  0 0 16px ${({ theme }) => theme.colors.gradientPinkBlue};
+  pointer-events: none;
+`;
 const Card = styled(motion.div)`
+  position: relative;
+  overflow: hidden;   /* important */
+
   width: 100%;
   max-width: 420px;
-
   padding: 2.5rem;
 
   border-radius: ${({ theme }) => theme.borderRadius.lg};
@@ -45,8 +66,8 @@ const IconBox = styled.div`
   align-items: center;
   justify-content: center;
 
-  background: rgba(255, 0, 128, 0.08);
-  border: 1px solid rgba(255, 0, 128, 0.2);
+  background: ${({ theme }) => theme.colors.gradientPinkBlue};
+  border: 1px solid ${({ theme }) => theme.colors.accentBlue};
 `;
 
 const Title = styled.h1`
@@ -108,7 +129,32 @@ const Input = styled.input`
   outline: none;
 
   &:focus {
-    border-color: ${({ theme }) => theme.colors.accentPink};
+    border-color: ${({ theme }) => theme.colors.gradientPinkBlue};
+  }
+`;
+const GlitchTitle = styled(motion.h1)`
+  /* same as Title */
+  position: relative;
+
+  &::before, &::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    opacity: 0.08;
+  }
+  &::before { color: #FF2D6B; transform: translate(-2px, 0); }
+  &::after  { color: #3B82F6; transform: translate(2px, 0); }
+
+  &:hover::before { animation: glitch-clip 0.3s steps(5) infinite; }
+  &:hover::after  { animation: glitch-clip 0.3s steps(5) infinite reverse; }
+
+  @keyframes glitch-clip {
+    0%  { clip-path: inset(0 0 95% 0); }
+    20% { clip-path: inset(30% 0 50% 0); }
+    40% { clip-path: inset(60% 0 20% 0); }
+    60% { clip-path: inset(10% 0 80% 0); }
+    80% { clip-path: inset(80% 0 5% 0); }
+    100%{ clip-path: inset(0 0 95% 0); }
   }
 `;
 
@@ -139,20 +185,26 @@ const AdminLogin = () => {
 
   return (
     <Page>
-      <Card
-        initial={{ scale: 0.9, opacity: 0, y: 30 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <Header initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+    <Card
+  initial={{ scale: 0.85, opacity: 0, rotateX: 15 }}
+  animate={{ scale: 1, opacity: 1, rotateX: 0 }}
+  transition={{ duration: 0.7, ease: [0.34, 1.56, 0.64, 1] }}
+  style={{ perspective: 1000 }}
+>
+   <ScanLine
+    initial={{ top: '0%' }}
+    animate={{ top: ['0%', '100%', '0%'] }}
+    transition={{ duration: 3, repeat: Infinity, ease: 'linear', repeatDelay: 4 }}
+  />
+ <Header initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
           <IconBox>
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="hotpink" strokeWidth="2">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#EDE8DC" strokeWidth="2">
               <rect x="3" y="11" width="18" height="11" rx="2" />
               <path d="M7 11V7a5 5 0 0 1 10 0v4" />
             </svg>
           </IconBox>
 
-          <Title>Admin Access</Title>
+          <GlitchTitle data-text="Admin Access">Admin Access</GlitchTitle>
           <Subtitle>Sign in to manage your portfolio</Subtitle>
         </Header>
 
@@ -191,7 +243,7 @@ const AdminLogin = () => {
             {isLoading ? "Signing in..." : "Sign In →"}
           </MagneticButton>
         </Form>
-      </Card>
+</Card>
     </Page>
   );
 };

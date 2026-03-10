@@ -4,9 +4,9 @@ import SectionHeader from '../components/ui/SectionHeader';
 import BlogCard from '../components/cards/BlogCard';
 import { blogAPI } from '../services/apis';
 import { media } from '../../media';
-
+import PageHero from "../components/ui/PageHero";
 const Page = styled.div`
-  padding: 8rem 4rem ${({ theme }) => theme.spacing.section};
+  padding: 4rem 4rem ${({ theme }) => theme.spacing.section};
   max-width: 900px;
   margin: 0 auto;
   min-height: 100vh;
@@ -80,7 +80,14 @@ const Blog = () => {
 
   return (
     <Page>
-      <SectionHeader number="03" title="BLOG" />
+      <PageHero
+        number="03"
+        eyebrow="The Field Journal"
+        title="Blog"
+        titleAccent="Posts"
+        subtitle="Thoughts, tutorials, and deep-dives from 4 years of building things."
+        badge={`${posts.length} Articles`}
+      />
 
       <SearchInput
         placeholder="Search posts..."

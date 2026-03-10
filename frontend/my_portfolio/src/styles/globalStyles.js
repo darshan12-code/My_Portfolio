@@ -8,6 +8,11 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
+@media (max-width: 768px) {
+  #root { max-width: 100%; padding: 0; }
+}
+
+
   html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
@@ -27,16 +32,39 @@ const GlobalStyles = createGlobalStyle`
     color: #fff;
   }
 
-  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar { width: 0.375rem; }
   ::-webkit-scrollbar-track { background: ${({ theme }) => theme.colors.bgPrimary}; }
   ::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
+    border-radius: 0.1875rem;
   }
   ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
 
   a { color: inherit; text-decoration: none; }
   img { max-width: 100%; display: block; }
+
+  /* Keyboard nav focus rings */
+:focus-visible {
+  outline: 2px solid ${({ theme }) => theme.colors.gradientPinkBlue};
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Remove ugly default focus on mouse clicks */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Interactive elements */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid ${({ theme }) => theme.colors.gradientPinkBlue};
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px ${({ theme }) => theme.colors.gradientPinkBlueGlow};
+}
 `;
 
 export default GlobalStyles;

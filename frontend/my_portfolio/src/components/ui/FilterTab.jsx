@@ -6,8 +6,8 @@ const Tab = styled.button`
   font-size: ${({ theme }) => theme.fontSizes.small};
   font-weight: 500;
   color: ${({ $active, theme }) => $active ? theme.colors.textWhite : theme.colors.textTertiary};
-  background: ${({ $active, theme }) => $active ? theme.colors.accentPink : 'transparent'};
-  border: 1px solid ${({ $active, theme }) => $active ? theme.colors.accentPink : theme.colors.borderDefault};
+  background: ${({ $active, theme }) => $active ? theme.colors.gradientPinkBlue : 'transparent'};
+  border: 1px solid ${({ $active, theme }) => $active ? theme.colors.gradientPinkBlue : theme.colors.borderDefault};
   border-radius: ${({ theme }) => theme.borderRadius.full};
   cursor: pointer;
   transition: ${({ theme }) => theme.transitions.fast};

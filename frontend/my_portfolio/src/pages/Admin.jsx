@@ -1,77 +1,121 @@
-import { useState, useEffect } from "react";
-import styled from "styled-components";
+import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
+import styled, { keyframes } from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
-import { Pencil, Trash2, ArrowBigLeft, ArrowBigRight } from "lucide-react";
+import {
+  Pencil, Trash2, ArrowBigLeft, ArrowBigRight,
+  Plus, Eye, Save, X, Terminal,
+} from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
-import { blogAPI, caseStudyAPI, contactAPI,uploadAPI  } from "../services/apis";
-
+import { blogAPI, caseStudyAPI, contactAPI, uploadAPI } from "../services/apis";
 import SectionHeader from "../components/ui/SectionHeader";
 import MagneticButton from "../components/ui/MagneticButton";
 import RichEditor from "../components/ui/RichEditor";
 
+/*
+  WHY createPortal?
+  position:fixed is supposed to be viewport-relative, BUT the browser
+  re-parents it into the nearest ancestor that has a CSS transform,
+  filter, will-change:transform, or perspective applied — Framer Motion
+  applies transforms to every animated parent, so any fixed child gets
+  "trapped" inside that stacking context and scrolls with the page.
+
+  createPortal(node, document.body) escapes ALL ancestor stacking
+  contexts by rendering the overlay as a DIRECT child of <body>.
+  Combined with body position:fixed on open, the modal is always
+  perfectly centred in the viewport, regardless of scroll position.
+*/
+
 const ITEMS_PER_PAGE = 9;
 
+/* ── Portal: renders children directly into document.body ── */
+const Portal = ({ children }) => {
+  const el = useRef(document.createElement("div"));
+  useEffect(() => {
+    const node = el.current;
+    node.setAttribute("id", "modal-portal");
+    document.body.appendChild(node);
+    return () => { if (document.body.contains(node)) document.body.removeChild(node); };
+  }, []);
+  return createPortal(children, el.current);
+};
+
+/* ── Main component ── */
 const Admin = () => {
   const { user } = useAuth();
-
   const [tab, setTab] = useState("blogs");
-
   const [blogs, setBlogs] = useState([]);
   const [cases, setCases] = useState([]);
   const [messages, setMessages] = useState([]);
-
   const [page, setPage] = useState(1);
-
   const [showForm, setShowForm] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
-
   const [editItem, setEditItem] = useState(null);
-
   const [formData, setFormData] = useState({});
+  const [saving, setSaving] = useState(false);
+  const savedScrollY = useRef(0);
 
   const schemas = {
     blogs: [
-      { name: "title", label: "Blog Title", type: "text" },
-      { name: "excerpt", label: "Excerpt", type: "textarea" },
-      { name: "category", label: "Category", type: "text" },
-      { name: "content_type", label: "Editor Type", type: "radio" },
-      { name: "content", label: "Blog Content", type: "editor" },
-      { name: "is_published", label: "Publish", type: "checkbox" }
+      { name: "title",        label: "Blog Title",   type: "text"     },
+      { name: "excerpt",      label: "Excerpt",      type: "textarea" },
+      { name: "category",     label: "Category",     type: "text"     },
+      { name: "content_type", label: "Editor Type",  type: "radio"    },
+      { name: "content",      label: "Blog Content", type: "editor"   },
+      { name: "is_published", label: "Publish",      type: "checkbox" },
     ],
     cases: [
-      { name: "title", label: "Project Title", type: "text" },
-      { name: "summary", label: "Summary", type: "textarea" },
-      { name: "category", label: "Category", type: "text" },
-      { name: "tech_stack", label: "Tech Stack", type: "text" },
-      { name: "github_url", label: "Github URL", type: "text" },
-      { name: "live_url", label: "Live URL", type: "text" },
-      { name: "thumbnail", label: "Thumbnail Image", type: "thumbnail" },
-      { name: "company_project", label: "Company Project", type: "checkbox" },
-      { name: "content", label: "Case Study Content", type: "editor" },
-      { name: "is_published", label: "Publish", type: "checkbox" }
+      { name: "title",           label: "Project Title",       type: "text"      },
+      { name: "summary",         label: "Summary",             type: "textarea"  },
+      { name: "category",        label: "Category",            type: "text"      },
+      { name: "tech_stack",      label: "Tech Stack",          type: "text"      },
+      { name: "github_url",      label: "Github URL",          type: "text"      },
+      { name: "live_url",        label: "Live URL",            type: "text"      },
+      { name: "thumbnail",       label: "Thumbnail",           type: "thumbnail" },
+      { name: "company_project", label: "Company Project",     type: "checkbox"  },
+      { name: "content",         label: "Case Study Content",  type: "editor"    },
+      { name: "is_published",    label: "Publish",             type: "checkbox"  },
     ],
     messages: [
-      { name: "name", label: "Name", type: "text" },
-      { name: "email", label: "Email", type: "text" },
-      { name: "message", label: "Message", type: "textarea" }
-    ]
+      { name: "name",    label: "Name",    type: "text"     },
+      { name: "email",   label: "Email",   type: "text"     },
+      { name: "message", label: "Message", type: "textarea" },
+    ],
   };
 
-  // Prevent background scroll when modal is open
+  /*
+    SCROLL LOCK
+    Step 1 — record current scrollY before locking
+    Step 2 — pin body with position:fixed + top:-scrollY
+              (prevents the visible jump to top that plain overflow:hidden causes)
+    Step 3 — on close: remove styles, then silently restore scroll position
+  */
   useEffect(() => {
-    if (showForm || showPreview) {
-      document.body.style.overflow = "hidden";
+    const open = showForm || showPreview;
+    if (open) {
+      savedScrollY.current = window.scrollY;
+      Object.assign(document.body.style, {
+        overflow: "hidden",
+        position: "fixed",
+        top:      `-${savedScrollY.current}px`,
+        left:     "0",
+        right:    "0",
+      });
     } else {
-      document.body.style.overflow = "";
+      Object.assign(document.body.style, {
+        overflow: "", position: "", top: "", left: "", right: "",
+      });
+      if (savedScrollY.current > 0) {
+        window.scrollTo(0, savedScrollY.current);
+        savedScrollY.current = 0;
+      }
     }
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      Object.assign(document.body.style, {
+        overflow: "", position: "", top: "", left: "", right: "",
+      });
+    };
   }, [showForm, showPreview]);
-
-  const closeForm = () => {
-    setShowForm(false);
-    setEditItem(null);
-    setFormData({});
-  };
 
   const fetchData = async () => {
     const [b, c, m] = await Promise.all([
@@ -79,836 +123,866 @@ const Admin = () => {
       caseStudyAPI.getAll(1, 100),
       contactAPI.getAll(1, 100),
     ]);
-
-    setBlogs(b.data.data || []);
-    setCases(c.data.data || []);
+    setBlogs(b.data.data    || []);
+    setCases(c.data.data    || []);
     setMessages(m.data.data || []);
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  useEffect(() => { fetchData(); }, []);
+  useEffect(() => { setPage(1);  }, [tab]);
 
-  useEffect(() => {
-    setPage(1);
-  }, [tab]);
-
-  const dataset =
-    tab === "blogs" ? blogs : tab === "cases" ? cases : messages;
-
-  const start = (page - 1) * ITEMS_PER_PAGE;
-  const paginated = dataset.slice(start, start + ITEMS_PER_PAGE);
-
+  const dataset    = tab === "blogs" ? blogs : tab === "cases" ? cases : messages;
+  const start      = (page - 1) * ITEMS_PER_PAGE;
+  const paginated  = dataset.slice(start, start + ITEMS_PER_PAGE);
   const totalPages = Math.ceil(dataset.length / ITEMS_PER_PAGE);
+
+  const closeForm = () => { setShowForm(false); setEditItem(null); setFormData({}); };
 
   const openCreate = () => {
     setEditItem(null);
-
     const empty = {};
-
-    schemas[tab].forEach((field) => {
-      if (field.name === "is_published") empty[field.name] = true;
-      else if (field.name === "content_type") empty[field.name] = "rich";
-      else empty[field.name] = "";
+    schemas[tab].forEach(({ name }) => {
+      if (name === "is_published") empty[name] = true;
+      else if (name === "content_type") empty[name] = "rich";
+      else empty[name] = "";
     });
-
     setFormData(empty);
     setShowForm(true);
   };
 
   const openEdit = (item) => {
     setEditItem(item);
-
-    const fields = schemas[tab].map(f => f.name);
     const filtered = {};
-
-    fields.forEach(name => {
-      filtered[name] = item[name] ?? "";
-    });
-
-    if (tab === "blogs") {
-      filtered.content_type = item.content_type || "rich";
-    }
-
+    schemas[tab].forEach(({ name }) => { filtered[name] = item[name] ?? ""; });
+    if (tab === "blogs") filtered.content_type = item.content_type || "rich";
     setFormData(filtered);
     setShowForm(true);
   };
 
   const handleSave = async () => {
-    if (tab === "blogs") {
-      const payload = { ...formData };
-      editItem
-        ? await blogAPI.update(editItem.id, payload)
-        : await blogAPI.create(payload);
-    }
-
-    if (tab === "cases") {
-      const form = new FormData();
-      form.append("title", formData.title || "");
-      form.append("summary", formData.summary || "");
-      form.append("content", formData.content || "");
-      form.append("category", formData.category || "");
-      form.append("tech_stack", formData.tech_stack || "");
-      form.append("github_url", formData.github_url || "");
-      form.append("live_url", formData.live_url || "");
-      form.append("thumbnail", formData.thumbnail || "");
-      form.append("company_project", formData.company_project ? "true" : "false");
-      form.append("is_published", formData.is_published ? "true" : "false");
-
-      editItem
-        ? await caseStudyAPI.update(editItem.id, form)
-        : await caseStudyAPI.create(form);
-    }
-
-    closeForm();
-    fetchData();
+    setSaving(true);
+    try {
+      if (tab === "blogs") {
+        editItem
+          ? await blogAPI.update(editItem.id, { ...formData })
+          : await blogAPI.create({ ...formData });
+      }
+      if (tab === "cases") {
+        const fd = new FormData();
+        ["title","summary","content","category","tech_stack","github_url","live_url","thumbnail"]
+          .forEach((k) => fd.append(k, formData[k] || ""));
+        fd.append("company_project", formData.company_project ? "true" : "false");
+        fd.append("is_published",    formData.is_published    ? "true" : "false");
+        editItem
+          ? await caseStudyAPI.update(editItem.id, fd)
+          : await caseStudyAPI.create(fd);
+      }
+      closeForm();
+      fetchData();
+    } finally { setSaving(false); }
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete item?")) return;
-
+    if (!window.confirm("Delete this item?")) return;
     if (tab === "blogs") await blogAPI.delete(id);
     if (tab === "cases") await caseStudyAPI.delete(id);
-
     fetchData();
   };
 
-  const previewText = (text) => {
-    if (!text) return "";
-    return text.replace(/<[^>]+>/g, "").slice(0, 140) + "...";
-  };
+  const previewText = (text = "") =>
+    text.replace(/<[^>]+>/g, "").slice(0, 130) + (text.length > 130 ? "…" : "");
 
   const uploadMediaToCloudinary = async (file, type) => {
     try {
       const res = await uploadAPI.uploadMedia(file, type);
-      const uploaded = res.data.files[0];
-      return uploaded?.url || null;
-    } catch (err) {
-      console.error("Media upload failed:", err);
-      return null;
-    }
+      return res.data.files[0]?.url || null;
+    } catch (err) { console.error("Upload error:", err); return null; }
   };
 
+  const renderField = (key, value) => {
+    if (key === "content" && (tab === "blogs" || tab === "cases")) {
+      if (tab === "cases" || formData.content_type === "rich") {
+        return (
+          <EditorBlock key={key}>
+            <FLabel>Content</FLabel>
+            <RichEditor
+              value={value || ""}
+              onChange={(html) => setFormData((p) => ({ ...p, content: html }))}
+              uploadMediaToCloudinary={uploadMediaToCloudinary}
+            />
+          </EditorBlock>
+        );
+      }
+      return (
+        <FGroup key={key} $full>
+          <FLabel>{formData.content_type === "html" ? "HTML Content" : "Plain Text"}</FLabel>
+          <FTextarea value={value || ""} onChange={(e) => setFormData({ ...formData, content: e.target.value })} />
+        </FGroup>
+      );
+    }
+
+    if (key === "thumbnail") {
+      return (
+        <FGroup key={key}>
+          <FLabel>Thumbnail</FLabel>
+          <FFileInput type="file" accept="image/*" onChange={async (e) => {
+            const file = e.target.files[0]; if (!file) return;
+            setFormData((p) => ({ ...p, thumbnail: URL.createObjectURL(file) }));
+            const url = await uploadMediaToCloudinary(file, "image");
+            if (url) setFormData((p) => ({ ...p, thumbnail: url }));
+          }} />
+          {formData.thumbnail && (
+            <ThumbPreview>
+              <img src={formData.thumbnail} alt="thumb" onError={(e) => { e.target.style.display = "none"; }} />
+            </ThumbPreview>
+          )}
+        </FGroup>
+      );
+    }
+
+    if (key === "content_type") {
+      if (tab !== "blogs") return null;
+      return (
+        <RadioBlock key={key}>
+          <FLabel>Editor Type</FLabel>
+          <RadioRow>
+            {[["text","Plain Text"],["rich","Rich Editor"],["html","HTML"]].map(([opt, lbl]) => (
+              <RadioChip key={opt} type="button" $active={value === opt}
+                onClick={() => setFormData({ ...formData, content_type: opt })}>
+                {lbl}
+              </RadioChip>
+            ))}
+          </RadioRow>
+        </RadioBlock>
+      );
+    }
+
+    if (typeof value === "boolean") {
+      return (
+        <ToggleRow key={key}>
+          <FLabel style={{ marginBottom: 0 }}>{key.replaceAll("_", " ")}</FLabel>
+          <Toggle>
+            <input type="checkbox" checked={value}
+              onChange={(e) => setFormData({ ...formData, [key]: e.target.checked })} />
+            <ToggleTrack />
+          </Toggle>
+        </ToggleRow>
+      );
+    }
+
+    if (key === "summary" || key === "excerpt") {
+      return (
+        <FGroup key={key} $full>
+          <FLabel>{key.replace("_", " ")}</FLabel>
+          <FTextarea value={value || ""} onChange={(e) => setFormData({ ...formData, [key]: e.target.value })} />
+        </FGroup>
+      );
+    }
+
+    return (
+      <FGroup key={key}>
+        <FLabel>{key.replace(/_/g, " ")}</FLabel>
+        <FInput value={value || ""} onChange={(e) => setFormData({ ...formData, [key]: e.target.value })} />
+      </FGroup>
+    );
+  };
+
+const TAB_CONFIG = [
+  { key: "blogs",    label: "Blogs",    color: "#FF2D6B", icon: "📝", count: blogs.length    },
+  { key: "cases",    label: "Cases",    color: "#3B82F6", icon: "📁", count: cases.length    },
+  { key: "messages", label: "Messages", color: "#00E89D", icon: "💬", count: messages.length },
+];
   return (
-    <Page>
+    <>
+      <Page>
+        {/* ── Sidebar ── */}
+         {/* // ── Desktop Sidebar (hidden on mobile via CSS) ── */}
       <Sidebar>
-        <SideLink onClick={() => setTab("blogs")}>
-          Blogs ({blogs.length})
-        </SideLink>
-
-        <SideLink onClick={() => setTab("cases")}>
-          Case Studies ({cases.length})
-        </SideLink>
-
-        <SideLink onClick={() => setTab("messages")}>
-          Messages ({messages.length})
-        </SideLink>
+        {/* <SidebarTop>
+          <Terminal size={16} />
+          <SidebarBrand>Command Centre</SidebarBrand>
+        </SidebarTop> */}
+        <NavSection>
+          {TAB_CONFIG.map(({ key, label, count, color }) => (
+            <SideLink key={key} $active={tab === key} onClick={() => setTab(key)}>
+              <SideDot style={{ background: color, opacity: tab === key ? 1 : 0.35 }} />
+              <SideLabelText>{label}</SideLabelText>
+              <CountPill $active={tab === key} style={tab === key ? { background: color } : {}}>
+                {count}
+              </CountPill>
+            </SideLink>
+          ))}
+        </NavSection>
       </Sidebar>
 
-      <Content>
-        <SectionHeader title="ADMIN DASHBOARD" number="⚡" />
+        {/* ── Main ── */}
+             
+      <MainContent>
+      
+        {/* <MobileHeader>
+          <Terminal size={16} />
+          <MobileHeaderBrand>Command Centre</MobileHeaderBrand>
+        </MobileHeader> */}
 
-        <Welcome>
-          Welcome <Accent>{user?.name}</Accent>
-        </Welcome>
+          <PageTitleBlock>
+            {/* <TitleEyebrow>⚡ Admin Dashboard</TitleEyebrow> */}
+            <PageTitle>Command<TitleAccent> Centre</TitleAccent></PageTitle>
+            <TitleSub>Welcome back, <strong>{user?.name || "Admin"}</strong>. Manage your content below.</TitleSub>
+          </PageTitleBlock>
 
-        {tab !== "messages" && (
-          <ActionRow>
-            <MagneticButton onClick={openCreate}>
-              + Create {tab === "blogs" ? "Blog" : "Case Study"}
-            </MagneticButton>
-          </ActionRow>
-        )}
+          {tab !== "messages" && (
+            <ActionRow>
+              <CreateBtn onClick={openCreate}>
+                <Plus size={15} />
+                New {tab === "blogs" ? "Blog Post" : "Case Study"}
+              </CreateBtn>
+            </ActionRow>
+          )}
 
-        <CardGrid>
-          {paginated.map((item) => (
-            <Card key={item.id}>
-              <CardHeader>
-                <h3>{item.title || item.name}</h3>
+          <GridWrap>
+            <CardGrid>
+              {paginated.map((item, i) => (
+                <motion.div key={item.id}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: i * 0.04 }}>
+                  <Card>
+                    <CardShimmerBar />
+                    <CardHeader>
+                      <CardTitle>{item.title || item.name || "(no title)"}</CardTitle>
+                      {tab !== "messages" && (
+                        <CardActions>
+                          <IconBtn type="button" onClick={() => openEdit(item)} title="Edit">
+                            <Pencil size={13} />
+                          </IconBtn>
+                          <IconBtn type="button" $danger onClick={() => handleDelete(item.id)} title="Delete">
+                            <Trash2 size={13} />
+                          </IconBtn>
+                        </CardActions>
+                      )}
+                    </CardHeader>
+                    <CardBody>
+                      {tab === "blogs" && (<><CategoryChip>{item.category || "—"}</CategoryChip><CardPreview>{previewText(item.excerpt || item.content)}</CardPreview></>)}
+                      {tab === "cases" && (<><CategoryChip>{(item.tech_stack || "").split(",")[0] || "—"}</CategoryChip><CardPreview>{previewText(item.summary)}</CardPreview></>)}
+                      {tab === "messages" && (<><CategoryChip>{item.email}</CategoryChip><CardPreview>{previewText(item.message)}</CardPreview></>)}
+                    </CardBody>
+                    {tab !== "messages" && (
+                      <CardStatusRow>
+                        <StatusDot $on={item.is_published} />
+                        <span>{item.is_published ? "Published" : "Draft"}</span>
+                      </CardStatusRow>
+                    )}
+                  </Card>
+                </motion.div>
+              ))}
+            </CardGrid>
+            {paginated.length >= 6 && <GridFog />}
+          </GridWrap>
 
-                {tab !== "messages" && (
-                  <CardActions>
-                    <IconButton onClick={() => openEdit(item)}>
-                      <Pencil size={16} />
-                    </IconButton>
-
-                    <IconButton
-                      $danger
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      <Trash2 size={16} />
-                    </IconButton>
-                  </CardActions>
-                )}
-              </CardHeader>
-
-              <CardBody>
-                {tab === "blogs" && (
-                  <>
-                    <Meta>{item.category}</Meta>
-                    <p>{previewText(item.excerpt || item.content)}</p>
-                  </>
-                )}
-
-                {tab === "cases" && (
-                  <>
-                    <Meta>{item.tech_stack}</Meta>
-                    <p>{previewText(item.summary)}</p>
-                  </>
-                )}
-
-                {tab === "messages" && (
-                  <>
-                    <Meta>{item.email}</Meta>
-                    <p>{previewText(item.message)}</p>
-                  </>
-                )}
-              </CardBody>
-            </Card>
-          ))}
-        </CardGrid>
-
-        <Pagination>
-          <MagneticButton
-            variant="nav"
-            size="sm"
-            disabled={page === 1}
-            onClick={() => setPage(page - 1)}
-          >
-            <ArrowBigLeft />
-          </MagneticButton>
-
-          <span>
-            {page} / {totalPages || 1}
-          </span>
-
-          <MagneticButton
-            variant="nav"
-            size="sm"
-            disabled={page === totalPages}
-            onClick={() => setPage(page + 1)}
-          >
-            <ArrowBigRight />
-          </MagneticButton>
-        </Pagination>
-
+          {totalPages > 1 && (
+            <Pagination>
+              <MagneticButton variant="nav" size="sm" disabled={page === 1} onClick={() => setPage((p) => p - 1)}>
+                <ArrowBigLeft size={18} />
+              </MagneticButton>
+              <PageInfo><strong>{page}</strong><PaginationSep>/</PaginationSep>{totalPages}</PageInfo>
+              <MagneticButton variant="nav" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>
+                <ArrowBigRight size={18} />
+              </MagneticButton>
+            </Pagination>
+          )}
+        </MainContent>
+      </Page>
+   {/* // ── Mobile bottom tab bar ── */}
+    <MobileTabBar>
+      {TAB_CONFIG.map(({ key, label, color, icon, count }) => (
+        <MobileTab key={key} $active={tab === key} $color={color} onClick={() => setTab(key)}>
+          <MobileTabIcon $active={tab === key} $color={color}>{icon}</MobileTabIcon>
+          <MobileTabLabel $active={tab === key}>{label}</MobileTabLabel>
+          {count > 0 && (
+            <MobileTabCount $color={color}>{count > 99 ? "99+" : count}</MobileTabCount>
+          )}
+        </MobileTab>
+      ))}
+    </MobileTabBar>
+      {/* ══ FORM MODAL via Portal — truly viewport-fixed ══ */}
+      <Portal>
         <AnimatePresence>
           {showForm && (
-            <ModalOverlay
-              as={motion.div}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => closeForm()}
-            >
-              <ModalCard
-                as={motion.div}
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                onClick={(e) => e.stopPropagation()}
-              >
-                {/* Fixed header inside modal */}
+            <Overlay as={motion.div}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.18 }} onClick={closeForm}>
+              <ModalCard as={motion.div}
+                initial={{ scale: 0.94, opacity: 0, y: 30 }}
+                animate={{ scale: 1,    opacity: 1, y: 0  }}
+                exit={{    scale: 0.94, opacity: 0, y: 30 }}
+                transition={{ type: "spring", stiffness: 380, damping: 34 }}
+                onClick={(e) => e.stopPropagation()}>
                 <ModalHeader>
-                  <h3>{editItem ? `Edit ${tab}` : `Create ${tab}`}</h3>
+                  <ModalTitle>{editItem ? `✏️ Edit ${tab}` : `✨ New ${tab}`}</ModalTitle>
+                  <ModalCloseBtn type="button" onClick={closeForm}><X size={15} /></ModalCloseBtn>
                 </ModalHeader>
-
-                {/* Scrollable form body */}
                 <FormBody>
                   <FormGrid>
-                    {Object.entries(formData).map(([key, value]) => {
-
-                      if (key === "content" && (tab === "blogs" || tab === "cases")) {
-                        if (tab === "cases" || formData.content_type === "rich") {
-                          return (
-                            <EditorBlock key={key}>
-                              <Label>{tab === "cases" ? "Case Study Content" : "Blog Content"}</Label>
-                              <RichEditor
-                                value={value || ""}
-                                onChange={(html) => setFormData(prev => ({ ...prev, content: html }))}
-                                uploadMediaToCloudinary={uploadMediaToCloudinary}
-                              />
-                            </EditorBlock>
-                          );
-                        }
-
-                        if (formData.content_type === "html") {
-                          return (
-                            <FormGroup key={key}>
-                              <Label>HTML Content</Label>
-                              <Textarea
-                                placeholder="Write HTML..."
-                                value={value || ""}
-                                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                              />
-                            </FormGroup>
-                          );
-                        }
-
-                        if (formData.content_type === "text") {
-                          return (
-                            <FormGroup key={key}>
-                              <Label>Plain Text</Label>
-                              <Textarea
-                                placeholder="Write plain text..."
-                                value={value || ""}
-                                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                              />
-                            </FormGroup>
-                          );
-                        }
-                      }
-
-                      if (key === "thumbnail") {
-                        return (
-                          <FormGroup key={key}>
-                            <Label>Thumbnail Image</Label>
-
-                            <ImageUpload
-                              type="file"
-                              accept="image/*"
-                              onChange={async (e) => {
-                                const file = e.target.files[0];
-                                if (!file) return;
-
-                                const localUrl = URL.createObjectURL(file);
-                                setFormData(prev => ({ ...prev, thumbnail: localUrl }));
-
-                                const url = await uploadMediaToCloudinary(file, "image");
-                                if (url) setFormData(prev => ({ ...prev, thumbnail: url }));
-                              }}
-                            />
-
-                            {formData.thumbnail && (
-                              <ThumbnailPreview>
-                                <img
-                                  src={formData.thumbnail}
-                                  alt="thumbnail"
-                                  onError={(e) => e.target.style.display = "none"}
-                                />
-                              </ThumbnailPreview>
-                            )}
-                          </FormGroup>
-                        );
-                      }
-
-                      if (key === "company_project") {
-                        return (
-                          <ToggleRow key={key}>
-                            <Label>Company Project</Label>
-                            <input
-                              type="checkbox"
-                              checked={value || false}
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  company_project: e.target.checked,
-                                })
-                              }
-                            />
-                          </ToggleRow>
-                        );
-                      }
-
-                      if (key === "content_type") {
-                        if (tab !== "blogs") return null;
-                        return (
-                          <RadioGroup key={key}>
-                            <Label>Editor Type</Label>
-                            <RadioRow>
-                              <label>
-                                <input
-                                  type="radio"
-                                  checked={value === "text"}
-                                  onChange={() =>
-                                    setFormData({ ...formData, content_type: "text" })
-                                  }
-                                />
-                                Plain Text
-                              </label>
-                              <label>
-                                <input
-                                  type="radio"
-                                  checked={value === "rich"}
-                                  onChange={() =>
-                                    setFormData({ ...formData, content_type: "rich" })
-                                  }
-                                />
-                                Rich Editor
-                              </label>
-                              <label>
-                                <input
-                                  type="radio"
-                                  checked={value === "html"}
-                                  onChange={() =>
-                                    setFormData({ ...formData, content_type: "html" })
-                                  }
-                                />
-                                HTML
-                              </label>
-                            </RadioRow>
-                          </RadioGroup>
-                        );
-                      }
-
-                      if (typeof value === "boolean") {
-                        return (
-                          <CheckboxRow key={key}>
-                            <Label>{key.replaceAll("_", " ").toUpperCase()}</Label>
-                            <input
-                              type="checkbox"
-                              checked={value}
-                              onChange={(e) =>
-                                setFormData({ ...formData, [key]: e.target.checked })
-                              }
-                            />
-                          </CheckboxRow>
-                        );
-                      }
-
-                      if (key === "summary" || key === "excerpt") {
-                        return (
-                          <FormGroup key={key}>
-                            <Label>{key.replace("_", " ")}</Label>
-                            <Textarea
-                              value={value || ""}
-                              onChange={(e) =>
-                                setFormData({ ...formData, [key]: e.target.value })
-                              }
-                            />
-                          </FormGroup>
-                        );
-                      }
-
-                      return (
-                        <FormGroup key={key}>
-                          <Label>{key.replace("_", " ")}</Label>
-                          <Input
-                            value={value || ""}
-                            onChange={(e) =>
-                              setFormData({ ...formData, [key]: e.target.value })
-                            }
-                          />
-                        </FormGroup>
-                      );
-                    })}
+                    {Object.entries(formData).map(([key, value]) => renderField(key, value))}
                   </FormGrid>
                 </FormBody>
-
-                {/* Sticky footer with action buttons */}
                 <ModalFooter>
-                  <MagneticButton onClick={() => setShowPreview(true)}>
-                    Preview
-                  </MagneticButton>
-
-                  <MagneticButton variant="edit" onClick={handleSave}>
-                    Save
-                  </MagneticButton>
-
-                  <MagneticButton onClick={() => closeForm()}>
-                    Cancel
-                  </MagneticButton>
+                  <ModalBtn type="button" $v="preview" onClick={() => setShowPreview(true)}><Eye size={14} /> Preview</ModalBtn>
+                  <ModalBtn type="button" $v="save" onClick={handleSave} disabled={saving}><Save size={14} /> {saving ? "Saving…" : "Save"}</ModalBtn>
+                  <ModalBtn type="button" $v="cancel" onClick={closeForm}><X size={14} /> Cancel</ModalBtn>
                 </ModalFooter>
               </ModalCard>
-            </ModalOverlay>
+            </Overlay>
           )}
         </AnimatePresence>
+      </Portal>
 
-        {showPreview && (
-          <ModalOverlay onClick={() => setShowPreview(false)}>
-            <PreviewModal onClick={(e) => e.stopPropagation()}>
-              <h1>{formData.title}</h1>
-
-              <Category>{formData.category}</Category>
-
-              <PreviewContent
-                dangerouslySetInnerHTML={{
-                  __html: formData.content,
-                }}
-              />
-
-              <MagneticButton onClick={() => setShowPreview(false)}>
-                Close
-              </MagneticButton>
-            </PreviewModal>
-          </ModalOverlay>
-        )}
-      </Content>
-    </Page>
+      {/* ══ PREVIEW MODAL via Portal ══ */}
+      <Portal>
+        <AnimatePresence>
+          {showPreview && (
+            <Overlay as={motion.div}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.18 }} onClick={() => setShowPreview(false)}>
+              <PreviewCard as={motion.div}
+                initial={{ scale: 0.94, opacity: 0 }}
+                animate={{ scale: 1,    opacity: 1  }}
+                exit={{    scale: 0.94, opacity: 0  }}
+                transition={{ type: "spring", stiffness: 380, damping: 34 }}
+                onClick={(e) => e.stopPropagation()}>
+                <ModalHeader>
+                  <ModalTitle>Preview</ModalTitle>
+                  <ModalCloseBtn type="button" onClick={() => setShowPreview(false)}><X size={15} /></ModalCloseBtn>
+                </ModalHeader>
+                <PreviewBody>
+                  <PreviewTitle>{formData.title}</PreviewTitle>
+                  {formData.category && <PreviewCategoryBadge>{formData.category}</PreviewCategoryBadge>}
+                  <PreviewContent dangerouslySetInnerHTML={{ __html: formData.content }} />
+                </PreviewBody>
+              </PreviewCard>
+            </Overlay>
+          )}
+        </AnimatePresence>
+      </Portal>
+    </>
   );
 };
 
 export default Admin;
 
-/* -------------------- STYLES -------------------- */
+/* ═══════════════════════════════════ STYLES ══════════════════════════════════ */
 
-const Page = styled.div`
-  display: flex;
-  min-height: 100vh;
-`;
 
-const Sidebar = styled.aside`
-  width: 220px;
-  background: ${({ theme }) => theme.colors.bgTertiary};
-  padding: 3rem 1rem;
+const MainContent = styled.main`
+ flex: 1;
+  min-width: 0;
+  padding: 4rem 2.5rem 5rem;
+
+  @media (max-width: 1024px) { padding: 2rem 1.5rem 4rem; }
 
   @media (max-width: 768px) {
-    width: 100%;
-    padding: 1rem;
-    display: flex;
-    gap: 8px;
+    /*
+      Top padding must clear the fixed navbar.
+      Adjust the 64px to match your actual Navbar height.
+      The bottom padding clears the fixed MobileTabBar (64px).
+    */
+    padding: calc(64px + 1.5rem) 1rem calc(64px + 1rem);
   }
 `;
 
-const SideLink = styled.button`
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  background: transparent;
-  border: none;
-  color: ${({ theme }) => theme.colors.textSecondary};
-  cursor: pointer;
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.textPrimary};
-  }
-
-  @media (max-width: 768px) {
-    margin-bottom: 0;
-    white-space: nowrap;
-  }
+const PageTitleBlock = styled.div`
+  margin-bottom: 2.5rem; padding-bottom: 2rem;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.borderDefault};
 `;
 
-const Content = styled.main`
-  flex: 1;
-  padding: 2rem;
-
-  @media (max-width: 768px) {
-    padding: 1rem;
-  }
+const TitleEyebrow = styled.p`
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.15em;
+  text-transform: uppercase; color: ${({ theme }) => theme.colors.gradientPinkBlue}; margin-bottom: 0.55rem;
 `;
 
-const Welcome = styled.p`
-  margin-bottom: 1rem;
+const PageTitle = styled.h1`
+  font-family: ${({ theme }) => theme.fonts.heading};
+  font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.0;
+  letter-spacing: -0.03em; color: ${({ theme }) => theme.colors.textPrimary}; margin-bottom: 0.6rem;
 `;
 
-const Accent = styled.span`
-  color: ${({ theme }) => theme.colors.accentPink};
+const TitleAccent = styled.span`
+  background: linear-gradient(90deg, #FF2D6B 0%, #3B82F6 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 `;
+
+const TitleSub = styled.p`
+  font-size: 0.9rem; color: ${({ theme }) => theme.colors.textSecondary};
+  strong { color: ${({ theme }) => theme.colors.textPrimary}; }
+`;
+
+const ActionRow = styled.div`margin-bottom: 1.75rem;`;
+
+const CreateBtn = styled.button`
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.62rem 1.4rem; border-radius: 999px; border: none;
+  background: linear-gradient(90deg, #FF2D6B 0%, #3B82F6 100%);
+  color: #fff; font-size: 0.875rem; font-weight: 600; cursor: pointer;
+  transition: box-shadow 0.3s, transform 0.2s;
+  &:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,45,107,0.35); }
+`;
+
+const GridWrap = styled.div`position: relative;`;
 
 const CardGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-
-  @media (max-width: 640px) {
-    grid-template-columns: 1fr;
-  }
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 1.2rem; padding-bottom: 0.5rem;
+  @media (max-width: 640px) { grid-template-columns: 1fr; }
 `;
+
+const shimmerMove = keyframes`0%{background-position:-200% 0}100%{background-position:200% 0}`;
 
 const Card = styled.div`
   background: ${({ theme }) => theme.colors.bgSecondary};
-  border-radius: 12px;
-  padding: 1.5rem;
+  border-radius: 12px; padding: 1.25rem;
   border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  position: relative; overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  &:hover { border-color: ${({ theme }) => theme.colors.borderHover}; box-shadow: 0 8px 32px rgba(0,0,0,0.25); transform: translateY(-2px); }
 `;
 
-const CardHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
+const CardShimmerBar = styled.div`
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, #FF2D6B 0%, #3B82F6 50%, #FF2D6B 100%);
+  background-size: 200% 100%; opacity: 0; transition: opacity 0.3s;
+  animation: ${shimmerMove} 2.5s linear infinite;
+  ${Card}:hover & { opacity: 1; }
 `;
 
-const CardBody = styled.div`
-  margin-top: 1rem;
-  font-size: 0.9rem;
-`;
+const CardHeader = styled.div`display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem;`;
+const CardTitle = styled.h3`font-size: 0.93rem; font-weight: 600; color: ${({ theme }) => theme.colors.textPrimary}; line-height: 1.3; flex: 1; margin: 0;`;
+const CardActions = styled.div`display: flex; gap: 5px; flex-shrink: 0;`;
 
-const Meta = styled.div`
-  font-size: 0.75rem;
-  opacity: 0.7;
-  margin-bottom: 6px;
-`;
-
-const CardActions = styled.div`
-  display: flex;
-  gap: 6px;
-`;
-
-const IconButton = styled.button`
+const IconBtn = styled.button`
   border: none;
-  background: ${({ $danger }) => ($danger ? "#ff4d4f" : "#2d2d2d")};
-  color: white;
-  padding: 6px;
-  border-radius: 6px;
-  cursor: pointer;
+  background: ${({ $danger }) => $danger ? "rgba(239,68,68,0.12)" : "rgba(255,255,255,0.06)"};
+  color: ${({ $danger }) => $danger ? "#ef4444" : "#9BA1B0"};
+  padding: 6px; border-radius: 7px; cursor: pointer;
+  transition: all 0.15s; display: flex; align-items: center;
+  &:hover { background: ${({ $danger }) => $danger ? "rgba(239,68,68,0.22)" : "rgba(255,255,255,0.12)"}; color: ${({ $danger }) => $danger ? "#ff6060" : "#fff"}; transform: scale(1.1); }
 `;
 
-const Label = styled.label`
-  display: block;
-  font-size: 0.85rem;
-  margin-bottom: 6px;
-  color: ${({ theme }) => theme.colors.textSecondary};
+const CardBody = styled.div`font-size: 0.85rem;`;
+
+const CategoryChip = styled.span`
+  display: inline-block; padding: 2px 9px; border-radius: 999px;
+  font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+  background: rgba(255,45,107,0.09); border: 1px solid rgba(255,45,107,0.18);
+  color: ${({ theme }) => theme.colors.gradientPinkBlue}; margin-bottom: 0.5rem;
 `;
 
-const Input = styled.input`
-  width: 100%;
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  background: ${({ theme }) => theme.colors.bgPrimary};
-  color: ${({ theme }) => theme.colors.textPrimary};
+const CardPreview = styled.p`color: ${({ theme }) => theme.colors.textTertiary}; font-size: 0.82rem; line-height: 1.5; margin: 0;`;
 
-  &:focus {
-    border-color: ${({ theme }) => theme.colors.accentPink};
-    outline: none;
-  }
+const CardStatusRow = styled.div`
+  display: flex; align-items: center; gap: 6px;
+  margin-top: 0.85rem; padding-top: 0.75rem;
+  border-top: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  font-size: 0.72rem; color: ${({ theme }) => theme.colors.textTertiary};
 `;
 
-const ImageUpload = styled.input`
-  padding: 10px;
-  border: 2px dashed ${({ theme }) => theme.colors.borderDefault};
-  border-radius: 8px;
-  cursor: pointer;
-  width: 100%;
+const blinkAnim = keyframes`0%,100%{opacity:1}50%{opacity:0.3}`;
+const StatusDot = styled.span`
+  width: 6px; height: 6px; border-radius: 50%;
+  background: ${({ $on }) => $on ? "#00E89D" : "#5C6170"};
+  animation: ${({ $on }) => $on ? blinkAnim : "none"} 2.5s ease-in-out infinite;
 `;
 
-const Textarea = styled.textarea`
-  width: 100%;
-  min-height: 120px;
-  margin-bottom: 4px;
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  background: ${({ theme }) => theme.colors.bgPrimary};
-  color: ${({ theme }) => theme.colors.textPrimary};
-  resize: vertical;
+const GridFog = styled.div`
+  position: absolute; bottom: 0; left: 0; right: 0; height: 90px;
+  background: linear-gradient(to bottom, transparent 0%, ${({ theme }) => theme.colors.bgPrimary} 100%);
+  pointer-events: none; z-index: 2;
 `;
 
-const CheckboxRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-`;
+const Pagination = styled.div`margin-top: 2.5rem; display: flex; align-items: center; gap: 1rem;`;
+const PageInfo = styled.span`font-size: 0.875rem; color: ${({ theme }) => theme.colors.textSecondary}; strong { color: ${({ theme }) => theme.colors.textPrimary}; }`;
+const PaginationSep = styled.span`opacity: 0.35; margin: 0 0.3rem;`;
 
-const RadioGroup = styled.div`
-  margin-bottom: 12px;
-  grid-column: 1 / -1;
-`;
-
-const RadioRow = styled.div`
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-
-  label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: ${({ theme }) => theme.colors.bgTertiary};
-    padding: 8px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-
-    &:hover {
-      border-color: ${({ theme }) => theme.colors.accentPink};
-    }
-  }
-
-  input {
-    accent-color: ${({ theme }) => theme.colors.accentPink};
-  }
-`;
-
-const ThumbnailPreview = styled.div`
-  margin-top: 10px;
-
-  img {
-    width: 100%;
-    max-height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
-    border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  }
-`;
-
-const FormGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 4px;
-`;
-
-const ActionRow = styled.div`
-  margin-bottom: 1rem;
-`;
-
-const Pagination = styled.div`
-  margin-top: 2rem;
-  display: flex;
-  gap: 20px;
-  align-items: center;
-`;
-
-/* ── Modal ────────────────────────────────────────── */
-
-const ModalOverlay = styled.div`
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  height: 100vh;           /* Sets the container height to 100% of the viewport height */
-  width: 100vw;  
-  /* No overflow here — we let the inner card scroll */
-  padding: 16px;
-
-  @media (max-width: 480px) {
-    padding: 0;
-    align-items: flex-end;
-  }
+/* ══ THE KEY: Overlay is position:fixed top:0 left:0 — always viewport-relative.
+      createPortal() ensures no ancestor transform/stacking context can trap it. ══ */
+const Overlay = styled.div`
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999; padding: 20px;
+  @media (max-width: 480px) { padding: 0; align-items: flex-end; }
 `;
 
 const ModalCard = styled.div`
-  /* Full layout using flex column so footer sticks */
-  display: flex;
-  flex-direction: column;
-
-  width: 90vw;
-  max-width: 860px;
-  /* Responsive height: fills most of viewport, never overflows */
-  max-height: 90vh;
-  height: auto;
-
+  display: flex; flex-direction: column;
+  width: 92vw; max-width: 880px; max-height: 88vh;
   background: ${({ theme }) => theme.colors.bgSecondary};
-  border-radius: 12px;
-  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-
-  /* No overflow on the card itself — children handle scroll */
-  overflow: hidden;
-
-  @media (max-width: 480px) {
-    width: 100vw;
-    max-height: 95vh;
-    border-radius: 16px 16px 0 0;
-  }
+  border-radius: 18px; border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  overflow: hidden; box-shadow: 0 32px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,45,107,0.06);
+  @media (max-width: 480px) { width: 100vw; max-height: 96vh; border-radius: 22px 22px 0 0; }
 `;
 
-/* Fixed modal title bar */
 const ModalHeader = styled.div`
-  flex-shrink: 0;
-  padding: 20px 28px 16px;
+  flex-shrink: 0; padding: 18px 24px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.borderDefault};
-
-  h3 {
-    margin: 0;
-    text-transform: capitalize;
-  }
-
-  @media (max-width: 480px) {
-    padding: 16px 20px 12px;
-  }
+  display: flex; align-items: center; justify-content: space-between;
+  background: ${({ theme }) => theme.colors.bgTertiary};
 `;
 
-/* Scrollable form area */
+const ModalTitle = styled.h3`margin: 0; font-size: 0.97rem; font-weight: 600; color: ${({ theme }) => theme.colors.textPrimary}; text-transform: capitalize;`;
+
+const ModalCloseBtn = styled.button`
+  display: flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 7px;
+  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  background: transparent; color: ${({ theme }) => theme.colors.textSecondary}; cursor: pointer; transition: all 0.15s;
+  &:hover { background: rgba(255,45,107,0.1); border-color: ${({ theme }) => theme.colors.gradientPinkBlue}; color: ${({ theme }) => theme.colors.gradientPinkBlue}; }
+`;
+
 const FormBody = styled.div`
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px 28px;
-
-  /* Smooth scrolling & custom scrollbar */
-  scroll-behavior: smooth;
-  &::-webkit-scrollbar { width: 6px; }
+  flex: 1; overflow-y: auto; padding: 22px 24px; scroll-behavior: smooth;
+  &::-webkit-scrollbar { width: 5px; }
   &::-webkit-scrollbar-track { background: transparent; }
-  &::-webkit-scrollbar-thumb {
-    background: ${({ theme }) => theme.colors.borderDefault};
-    border-radius: 3px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 16px 20px;
-  }
+  &::-webkit-scrollbar-thumb { background: ${({ theme }) => theme.colors.borderDefault}; border-radius: 3px; }
+  @media (max-width: 480px) { padding: 16px; }
 `;
 
-/* Sticky action buttons at bottom */
 const ModalFooter = styled.div`
-  flex-shrink: 0;
-  padding: 16px 28px;
+  flex-shrink: 0; padding: 14px 24px;
   border-top: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  background: ${({ theme }) => theme.colors.bgSecondary};
+  background: ${({ theme }) => theme.colors.bgTertiary};
+  display: flex; gap: 10px; flex-wrap: wrap;
+  @media (max-width: 480px) { padding: 12px 16px; & > * { flex: 1; min-width: 80px; } }
+`;
 
-  @media (max-width: 480px) {
-    padding: 14px 20px;
-    gap: 8px;
-
-    /* Make buttons fill on very small screens */
-    & > * {
-      flex: 1;
-      min-width: 80px;
-    }
-  }
+const ModalBtn = styled.button`
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.5rem 1.2rem; border-radius: 8px;
+  font-size: 0.83rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none;
+  ${({ $v }) => $v === "save"    && "background:linear-gradient(90deg,#FF2D6B,#3B82F6);color:#fff;&:hover{box-shadow:0 6px 20px rgba(255,45,107,0.35);transform:translateY(-1px);}"}
+  ${({ $v }) => $v === "preview" && "background:rgba(59,130,246,0.12);color:#3B82F6;border:1px solid rgba(59,130,246,0.25);&:hover{background:rgba(59,130,246,0.2);}"}
+  ${({ $v }) => $v === "cancel"  && "background:rgba(255,255,255,0.05);color:#9BA1B0;border:1px solid rgba(255,255,255,0.08);&:hover{background:rgba(255,255,255,0.1);color:#fff;}"}
+  &:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
 `;
 
 const FormGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  @media (max-width: 600px) { grid-template-columns: 1fr; }
+`;
 
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr;
+const FGroup = styled.div`
+  display: flex; flex-direction: column; gap: 5px;
+  grid-column: ${({ $full }) => $full ? "1 / -1" : "auto"};
+`;
+
+const FLabel = styled.label`
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; color: ${({ theme }) => theme.colors.textTertiary};
+`;
+
+const FInput = styled.input`
+  width: 100%; padding: 9px 12px; border-radius: 8px;
+  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  background: ${({ theme }) => theme.colors.bgPrimary}; color: ${({ theme }) => theme.colors.textPrimary};
+  font-size: 0.875rem; transition: border-color 0.2s;
+  &:focus { border-color: ${({ theme }) => theme.colors.gradientPinkBlue}; outline: none; box-shadow: 0 0 0 3px rgba(255,45,107,0.1); }
+`;
+
+const FTextarea = styled.textarea`
+  width: 100%; min-height: 100px; padding: 9px 12px; border-radius: 8px;
+  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  background: ${({ theme }) => theme.colors.bgPrimary}; color: ${({ theme }) => theme.colors.textPrimary};
+  font-size: 0.875rem; resize: vertical; font-family: inherit; transition: border-color 0.2s;
+  &:focus { border-color: ${({ theme }) => theme.colors.gradientPinkBlue}; outline: none; box-shadow: 0 0 0 3px rgba(255,45,107,0.1); }
+`;
+
+const FFileInput = styled.input`
+  padding: 9px 12px; border: 2px dashed ${({ theme }) => theme.colors.borderDefault};
+  border-radius: 8px; cursor: pointer; width: 100%;
+  color: ${({ theme }) => theme.colors.textSecondary}; font-size: 0.875rem;
+  background: ${({ theme }) => theme.colors.bgPrimary}; transition: border-color 0.2s;
+  &:hover { border-color: ${({ theme }) => theme.colors.gradientPinkBlue}; }
+`;
+
+const ThumbPreview = styled.div`
+  margin-top: 8px;
+  img { width: 100%; max-height: 150px; object-fit: cover; border-radius: 8px; border: 1px solid ${({ theme }) => theme.colors.borderDefault}; }
+`;
+
+const RadioBlock = styled.div`grid-column: 1 / -1;`;
+const RadioRow = styled.div`display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px;`;
+
+const RadioChip = styled.button`
+  padding: 7px 14px; border-radius: 8px; cursor: pointer; font-size: 0.82rem;
+  background: ${({ $active, theme }) => $active ? "rgba(255,45,107,0.1)" : theme.colors.bgTertiary};
+  border: 1px solid ${({ $active, theme }) => $active ? theme.colors.gradientPinkBlue : theme.colors.borderDefault};
+  color: ${({ $active, theme }) => $active ? theme.colors.gradientPinkBlue : theme.colors.textSecondary};
+  transition: all 0.15s;
+  &:hover { border-color: ${({ theme }) => theme.colors.gradientPinkBlue}; }
+`;
+
+const ToggleRow = styled.div`display: flex; align-items: center; justify-content: space-between; padding: 8px 0;`;
+
+const Toggle = styled.label`
+  position: relative; display: inline-block; width: 42px; height: 24px; cursor: pointer;
+  input { opacity: 0; width: 0; height: 0; position: absolute; }
+  input:checked + span { background: linear-gradient(90deg, #FF2D6B, #3B82F6); }
+  input:checked + span::before { transform: translateY(-50%) translateX(18px); }
+`;
+
+const ToggleTrack = styled.span`
+  position: absolute; inset: 0;
+  background: rgba(255,255,255,0.1); border-radius: 999px; border: 1px solid rgba(255,255,255,0.1); transition: background 0.3s;
+  &::before {
+    content: ""; position: absolute; width: 18px; height: 18px;
+    left: 2px; top: 50%; transform: translateY(-50%);
+    background: #fff; border-radius: 50%; transition: transform 0.3s; box-shadow: 0 1px 4px rgba(0,0,0,0.3);
   }
 `;
 
-const ToggleRow = styled.div`
+const EditorBlock = styled.div`grid-column: 1 / -1;`;
+
+const PreviewCard = styled.div`
+  display: flex; flex-direction: column;
+  width: min(880px, 92vw); max-height: 88vh;
+  background: ${({ theme }) => theme.colors.bgSecondary};
+  border-radius: 18px; border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  overflow: hidden; box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+  @media (max-width: 480px) { width: 100vw; max-height: 96vh; border-radius: 22px 22px 0 0; }
+`;
+
+const PreviewBody = styled.div`flex: 1; overflow-y: auto; padding: 2.5rem 3rem; @media (max-width: 480px) { padding: 1.25rem; }`;
+const PreviewTitle = styled.h1`font-family: ${({ theme }) => theme.fonts.heading}; font-size: clamp(1.6rem,4vw,2.4rem); margin-bottom: 0.75rem; color: ${({ theme }) => theme.colors.textPrimary};`;
+const PreviewCategoryBadge = styled.div`display:inline-block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;color:${({ theme }) => theme.colors.gradientPinkBlue};background:rgba(255,45,107,0.08);border:1px solid rgba(255,45,107,0.2);padding:3px 10px;border-radius:999px;margin-bottom:1.5rem;`;
+const PreviewContent = styled.div`
+  line-height: 1.8; color: ${({ theme }) => theme.colors.textSecondary};
+  img { max-width: 100%; border-radius: 8px; margin: 1rem 0; }
+  h2, h3 { color: ${({ theme }) => theme.colors.textPrimary}; margin: 1.5rem 0 0.75rem; }
+  p { margin-bottom: 1.2rem; }
+  pre { background: rgba(0,0,0,0.4); padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; }
+  code { background: rgba(255,45,107,0.1); color: ${({ theme }) => theme.colors.gradientPinkBlue}; padding: 2px 6px; border-radius: 4px; font-size: 0.875em; }
+  pre code { background: none; color: inherit; padding: 0; }
+  blockquote { border-left: 3px solid ${({ theme }) => theme.colors.gradientPinkBlue}; padding: 0.5rem 1rem; margin: 1.5rem 0; font-style: italic; color: ${({ theme }) => theme.colors.textTertiary}; }
+`;
+
+
+const Page = styled.div`
+  display: flex;
+   min-height: 100vh;
+  @media (max-width: 768px) 
+  { 
+    flex-direction: column;
+      padding-bottom: 4.5rem; 
+    }
+`;
+
+
+
+
+// ─── STEP 2: Replace Sidebar ─────────────────────────────────
+const Sidebar = styled.aside`
+  /* ── Desktop ── */
+  width: 15rem;
+  flex-shrink: 0;
+  min-height: 100vh;
+  background: ${({ theme }) => theme.colors.bgTertiary};
+  border-right: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  padding: 4rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 900px) { width: 200px; }
+
+  /* ── Mobile: hide the desktop sidebar entirely ── */
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+// ─── STEP 3: SidebarTop unchanged (only shown on desktop now) ─
+const SidebarTop = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin: 4px 0;
+  gap: 0.55rem;
+  padding: 0 0.4rem;
+  margin-bottom: 2rem;
+  color: ${({ theme }) => theme.colors.textTertiary};
 `;
 
-const EditorBlock = styled.div`
-  grid-column: 1 / -1;
-  margin-bottom: 4px;
+const SidebarBrand = styled.span`
+  font-family: ${({ theme }) => theme.fonts.heading};
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.textSecondary};
+`;
 
-  .ql-editor {
-    min-height: 200px;
+// ─── STEP 4: NavSection (desktop only now) ───────────────────
+const NavSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+// ─── STEP 5: SideLink (desktop only) ─────────────────────────
+const SideLink = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid ${({ $active }) => $active ? "rgba(255,45,107,0.28)" : "transparent"};
+  background: ${({ $active }) => $active ? "rgba(255,45,107,0.07)" : "transparent"};
+  color: ${({ $active, theme }) => $active ? theme.colors.textPrimary : theme.colors.textSecondary};
+  cursor: pointer;
+  transition: all 0.18s ease;
+  text-align: left;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.bgGlassLight};
+    color: ${({ theme }) => theme.colors.textPrimary};
   }
 `;
 
-const PreviewModal = styled.div`
-  width: min(900px, 95vw);
-  max-height: 90vh;
-  overflow-y: auto;
-  background: ${({ theme }) => theme.colors.bgSecondary};
-  padding: 40px;
+const SideDot = styled.span`
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: opacity 0.2s;
+`;
+
+const SideLabelText = styled.span`
+  flex: 1;
+  font-size: 0.875rem;
+  font-weight: 500;
+`;
+
+const CountPill = styled.span`
+  font-size: 0.68rem;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: ${({ $active, theme }) => $active ? "" : theme.colors.bgGlassLight};
+  color: ${({ $active }) => $active ? "#fff" : "inherit"};
+  font-weight: 700;
+  min-width: 20px;
+  text-align: center;
+`;
+
+// ─── STEP 6: ADD these NEW components (mobile bottom tab bar) ─
+
+/** Sticky bottom nav — only visible on mobile */
+const MobileTabBar = styled.nav`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    background: ${({ theme }) => theme.colors.bgTertiary};
+    border-top: 1px solid ${({ theme }) => theme.colors.borderDefault};
+    height: 64px;
+    padding: 0 8px;
+    /* Frosted glass */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    /* Safe area for notched phones */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+`;
+
+const MobileTab = styled.button`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 8px 4px;
   border-radius: 12px;
+  transition: background 0.15s;
+  position: relative;
 
-  @media (max-width: 480px) {
-    padding: 24px 16px;
-    border-radius: 16px 16px 0 0;
-    max-height: 95vh;
+  /* Active indicator bar at top */
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 2px;
+    border-radius: 0 0 3px 3px;
+    background: ${({ $color }) => $color || "#FF2D6B"};
+    opacity: ${({ $active }) => $active ? 1 : 0};
+    transition: opacity 0.18s;
+  }
+
+  &:active { background: rgba(255,255,255,0.05); }
+`;
+
+const MobileTabLabel = styled.span`
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: ${({ $active, theme }) => $active ? theme.colors.textPrimary : theme.colors.textTertiary};
+  transition: color 0.18s;
+`;
+
+const MobileTabCount = styled.span`
+  position: absolute;
+  top: 6px;
+  right: calc(50% - 18px);
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: ${({ $color }) => $color || "#FF2D6B"};
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+`;
+
+const MobileTabIcon = styled.span`
+  font-size: 18px;
+  line-height: 1;
+  /* colour the icon based on active state */
+  color: ${({ $active, $color, theme }) =>
+    $active ? ($color || "#FF2D6B") : theme.colors.textTertiary};
+  transition: color 0.18s;
+`;
+
+// ─── STEP 7: ADD this mobile header bar ──────────────────────
+const MobileHeader = styled.div`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 1.25rem 0;
+    color: ${({ theme }) => theme.colors.textTertiary};
+  
   }
 `;
 
-const PreviewContent = styled.div`
-  margin-top: 10px;
-  line-height: 1.6;
-
-  img { max-width: 100%; }
-
-  pre {
-    background: #111;
-    padding: 10px;
-    overflow-x: auto;
-  }
-`;
-
-const Category = styled.div`
-  margin-bottom: 20px;
-  opacity: 0.6;
+const MobileHeaderBrand = styled.span`
+  font-family: ${({ theme }) => theme.fonts.heading};
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.textSecondary};
 `;

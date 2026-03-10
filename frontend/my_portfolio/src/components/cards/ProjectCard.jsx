@@ -1,38 +1,183 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Tag from "../ui/Tag";
+import Tilt from "react-parallax-tilt";
+import { getCategoryColor } from "../../utils/categoryColors";
 
-const Card = styled(motion.div)`
+const ProjectCard = ({ project }) => {
+  const navigate = useNavigate();
+  const colors = getCategoryColor(project.category || (project.tags && project.tags[0]));
+
+  return (
+    <Tilt
+      tiltMaxAngleX={8}
+      tiltMaxAngleY={8}
+      glareEnable
+      glareMaxOpacity={0.07}
+      glareColor="#3B82F6"
+      scale={1.02}
+      transitionSpeed={500}
+      style={{ borderRadius: "14px", transformStyle: "preserve-3d" }}
+    >
+      <CardLink
+        onClick={() => navigate(project.link)}
+        initial={{ y: 24, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.42 }}
+      >
+        {/* ── Thumbnail with zoom-on-hover ── */}
+        {project.image && (
+          <ImageWrap>
+            <ProjectImage src={project.image} alt={project.title} loading="lazy" />
+            <ImageOverlay />
+            {project.category && (
+              <CategoryBadge $c={colors}>{project.category}</CategoryBadge>
+            )}
+          </ImageWrap>
+        )}
+
+        <CardBody>
+          <Title>{project.title}</Title>
+          <Desc>{project.description}</Desc>
+
+          {project.tags && project.tags.length > 0 && (
+            <Tags>
+              {project.tags.slice(0, 4).map((tag) => (
+                <Tag key={tag}>{tag}</Tag>
+              ))}
+              {project.tags.length > 4 && (
+                <MoreTags>+{project.tags.length - 4}</MoreTags>
+              )}
+            </Tags>
+          )}
+
+          <ArrowChip whileHover={{ x: 5 }} transition={{ type: "spring", stiffness: 400 }}>
+            View Case Study →
+          </ArrowChip>
+        </CardBody>
+
+        {/* Top gradient bar slides in on hover */}
+        <TopBar />
+      </CardLink>
+    </Tilt>
+  );
+};
+
+export default ProjectCard;
+
+/* ─── STYLES ─────────────────────────────────────────── */
+
+const CardLink = styled(motion.div)`
   position: relative;
-  padding: 1.25rem;
   background: ${({ theme }) => theme.colors.bgSecondary};
   border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
+  border-radius: 14px;
+  cursor: pointer;
   overflow: hidden;
-  transition: ${({ theme }) => theme.transitions.default};
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
-    transform: translateY(-4px) scale(1.02);
-    border-color: ${({ theme }) => theme.colors.borderAccent};
-    box-shadow: ${({ theme }) => theme.colors.shadowCardHover};
+    border-color: ${({ theme }) => theme.colors.borderHover};
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 45, 107, 0.08);
   }
+`;
 
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: ${({ theme }) => theme.colors.gradientPinkBlue};
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
+/* The top gradient bar that scaleX(0→1) on hover */
+const TopBar = styled.span`
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #FF2D6B 0%, #3B82F6 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s ease;
+  pointer-events: none;
 
-  &:hover::before {
-    opacity: 1;
+  ${CardLink}:hover & {
+    transform: scaleX(1);
   }
+`;
+
+/* ── Image wrapper: overflow hidden so zoom stays clipped ── */
+const ImageWrap = styled.div`
+  position: relative;
+  width: 100%;
+  /* 
+    aspect-ratio keeps the slot a fixed 16:9 regardless of image dimensions.
+    The image inside uses object-fit:cover so it fills without distortion.
+    Change the ratio here to suit your thumbnails (e.g. "4/3", "1/1").
+  */
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: ${({ theme }) => theme.colors.bgTertiary};
+`;
+
+const zoomIn = keyframes`
+  from { transform: scale(1); }
+  to   { transform: scale(1.08); }
+`;
+
+const zoomOut = keyframes`
+  from { transform: scale(1.08); }
+  to   { transform: scale(1); }
+`;
+
+const ProjectImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Use object-position to keep the focal point centred */
+  object-position: center top;
+  display: block;
+  transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+
+  /* Zoom in when parent card is hovered */
+  ${CardLink}:hover & {
+    transform: scale(1.08);
+  }
+`;
+
+/* Dark gradient over image bottom — for text legibility */
+const ImageOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(13, 15, 20, 0.55) 100%
+  );
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+
+  ${CardLink}:hover & {
+    opacity: 0.8;
+  }
+`;
+
+/* Category badge floating over image bottom-left */
+const CategoryBadge = styled.span`
+  position: absolute;
+  bottom: 0.65rem;
+  left: 0.75rem;
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: ${({ $c }) => $c.bg};
+  border: 1px solid ${({ $c }) => $c.border};
+  color: ${({ $c }) => $c.text};
+  backdrop-filter: blur(8px);
+`;
+
+/* ── Card body ── */
+const CardBody = styled.div`
+  padding: 1.25rem 1.25rem 1.5rem;
 `;
 
 const Title = styled.h3`
@@ -40,66 +185,61 @@ const Title = styled.h3`
   font-size: ${({ theme }) => theme.fontSizes.h3};
   color: ${({ theme }) => theme.colors.textPrimary};
   margin-bottom: 0.5rem;
+  line-height: 1.25;
+  transition: color 0.2s ease;
+
+  ${CardLink}:hover & {
+    color: ${({ theme }) => theme.colors.gradientPinkBlue};
+  }
 `;
 
 const Desc = styled.p`
   font-size: ${({ theme }) => theme.fontSizes.small};
   color: ${({ theme }) => theme.colors.textSecondary};
   margin-bottom: 1rem;
-  line-height: 1.5;
+  line-height: 1.6;
+  /* Clamp to 2 lines so all cards have consistent height */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 `;
 
 const Tags = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.4rem;
+  margin-bottom: 0.25rem;
 `;
 
-const Arrow = styled.span`
-  display: inline-block;
-  margin-top: 1rem;
-  color: ${({ theme }) => theme.colors.accentPink};
-  font-size: 1.2rem;
-  cursor: pointer;
+const MoreTags = styled.span`
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  background: ${({ theme }) => theme.colors.bgGlassLight};
+  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  color: ${({ theme }) => theme.colors.textTertiary};
+`;
 
-  &:hover {
-    transform: translateX(4px);
+const ArrowChip = styled(motion.span)`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: linear-gradient(90deg, rgba(255, 45, 107, 0.1), rgba(59, 130, 246, 0.1));
+  border: 1px solid rgba(255, 45, 107, 0.2);
+  color: ${({ theme }) => theme.colors.gradientPinkBlue};
+  transition: border-color 0.2s ease;
+
+  ${CardLink}:hover & {
+    border-color: rgba(255, 45, 107, 0.45);
+    background: linear-gradient(90deg, rgba(255, 45, 107, 0.15), rgba(59, 130, 246, 0.15));
   }
 `;
-
-const ProjectImage = styled.img`
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-`;
-
-const ProjectCard = ({ project }) => {
-  const navigate = useNavigate();
-
-  return (
-    <Card
-      initial={{ y: 30, opacity: 0 }}
-      whileInView={{ y: 0, opacity: 1 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.5 }}
-      onClick={() => project.link && navigate(project.link)}
-    >
-      {/* Add this */}
-      {project.image && (
-        <ProjectImage src={project.image} alt={project.title} />
-      )}
-
-      <Title>{project.title}</Title>
-      <Desc>{project.description}</Desc>
-      <Tags>
-        {project.tags.map((tag) => (
-          <Tag key={tag}>{tag}</Tag>
-        ))}
-      </Tags>
-      <Arrow>→</Arrow>
-    </Card>
-  );
-};
-export default ProjectCard;

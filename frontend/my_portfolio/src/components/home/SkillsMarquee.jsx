@@ -1,6 +1,8 @@
 import styled, { keyframes } from 'styled-components';
 import { skills } from '../../data/siteData';
 
+import Tilt from 'react-parallax-tilt';
+
 const scroll = keyframes`
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
@@ -22,7 +24,7 @@ const Track = styled.div`
 const Pill = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.6rem;
   padding: 0.75rem 1.5rem;
   background: ${({ theme }) => theme.colors.bgGlassLight};
   border: 1px solid ${({ theme }) => theme.colors.borderDefault};
@@ -32,6 +34,7 @@ const Pill = styled.div`
   color: ${({ theme }) => theme.colors.textSecondary};
   white-space: nowrap;
   transition: ${({ theme }) => theme.transitions.fast};
+  cursor: default;
 
   &:hover {
     border-color: ${({ theme }) => theme.colors.borderAccent};
@@ -40,13 +43,35 @@ const Pill = styled.div`
   }
 `;
 
+const SkillDot = styled.span`
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: ${({ theme }) => theme.colors.gradientPinkBlue};
+  flex-shrink: 0;
+  box-shadow: 0 0 6px ${({ theme }) => theme.colors.gradientPinkBlue};
+`;
 const SkillsMarquee = () => {
   const doubled = [...skills, ...skills];
   return (
     <Wrapper>
       <Track>
         {doubled.map((skill, i) => (
-          <Pill key={`${skill.name}-${i}`}>{skill.name}</Pill>
+          <Tilt
+          key={`${skill.name}-${i}`}
+  tiltMaxAngleX={15}
+  tiltMaxAngleY={15}
+  glareEnable={true}
+  glareMaxOpacity={0.08}
+  glareColor="#FF2D6B"
+  scale={1.05}
+  transitionSpeed={400}
+>
+  <Pill key={`${skill.name}-${i}`}>
+    <SkillDot />
+    {skill.name}
+  </Pill>
+</Tilt>
         ))}
       </Track>
     </Wrapper>

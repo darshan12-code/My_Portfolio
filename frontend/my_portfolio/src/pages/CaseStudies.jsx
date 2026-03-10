@@ -4,9 +4,10 @@ import SectionHeader from "../components/ui/SectionHeader";
 import ProjectCard from "../components/cards/ProjectCard";
 import { caseStudyAPI } from "../services/apis";
 import { media } from "../../media";
+import PageHero from "../components/ui/PageHero";
 
 const Page = styled.div`
-  padding: 8rem 4rem;
+  padding: 4rem 4rem;
   max-width: 1100px;
   margin: auto;
 
@@ -46,9 +47,13 @@ const fetchCaseStudies = async () => {
   return (
     <Page>
 
-      <SectionHeader
+      <PageHero
         number="02"
-        title="CASE STUDIES"
+        eyebrow="Mission Dossier"
+        title="Case"
+        titleAccent="Studies"
+        subtitle="Full-stack projects, technical write-ups, and production work."
+        badge={`${projects.length} Projects`}
       />
 
       <Grid>

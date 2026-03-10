@@ -3,9 +3,10 @@ import { motion } from 'framer-motion';
 import { useCountUp } from '../../hooks/useCountUp';
 import { counters } from '../../data/siteData';
 import { media } from '../../../media';
+import { useScrollReveal } from '../../hooks/useScrollReveal';
 
 const Section = styled.section`
-  padding: ${({ theme }) => theme.spacing.section} 4rem;
+  padding: ${({ theme }) => theme.spacing.section} clamp(1.25rem, 5vw, 4rem);;
   max-width: 1100px;
   margin: 0 auto;
   ${media.tablet} { padding: ${({ theme }) => theme.spacing.section} 2rem; }
@@ -48,22 +49,25 @@ const Label = styled.span`
 
 const Counter = ({ target, suffix, label }) => {
   const { count, ref } = useCountUp(target);
+  
   return (
-    <CounterCard ref={ref}>
+    <CounterCard ref={ref} >
       <Value>{count}{suffix}</Value>
       <Label>{label}</Label>
     </CounterCard>
   );
 };
+// animate={inView ? { y: 0, opacity: 1, scale: 1 } : {}}
 
-const Counters = () => (
-  <Section>
+const Counters = () => {
+  const { ref, inView } = useScrollReveal();
+  return (<Section ref={ref}>
     <Grid>
       {counters.map((c) => (
         <Counter key={c.label} target={c.value} suffix={c.suffix} label={c.label} />
       ))}
     </Grid>
   </Section>
-);
+)};
 
 export default Counters;

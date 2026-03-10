@@ -1,11 +1,8 @@
-import { ThemeProvider } from "styled-components";
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import { theme } from "./styles/theme";
 import GlobalStyles from "./styles/globalStyles";
-
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 
 import Navbar from "./components/layout/Navbar";
@@ -15,6 +12,12 @@ import NoiseOverlay from "./components/layout/NoiseOverlay";
 import FloatingShapes from "./components/effects/FloatingShapes";
 import WaterWaves from "./components/effects/WaterWaves";
 import PageTransition from "./components/layout/PageTransition";
+import ScrollToTop from "./components/layout/ScrollToTop";
+import LoadingScreen from "./components/ui/LoadingScreen";
+
+import { ThemeProvider as StyledProvider } from "styled-components";
+import { ThemeProvider, useTheme } from "./contexts/ThemeContext";
+import { darkTheme, lightTheme } from "./styles/theme";
 
 import Home from "./pages/Home";
 import CaseStudies from "./pages/CaseStudies";
@@ -25,94 +28,118 @@ import Admin from "./pages/Admin";
 import NotFound from "./components/ui/NotFound";
 import BlogDetail from "./pages/BlogDetails";
 import CaseStudyDetails from "./pages/CaseStudyDetails";
+import CustomCursor from "./components/ui/CustomCursor";
+import ComicGrid from "./components/effects/ComicGrid";
 
 const queryClient = new QueryClient();
 
+/* ── Protected route ──────────────────────────────────── */
 const ProtectedRoute = ({ children }) => {
   const { isAdmin, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "#999",
-        }}
-      >
-        Loading...
-      </div>
-    );
-  }
-
+  if (loading) return <LoadingScreen />;
   return isAdmin ? children : <Navigate to="/admin/login" replace />;
 };
 
+/* ── All routes with transitions ─────────────────────── */
 const AnimatedRoutes = () => {
   const location = useLocation();
 
   return (
-    <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+    <>
+      {/*
+        ScrollToTop MUST be here — inside the Router context (so it can
+        read useLocation) but OUTSIDE AnimatePresence (so it fires
+        immediately on pathname change, before the exit animation starts).
+      */}
+      <ScrollToTop />
 
-        <Route
-          path="/case-studies"
-          element={<PageTransition><CaseStudies /></PageTransition>}
-        />
-        <Route path="/case-studies/:slug" element={<PageTransition><CaseStudyDetails/></PageTransition>} />
-        <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />
+      <AnimatePresence mode="wait" initial={false}>
+        {/*
+          KEY = location.pathname tells AnimatePresence which child changed.
+          "wait" mode means: fully finish exit animation, THEN start enter.
+          This is what gives the clean comic-page-flip feel.
+        */}
+        <PageTransition key={location.pathname} locationKey={location.pathname}>
+        <Routes location={location} key={location.pathname}>
 
-        <Route path="/blog/:slug" element={<PageTransition><BlogDetail /></PageTransition>} />
-        <Route
-          path="/contact"
-          element={<PageTransition><Contact /></PageTransition>}
-        />
+          <Route path="/"
+            element={<Home />}
+          />
 
-        <Route
-          path="/admin/login"
-          element={<PageTransition><AdminLogin /></PageTransition>}
-        />
+          <Route path="/case-studies"
+            element={<CaseStudies />}
+          />
 
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute>
-              <PageTransition>
+          <Route path="/case-studies/:slug"
+            element={<CaseStudyDetails />}
+          />
+
+          <Route path="/blog"
+            element={<Blog />}
+          />
+
+          <Route path="/blog/:slug"
+            element={<BlogDetail />}
+          />
+
+          <Route path="/contact"
+            element={<Contact />}
+          />
+
+          <Route path="/admin/login"
+            element={<AdminLogin />}
+          />
+
+          <Route path="/admin"
+            element={
+              <ProtectedRoute>
                 <Admin />
-              </PageTransition>
-            </ProtectedRoute>
-          }
-        />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </AnimatePresence>
+          <Route path="*" element={<NotFound />} />
+
+        </Routes>
+        </PageTransition>
+      </AnimatePresence>
+    </>
   );
 };
 
+/* ── Themed shell (no Router here — BrowserRouter is in App) ── */
+const ThemedApp = () => {
+  const { isDark } = useTheme();
+  const activeTheme = isDark ? darkTheme : lightTheme;
+
+  return (
+    <StyledProvider theme={activeTheme}>
+      <GlobalStyles />
+      <CustomCursor />
+      <NoiseOverlay />
+      <ComicGrid />
+      <FloatingShapes />
+      <WaterWaves />
+      <ScrollProgress />
+      <Navbar />
+      <AnimatedRoutes />
+      <Footer />
+    </StyledProvider>
+  );
+};
+
+/* ── Root — BrowserRouter lives HERE and ONLY here ──────── */
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-
-      <QueryClientProvider client={queryClient}>
+  
+      <ThemeProvider>
+        <QueryClientProvider client={queryClient}>
           <AuthProvider>
-            <NoiseOverlay />
-            <FloatingShapes />
-            <WaterWaves />
-            <ScrollProgress />
-
-            <Navbar />
-
-            <AnimatedRoutes />
-
-            <Footer />
+            <ThemedApp />
           </AuthProvider>
-      </QueryClientProvider>
-    </ThemeProvider>
+        </QueryClientProvider>
+      </ThemeProvider>
+  
   );
 }
 

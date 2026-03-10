@@ -1,64 +1,100 @@
 import { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { media } from '../../../media';
 const Btn = styled(motion.button)`
   position: relative;
-  padding: ${({ $size }) =>
-    $size === "sm" ? "0.4rem 0.9rem" : "0.875rem 2rem"};
-
+  padding: ${({ $size }) => $size === 'sm' ? '0.4rem 0.9rem' : '0.875rem 2rem'};
   font-family: ${({ theme }) => theme.fonts.body};
   font-weight: 600;
   font-size: ${({ theme }) => theme.fontSizes.small};
   color: ${({ theme }) => theme.colors.textWhite};
+  border-radius: ${({ theme }) => theme.borderRadius.full};
+  cursor: pointer;
+  overflow: hidden;
+  border: none;
 
+  transition: ${({ theme }) => theme.transitions.default};
+
+  /* Background variants */
   background: ${({ $variant, theme }) => {
     switch ($variant) {
-      case "outline":
-        return "transparent";
-      case "edit":
-        return "#2563eb";
-      case "delete":
-        return "#ef4444";
-      case "nav":
-        return theme.colors.bgSecondary;
-      case "ghost":
-        return "transparent";
-      default:
-        return theme.colors.accentPink;
+      case 'outline': return 'transparent';
+      case 'ghost':   return 'transparent';
+      case 'nav':     return theme.colors.bgGlassLight;
+      case 'edit':    return `linear-gradient(90deg, ${theme.colors.accentBlue}, ${theme.colors.accentNavyLight})`;
+      case 'delete':  return `linear-gradient(90deg, ${theme.colors.accentCrimson}, ${theme.colors.accentCoral})`;
+      default:        return theme.colors.gradientPinkBlue;
     }
   }};
 
-  border: ${({ $variant, theme }) =>
-    $variant === "outline"
-      ? `1px solid ${theme.colors.borderDefault}`
-      : "none"};
+  border: ${({ $variant, theme }) => {
+    if ($variant === 'outline') return `1px solid ${theme.colors.textWhite}`;
+    if ($variant === 'ghost') return '1px solid transparent';
+    return 'none';
+  }};
 
-  border-radius: ${({ theme }) => theme.borderRadius.full};
-
-  cursor: pointer;
-  overflow: hidden;
-
-  transition: ${({ theme }) => theme.transitions.default};
+  /* Shimmer effect */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      ${({ theme }) => theme.colors.bgGlassLight} 50%,
+      transparent 100%
+    );
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+  }
 
   &:hover {
     transform: translateY(-2px);
 
-    box-shadow: ${({ $variant, theme }) =>
-      $variant === "delete"
-        ? "0 0 12px rgba(239,68,68,0.5)"
-        : theme.colors.shadowGlowPink};
+    box-shadow: ${({ $variant, theme }) => {
+      if ($variant === 'delete') return theme.colors.shadowGlowPink;
+      if ($variant === 'outline' || $variant === 'ghost') return theme.colors.shadowGlowPink;
+      return theme.colors.shadowGlowPink;
+    }};
+
+    &::after {
+      transform: translateX(100%);
+    }
   }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  ${({ $variant, theme }) =>
+    $variant === 'outline' &&
+    `
+      &:hover {
+        background: ${theme.colors.bgGlassLight};
+        border-color: ${theme.colors.borderAccent};
+      }
+    `}
 `;
 const Ripple = styled.span`
   position: absolute;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
+  background: ${({ theme }) => theme.colors.bgGlassLight};
   transform: scale(0);
   animation: ripple-expand 0.6s ease-out forwards;
   pointer-events: none;
 
   @keyframes ripple-expand {
-    to { transform: scale(4); opacity: 0; }
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
   }
 `;
 
