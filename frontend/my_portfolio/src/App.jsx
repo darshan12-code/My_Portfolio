@@ -77,7 +77,7 @@ const ThemedApp = () => {
       <CustomCursor />
       <NoiseOverlay />
       <ComicGrid />
-      <FloatingShapes />
+      <FloatingShapes hideOnMobile={false} />
       <WaterWaves />
       <ScrollProgress />
       <Navbar />

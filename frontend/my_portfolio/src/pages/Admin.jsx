@@ -12,19 +12,7 @@ import SectionHeader from "../components/ui/SectionHeader";
 import MagneticButton from "../components/ui/MagneticButton";
 import RichEditor from "../components/ui/RichEditor";
 
-/*
-  WHY createPortal?
-  position:fixed is supposed to be viewport-relative, BUT the browser
-  re-parents it into the nearest ancestor that has a CSS transform,
-  filter, will-change:transform, or perspective applied — Framer Motion
-  applies transforms to every animated parent, so any fixed child gets
-  "trapped" inside that stacking context and scrolls with the page.
 
-  createPortal(node, document.body) escapes ALL ancestor stacking
-  contexts by rendering the overlay as a DIRECT child of <body>.
-  Combined with body position:fixed on open, the modal is always
-  perfectly centred in the viewport, regardless of scroll position.
-*/
 
 const ITEMS_PER_PAGE = 9;
 
@@ -83,13 +71,7 @@ const Admin = () => {
     ],
   };
 
-  /*
-    SCROLL LOCK
-    Step 1 — record current scrollY before locking
-    Step 2 — pin body with position:fixed + top:-scrollY
-              (prevents the visible jump to top that plain overflow:hidden causes)
-    Step 3 — on close: remove styles, then silently restore scroll position
-  */
+ 
   useEffect(() => {
     const open = showForm || showPreview;
     if (open) {
@@ -295,13 +277,9 @@ const TAB_CONFIG = [
   return (
     <>
       <Page>
-        {/* ── Sidebar ── */}
-         {/* // ── Desktop Sidebar (hidden on mobile via CSS) ── */}
+        
       <Sidebar>
-        {/* <SidebarTop>
-          <Terminal size={16} />
-          <SidebarBrand>Command Centre</SidebarBrand>
-        </SidebarTop> */}
+    
         <NavSection>
           {TAB_CONFIG.map(({ key, label, count, color }) => (
             <SideLink key={key} $active={tab === key} onClick={() => setTab(key)}>
@@ -319,13 +297,9 @@ const TAB_CONFIG = [
              
       <MainContent>
       
-        {/* <MobileHeader>
-          <Terminal size={16} />
-          <MobileHeaderBrand>Command Centre</MobileHeaderBrand>
-        </MobileHeader> */}
 
           <PageTitleBlock>
-            {/* <TitleEyebrow>⚡ Admin Dashboard</TitleEyebrow> */}
+          
             <PageTitle>Command<TitleAccent> Centre</TitleAccent></PageTitle>
             <TitleSub>Welcome back, <strong>{user?.name || "Admin"}</strong>. Manage your content below.</TitleSub>
           </PageTitleBlock>
@@ -474,314 +448,597 @@ export default Admin;
 
 
 const MainContent = styled.main`
- flex: 1;
+  flex: 1;
   min-width: 0;
   padding: 4rem 2.5rem 5rem;
 
   @media (max-width: 1024px) { padding: 2rem 1.5rem 4rem; }
 
   @media (max-width: 768px) {
-    /*
-      Top padding must clear the fixed navbar.
-      Adjust the 64px to match your actual Navbar height.
-      The bottom padding clears the fixed MobileTabBar (64px).
-    */
     padding: calc(64px + 1.5rem) 1rem calc(64px + 1rem);
   }
 `;
 
 const PageTitleBlock = styled.div`
-  margin-bottom: 2.5rem; padding-bottom: 2rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
   border-bottom: 1px solid ${({ theme }) => theme.colors.borderDefault};
-`;
-
-const TitleEyebrow = styled.p`
-  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.15em;
-  text-transform: uppercase; color: ${({ theme }) => theme.colors.gradientPinkBlue}; margin-bottom: 0.55rem;
 `;
 
 const PageTitle = styled.h1`
   font-family: ${({ theme }) => theme.fonts.heading};
-  font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.0;
-  letter-spacing: -0.03em; color: ${({ theme }) => theme.colors.textPrimary}; margin-bottom: 0.6rem;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  color: ${({ theme }) => theme.colors.textPrimary};
+  margin-bottom: 0.6rem;
 `;
 
 const TitleAccent = styled.span`
-  background: linear-gradient(90deg, #FF2D6B 0%, #3B82F6 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  background: ${({ theme }) => theme.colors.gradientPinkBlue};
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 `;
 
 const TitleSub = styled.p`
-  font-size: 0.9rem; color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: 0.9rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
   strong { color: ${({ theme }) => theme.colors.textPrimary}; }
 `;
 
-const ActionRow = styled.div`margin-bottom: 1.75rem;`;
-
-const CreateBtn = styled.button`
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  padding: 0.62rem 1.4rem; border-radius: 999px; border: none;
-  background: linear-gradient(90deg, #FF2D6B 0%, #3B82F6 100%);
-  color: #fff; font-size: 0.875rem; font-weight: 600; cursor: pointer;
-  transition: box-shadow 0.3s, transform 0.2s;
-  &:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,45,107,0.35); }
+const ActionRow = styled.div`
+  margin-bottom: 1.75rem;
 `;
 
-const GridWrap = styled.div`position: relative;`;
+const CreateBtn = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.62rem 1.4rem;
+  border-radius: 999px;
+  border: none;
+  background: ${({ theme }) => theme.colors.gradientPinkBlue};
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: box-shadow 0.3s, transform 0.2s;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: ${({ theme }) => theme.colors.shadowPinkHover};
+  }
+`;
+
+const GridWrap = styled.div`
+  position: relative;
+`;
 
 const CardGrid = styled.div`
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-  gap: 1.2rem; padding-bottom: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 1.2rem;
+  padding-bottom: 0.5rem;
   @media (max-width: 640px) { grid-template-columns: 1fr; }
 `;
 
-const shimmerMove = keyframes`0%{background-position:-200% 0}100%{background-position:200% 0}`;
+const shimmerMove = keyframes`
+  0%   { background-position: -200% 0 }
+  100% { background-position:  200% 0 }
+`;
 
 const Card = styled.div`
   background: ${({ theme }) => theme.colors.bgSecondary};
-  border-radius: 12px; padding: 1.25rem;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  padding: 1.25rem;
   border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  position: relative; overflow: hidden;
+  position: relative;
+  overflow: hidden;
   transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-  &:hover { border-color: ${({ theme }) => theme.colors.borderHover}; box-shadow: 0 8px 32px rgba(0,0,0,0.25); transform: translateY(-2px); }
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.borderHover};
+    box-shadow: ${({ theme }) => theme.colors.shadowCardHover};
+    transform: translateY(-2px);
+  }
 `;
 
 const CardShimmerBar = styled.div`
   position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, #FF2D6B 0%, #3B82F6 50%, #FF2D6B 100%);
-  background-size: 200% 100%; opacity: 0; transition: opacity 0.3s;
+  background: ${({ theme }) => theme.colors.gradientShimmer};
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity 0.3s;
   animation: ${shimmerMove} 2.5s linear infinite;
   ${Card}:hover & { opacity: 1; }
 `;
 
-const CardHeader = styled.div`display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem;`;
-const CardTitle = styled.h3`font-size: 0.93rem; font-weight: 600; color: ${({ theme }) => theme.colors.textPrimary}; line-height: 1.3; flex: 1; margin: 0;`;
-const CardActions = styled.div`display: flex; gap: 5px; flex-shrink: 0;`;
+const CardHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+`;
+
+const CardTitle = styled.h3`
+  font-size: 0.93rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.textPrimary};
+  line-height: 1.3;
+  flex: 1;
+  margin: 0;
+`;
+
+const CardActions = styled.div`
+  display: flex;
+  gap: 5px;
+  flex-shrink: 0;
+`;
 
 const IconBtn = styled.button`
   border: none;
-  background: ${({ $danger }) => $danger ? "rgba(239,68,68,0.12)" : "rgba(255,255,255,0.06)"};
-  color: ${({ $danger }) => $danger ? "#ef4444" : "#9BA1B0"};
-  padding: 6px; border-radius: 7px; cursor: pointer;
-  transition: all 0.15s; display: flex; align-items: center;
-  &:hover { background: ${({ $danger }) => $danger ? "rgba(239,68,68,0.22)" : "rgba(255,255,255,0.12)"}; color: ${({ $danger }) => $danger ? "#ff6060" : "#fff"}; transform: scale(1.1); }
+  background: ${({ $danger, theme }) =>
+    $danger ? theme.colors.accentDangerBg : theme.colors.bgGlassLight};
+  color: ${({ $danger, theme }) =>
+    $danger ? theme.colors.accentDanger : theme.colors.textSecondary};
+  padding: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  &:hover {
+    background: ${({ $danger, theme }) =>
+      $danger ? theme.colors.accentDangerBgHover : theme.colors.borderHover};
+    color: #fff;
+    transform: scale(1.1);
+  }
 `;
 
-const CardBody = styled.div`font-size: 0.85rem;`;
+const CardBody = styled.div`
+  font-size: 0.85rem;
+`;
 
 const CategoryChip = styled.span`
-  display: inline-block; padding: 2px 9px; border-radius: 999px;
-  font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
-  background: rgba(255,45,107,0.09); border: 1px solid rgba(255,45,107,0.18);
-  color: ${({ theme }) => theme.colors.gradientPinkBlue}; margin-bottom: 0.5rem;
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: ${({ theme }) => theme.colors.accentPinkSubtleBg};
+  border: 1px solid ${({ theme }) => theme.colors.accentPinkSubtleBorder};
+  color: ${({ theme }) => theme.colors.accentPink};
+  margin-bottom: 0.5rem;
 `;
 
-const CardPreview = styled.p`color: ${({ theme }) => theme.colors.textTertiary}; font-size: 0.82rem; line-height: 1.5; margin: 0;`;
+const CardPreview = styled.p`
+  color: ${({ theme }) => theme.colors.textTertiary};
+  font-size: 0.82rem;
+  line-height: 1.5;
+  margin: 0;
+`;
 
 const CardStatusRow = styled.div`
-  display: flex; align-items: center; gap: 6px;
-  margin-top: 0.85rem; padding-top: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
   border-top: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  font-size: 0.72rem; color: ${({ theme }) => theme.colors.textTertiary};
+  font-size: 0.72rem;
+  color: ${({ theme }) => theme.colors.textTertiary};
 `;
 
 const blinkAnim = keyframes`0%,100%{opacity:1}50%{opacity:0.3}`;
 const StatusDot = styled.span`
-  width: 6px; height: 6px; border-radius: 50%;
-  background: ${({ $on }) => $on ? "#00E89D" : "#5C6170"};
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: ${({ $on, theme }) => $on ? theme.colors.accentGreen : theme.colors.textTertiary};
   animation: ${({ $on }) => $on ? blinkAnim : "none"} 2.5s ease-in-out infinite;
 `;
 
 const GridFog = styled.div`
-  position: absolute; bottom: 0; left: 0; right: 0; height: 90px;
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 90px;
   background: linear-gradient(to bottom, transparent 0%, ${({ theme }) => theme.colors.bgPrimary} 100%);
-  pointer-events: none; z-index: 2;
+  pointer-events: none;
+  z-index: 2;
 `;
 
-const Pagination = styled.div`margin-top: 2.5rem; display: flex; align-items: center; gap: 1rem;`;
-const PageInfo = styled.span`font-size: 0.875rem; color: ${({ theme }) => theme.colors.textSecondary}; strong { color: ${({ theme }) => theme.colors.textPrimary}; }`;
-const PaginationSep = styled.span`opacity: 0.35; margin: 0 0.3rem;`;
+const Pagination = styled.div`
+  margin-top: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
 
-/* ══ THE KEY: Overlay is position:fixed top:0 left:0 — always viewport-relative.
-      createPortal() ensures no ancestor transform/stacking context can trap it. ══ */
+const PageInfo = styled.span`
+  font-size: 0.875rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  strong { color: ${({ theme }) => theme.colors.textPrimary}; }
+`;
+
+const PaginationSep = styled.span`
+  opacity: 0.35;
+  margin: 0 0.3rem;
+`;
+
 const Overlay = styled.div`
-  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 9999; padding: 20px;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: ${({ theme }) => theme.colors.overlayBg};
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
   @media (max-width: 480px) { padding: 0; align-items: flex-end; }
 `;
 
 const ModalCard = styled.div`
-  display: flex; flex-direction: column;
-  width: 92vw; max-width: 880px; max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  width: 92vw;
+  max-width: 880px;
+  max-height: 88vh;
   background: ${({ theme }) => theme.colors.bgSecondary};
-  border-radius: 18px; border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  overflow: hidden; box-shadow: 0 32px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,45,107,0.06);
-  @media (max-width: 480px) { width: 100vw; max-height: 96vh; border-radius: 22px 22px 0 0; }
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  overflow: hidden;
+  box-shadow: ${({ theme }) => theme.colors.shadowModal},
+              0 0 0 1px ${({ theme }) => theme.colors.accentPinkRingShadow};
+  @media (max-width: 480px) {
+    width: 100vw;
+    max-height: 96vh;
+    border-radius: ${({ theme }) => theme.borderRadius.xl} ${({ theme }) => theme.borderRadius.xl} 0 0;
+  }
 `;
 
 const ModalHeader = styled.div`
-  flex-shrink: 0; padding: 18px 24px;
+  flex-shrink: 0;
+  padding: 18px 24px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   background: ${({ theme }) => theme.colors.bgTertiary};
 `;
 
-const ModalTitle = styled.h3`margin: 0; font-size: 0.97rem; font-weight: 600; color: ${({ theme }) => theme.colors.textPrimary}; text-transform: capitalize;`;
+const ModalTitle = styled.h3`
+  margin: 0;
+  font-size: 0.97rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.textPrimary};
+  text-transform: capitalize;
+`;
 
 const ModalCloseBtn = styled.button`
-  display: flex; align-items: center; justify-content: center;
-  width: 28px; height: 28px; border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
   border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  background: transparent; color: ${({ theme }) => theme.colors.textSecondary}; cursor: pointer; transition: all 0.15s;
-  &:hover { background: rgba(255,45,107,0.1); border-color: ${({ theme }) => theme.colors.gradientPinkBlue}; color: ${({ theme }) => theme.colors.gradientPinkBlue}; }
+  background: transparent;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  cursor: pointer;
+  transition: all 0.15s;
+  &:hover {
+    background: ${({ theme }) => theme.colors.accentPinkFocus};
+    border-color: ${({ theme }) => theme.colors.accentPink};
+    color: ${({ theme }) => theme.colors.accentPink};
+  }
 `;
 
 const FormBody = styled.div`
-  flex: 1; overflow-y: auto; padding: 22px 24px; scroll-behavior: smooth;
+  flex: 1;
+  overflow-y: auto;
+  padding: 22px 24px;
+  scroll-behavior: smooth;
   &::-webkit-scrollbar { width: 5px; }
   &::-webkit-scrollbar-track { background: transparent; }
-  &::-webkit-scrollbar-thumb { background: ${({ theme }) => theme.colors.borderDefault}; border-radius: 3px; }
+  &::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.colors.borderDefault};
+    border-radius: 3px;
+  }
   @media (max-width: 480px) { padding: 16px; }
 `;
 
 const ModalFooter = styled.div`
-  flex-shrink: 0; padding: 14px 24px;
+  flex-shrink: 0;
+  padding: 14px 24px;
   border-top: 1px solid ${({ theme }) => theme.colors.borderDefault};
   background: ${({ theme }) => theme.colors.bgTertiary};
-  display: flex; gap: 10px; flex-wrap: wrap;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
   @media (max-width: 480px) { padding: 12px 16px; & > * { flex: 1; min-width: 80px; } }
 `;
 
 const ModalBtn = styled.button`
-  display: inline-flex; align-items: center; gap: 0.4rem;
-  padding: 0.5rem 1.2rem; border-radius: 8px;
-  font-size: 0.83rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none;
-  ${({ $v }) => $v === "save"    && "background:linear-gradient(90deg,#FF2D6B,#3B82F6);color:#fff;&:hover{box-shadow:0 6px 20px rgba(255,45,107,0.35);transform:translateY(-1px);}"}
-  ${({ $v }) => $v === "preview" && "background:rgba(59,130,246,0.12);color:#3B82F6;border:1px solid rgba(59,130,246,0.25);&:hover{background:rgba(59,130,246,0.2);}"}
-  ${({ $v }) => $v === "cancel"  && "background:rgba(255,255,255,0.05);color:#9BA1B0;border:1px solid rgba(255,255,255,0.08);&:hover{background:rgba(255,255,255,0.1);color:#fff;}"}
-  &:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  font-size: 0.83rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+
+  /* Save */
+  ${({ $v, theme }) => $v === "save" && `
+    background: ${theme.colors.gradientPinkBlue};
+    color: #fff;
+    &:hover {
+      box-shadow: ${theme.colors.shadowBlueBtnHover};
+      transform: translateY(-1px);
+    }
+  `}
+
+  /* Preview */
+  ${({ $v, theme }) => $v === "preview" && `
+    background: ${theme.colors.accentBlueBg};
+    color: ${theme.colors.accentBlue};
+    border: 1px solid ${theme.colors.accentBlueBorder};
+    &:hover { background: ${theme.colors.accentBlueBgHover}; }
+  `}
+
+  /* Cancel */
+  ${({ $v, theme }) => $v === "cancel" && `
+    background: ${theme.colors.surfaceSubtle};
+    color: ${theme.colors.textSecondary};
+    border: 1px solid ${theme.colors.borderSubtle};
+    &:hover {
+      background: ${theme.colors.bgGlassLight};
+      color: ${theme.colors.textPrimary};
+    }
+  `}
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
 `;
 
 const FormGrid = styled.div`
-  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
   @media (max-width: 600px) { grid-template-columns: 1fr; }
 `;
 
 const FGroup = styled.div`
-  display: flex; flex-direction: column; gap: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
   grid-column: ${({ $full }) => $full ? "1 / -1" : "auto"};
 `;
 
 const FLabel = styled.label`
-  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
-  text-transform: uppercase; color: ${({ theme }) => theme.colors.textTertiary};
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.textTertiary};
 `;
 
 const FInput = styled.input`
-  width: 100%; padding: 9px 12px; border-radius: 8px;
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
   border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  background: ${({ theme }) => theme.colors.bgPrimary}; color: ${({ theme }) => theme.colors.textPrimary};
-  font-size: 0.875rem; transition: border-color 0.2s;
-  &:focus { border-color: ${({ theme }) => theme.colors.gradientPinkBlue}; outline: none; box-shadow: 0 0 0 3px rgba(255,45,107,0.1); }
+  background: ${({ theme }) => theme.colors.bgPrimary};
+  color: ${({ theme }) => theme.colors.textPrimary};
+  font-size: 0.875rem;
+  transition: border-color 0.2s;
+  &:focus {
+    border-color: ${({ theme }) => theme.colors.accentPink};
+    outline: none;
+    box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.accentPinkFocus};
+  }
 `;
 
 const FTextarea = styled.textarea`
-  width: 100%; min-height: 100px; padding: 9px 12px; border-radius: 8px;
+  width: 100%;
+  min-height: 100px;
+  padding: 9px 12px;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
   border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  background: ${({ theme }) => theme.colors.bgPrimary}; color: ${({ theme }) => theme.colors.textPrimary};
-  font-size: 0.875rem; resize: vertical; font-family: inherit; transition: border-color 0.2s;
-  &:focus { border-color: ${({ theme }) => theme.colors.gradientPinkBlue}; outline: none; box-shadow: 0 0 0 3px rgba(255,45,107,0.1); }
+  background: ${({ theme }) => theme.colors.bgPrimary};
+  color: ${({ theme }) => theme.colors.textPrimary};
+  font-size: 0.875rem;
+  resize: vertical;
+  font-family: inherit;
+  transition: border-color 0.2s;
+  &:focus {
+    border-color: ${({ theme }) => theme.colors.accentPink};
+    outline: none;
+    box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.accentPinkFocus};
+  }
 `;
 
 const FFileInput = styled.input`
-  padding: 9px 12px; border: 2px dashed ${({ theme }) => theme.colors.borderDefault};
-  border-radius: 8px; cursor: pointer; width: 100%;
-  color: ${({ theme }) => theme.colors.textSecondary}; font-size: 0.875rem;
-  background: ${({ theme }) => theme.colors.bgPrimary}; transition: border-color 0.2s;
-  &:hover { border-color: ${({ theme }) => theme.colors.gradientPinkBlue}; }
+  padding: 9px 12px;
+  border: 2px dashed ${({ theme }) => theme.colors.borderDefault};
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  cursor: pointer;
+  width: 100%;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: 0.875rem;
+  background: ${({ theme }) => theme.colors.bgPrimary};
+  transition: border-color 0.2s;
+  &:hover { border-color: ${({ theme }) => theme.colors.accentPink}; }
 `;
 
 const ThumbPreview = styled.div`
   margin-top: 8px;
-  img { width: 100%; max-height: 150px; object-fit: cover; border-radius: 8px; border: 1px solid ${({ theme }) => theme.colors.borderDefault}; }
+  img {
+    width: 100%;
+    max-height: 150px;
+    object-fit: cover;
+    border-radius: ${({ theme }) => theme.borderRadius.sm};
+    border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  }
 `;
 
 const RadioBlock = styled.div`grid-column: 1 / -1;`;
 const RadioRow = styled.div`display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px;`;
 
 const RadioChip = styled.button`
-  padding: 7px 14px; border-radius: 8px; cursor: pointer; font-size: 0.82rem;
-  background: ${({ $active, theme }) => $active ? "rgba(255,45,107,0.1)" : theme.colors.bgTertiary};
-  border: 1px solid ${({ $active, theme }) => $active ? theme.colors.gradientPinkBlue : theme.colors.borderDefault};
-  color: ${({ $active, theme }) => $active ? theme.colors.gradientPinkBlue : theme.colors.textSecondary};
+  padding: 7px 14px;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  cursor: pointer;
+  font-size: 0.82rem;
+  background: ${({ $active, theme }) =>
+    $active ? theme.colors.accentPinkFocus : theme.colors.bgTertiary};
+  border: 1px solid ${({ $active, theme }) =>
+    $active ? theme.colors.accentPink : theme.colors.borderDefault};
+  color: ${({ $active, theme }) =>
+    $active ? theme.colors.accentPink : theme.colors.textSecondary};
   transition: all 0.15s;
-  &:hover { border-color: ${({ theme }) => theme.colors.gradientPinkBlue}; }
+  &:hover { border-color: ${({ theme }) => theme.colors.accentPink}; }
 `;
 
-const ToggleRow = styled.div`display: flex; align-items: center; justify-content: space-between; padding: 8px 0;`;
+const ToggleRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+`;
 
 const Toggle = styled.label`
-  position: relative; display: inline-block; width: 42px; height: 24px; cursor: pointer;
+  position: relative;
+  display: inline-block;
+  width: 42px; height: 24px;
+  cursor: pointer;
   input { opacity: 0; width: 0; height: 0; position: absolute; }
-  input:checked + span { background: linear-gradient(90deg, #FF2D6B, #3B82F6); }
+  input:checked + span { background: ${({ theme }) => theme.colors.gradientPinkBlue}; }
   input:checked + span::before { transform: translateY(-50%) translateX(18px); }
 `;
 
 const ToggleTrack = styled.span`
-  position: absolute; inset: 0;
-  background: rgba(255,255,255,0.1); border-radius: 999px; border: 1px solid rgba(255,255,255,0.1); transition: background 0.3s;
+  position: absolute;
+  inset: 0;
+  background: ${({ theme }) => theme.colors.surfaceLight};
+  border-radius: 999px;
+  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  transition: background 0.3s;
   &::before {
-    content: ""; position: absolute; width: 18px; height: 18px;
-    left: 2px; top: 50%; transform: translateY(-50%);
-    background: #fff; border-radius: 50%; transition: transform 0.3s; box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    content: "";
+    position: absolute;
+    width: 18px; height: 18px;
+    left: 2px; top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.3s;
+    box-shadow: 0 1px 4px ${({ theme }) => theme.colors.overlayBg};
   }
 `;
 
 const EditorBlock = styled.div`grid-column: 1 / -1;`;
 
 const PreviewCard = styled.div`
-  display: flex; flex-direction: column;
-  width: min(880px, 92vw); max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  width: min(880px, 92vw);
+  max-height: 88vh;
   background: ${({ theme }) => theme.colors.bgSecondary};
-  border-radius: 18px; border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  overflow: hidden; box-shadow: 0 32px 80px rgba(0,0,0,0.6);
-  @media (max-width: 480px) { width: 100vw; max-height: 96vh; border-radius: 22px 22px 0 0; }
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  overflow: hidden;
+  box-shadow: ${({ theme }) => theme.colors.shadowModalPreview};
+  @media (max-width: 480px) {
+    width: 100vw;
+    max-height: 96vh;
+    border-radius: ${({ theme }) => theme.borderRadius.xl} ${({ theme }) => theme.borderRadius.xl} 0 0;
+  }
 `;
 
-const PreviewBody = styled.div`flex: 1; overflow-y: auto; padding: 2.5rem 3rem; @media (max-width: 480px) { padding: 1.25rem; }`;
-const PreviewTitle = styled.h1`font-family: ${({ theme }) => theme.fonts.heading}; font-size: clamp(1.6rem,4vw,2.4rem); margin-bottom: 0.75rem; color: ${({ theme }) => theme.colors.textPrimary};`;
-const PreviewCategoryBadge = styled.div`display:inline-block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;color:${({ theme }) => theme.colors.gradientPinkBlue};background:rgba(255,45,107,0.08);border:1px solid rgba(255,45,107,0.2);padding:3px 10px;border-radius:999px;margin-bottom:1.5rem;`;
+const PreviewBody = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  padding: 2.5rem 3rem;
+  @media (max-width: 480px) { padding: 1.25rem; }
+`;
+
+const PreviewTitle = styled.h1`
+  font-family: ${({ theme }) => theme.fonts.heading};
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  margin-bottom: 0.75rem;
+  color: ${({ theme }) => theme.colors.textPrimary};
+`;
+
+const PreviewCategoryBadge = styled.div`
+  display: inline-block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.accentPink};
+  background: ${({ theme }) => theme.colors.accentPinkSubtleBg2};
+  border: 1px solid ${({ theme }) => theme.colors.accentPinkSubtleBorder2};
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-bottom: 1.5rem;
+`;
+
 const PreviewContent = styled.div`
-  line-height: 1.8; color: ${({ theme }) => theme.colors.textSecondary};
-  img { max-width: 100%; border-radius: 8px; margin: 1rem 0; }
+  line-height: 1.8;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  img {
+    max-width: 100%;
+    border-radius: ${({ theme }) => theme.borderRadius.sm};
+    margin: 1rem 0;
+  }
   h2, h3 { color: ${({ theme }) => theme.colors.textPrimary}; margin: 1.5rem 0 0.75rem; }
   p { margin-bottom: 1.2rem; }
-  pre { background: rgba(0,0,0,0.4); padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; }
-  code { background: rgba(255,45,107,0.1); color: ${({ theme }) => theme.colors.gradientPinkBlue}; padding: 2px 6px; border-radius: 4px; font-size: 0.875em; }
+  pre {
+    background: ${({ theme }) => theme.colors.preBg};
+    padding: 1rem;
+    border-radius: ${({ theme }) => theme.borderRadius.sm};
+    overflow-x: auto;
+    font-size: 0.875rem;
+  }
+  code {
+    background: ${({ theme }) => theme.colors.accentPinkSubtleBg};
+    color: ${({ theme }) => theme.colors.accentPink};
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.875em;
+  }
   pre code { background: none; color: inherit; padding: 0; }
-  blockquote { border-left: 3px solid ${({ theme }) => theme.colors.gradientPinkBlue}; padding: 0.5rem 1rem; margin: 1.5rem 0; font-style: italic; color: ${({ theme }) => theme.colors.textTertiary}; }
+  blockquote {
+    border-left: 3px solid ${({ theme }) => theme.colors.accentPink};
+    padding: 0.5rem 1rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: ${({ theme }) => theme.colors.textTertiary};
+  }
 `;
-
 
 const Page = styled.div`
   display: flex;
-   min-height: 100vh;
-  @media (max-width: 768px) 
-  { 
+  min-height: 100vh;
+  @media (max-width: 768px) {
     flex-direction: column;
-      padding-bottom: 4.5rem; 
-    }
+    padding-bottom: 4.5rem;
+  }
 `;
 
-
-
-
-// ─── STEP 2: Replace Sidebar ─────────────────────────────────
 const Sidebar = styled.aside`
-  /* ── Desktop ── */
   width: 15rem;
   flex-shrink: 0;
   min-height: 100vh;
@@ -792,50 +1049,28 @@ const Sidebar = styled.aside`
   flex-direction: column;
 
   @media (max-width: 900px) { width: 200px; }
-
-  /* ── Mobile: hide the desktop sidebar entirely ── */
-  @media (max-width: 768px) {
-    display: none;
-  }
+  @media (max-width: 768px) { display: none; }
 `;
 
-// ─── STEP 3: SidebarTop unchanged (only shown on desktop now) ─
-const SidebarTop = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0 0.4rem;
-  margin-bottom: 2rem;
-  color: ${({ theme }) => theme.colors.textTertiary};
-`;
-
-const SidebarBrand = styled.span`
-  font-family: ${({ theme }) => theme.fonts.heading};
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.textSecondary};
-`;
-
-// ─── STEP 4: NavSection (desktop only now) ───────────────────
 const NavSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
 `;
 
-// ─── STEP 5: SideLink (desktop only) ─────────────────────────
 const SideLink = styled.button`
   display: flex;
   align-items: center;
   gap: 0.7rem;
   width: 100%;
   padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid ${({ $active }) => $active ? "rgba(255,45,107,0.28)" : "transparent"};
-  background: ${({ $active }) => $active ? "rgba(255,45,107,0.07)" : "transparent"};
-  color: ${({ $active, theme }) => $active ? theme.colors.textPrimary : theme.colors.textSecondary};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  border: 1px solid ${({ $active, theme }) =>
+    $active ? theme.colors.accentPinkSidebarBorder : "transparent"};
+  background: ${({ $active, theme }) =>
+    $active ? theme.colors.accentPinkSidebarBg : "transparent"};
+  color: ${({ $active, theme }) =>
+    $active ? theme.colors.textPrimary : theme.colors.textSecondary};
   cursor: pointer;
   transition: all 0.18s ease;
   text-align: left;
@@ -865,33 +1100,26 @@ const CountPill = styled.span`
   padding: 2px 7px;
   border-radius: 999px;
   background: ${({ $active, theme }) => $active ? "" : theme.colors.bgGlassLight};
-  color: ${({ $active }) => $active ? "#fff" : "inherit"};
+  color: ${({ $active, theme }) => $active ? "#fff" : "inherit"};
   font-weight: 700;
   min-width: 20px;
   text-align: center;
 `;
 
-// ─── STEP 6: ADD these NEW components (mobile bottom tab bar) ─
-
-/** Sticky bottom nav — only visible on mobile */
 const MobileTabBar = styled.nav`
   display: none;
 
   @media (max-width: 768px) {
     display: flex;
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 200;
+    bottom: 0; left: 0; right: 0;
+    z-index: ${({ theme }) => theme.zIndex.modal};
     background: ${({ theme }) => theme.colors.bgTertiary};
     border-top: 1px solid ${({ theme }) => theme.colors.borderDefault};
     height: 64px;
     padding: 0 8px;
-    /* Frosted glass */
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    /* Safe area for notched phones */
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 `;
@@ -907,17 +1135,15 @@ const MobileTab = styled.button`
   background: transparent;
   cursor: pointer;
   padding: 8px 4px;
-  border-radius: 12px;
-  transition: background 0.15s;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  transition: background ${({ theme }) => theme.transitions.fast};
   position: relative;
 
-  /* Active indicator bar at top */
   &::before {
     content: "";
     position: absolute;
     top: 0;
-    left: 20%;
-    right: 20%;
+    left: 20%; right: 20%;
     height: 2px;
     border-radius: 0 0 3px 3px;
     background: ${({ $color }) => $color || "#FF2D6B"};
@@ -925,7 +1151,7 @@ const MobileTab = styled.button`
     transition: opacity 0.18s;
   }
 
-  &:active { background: rgba(255,255,255,0.05); }
+  &:active { background: ${({ theme }) => theme.colors.surfaceSubtle}; }
 `;
 
 const MobileTabLabel = styled.span`
@@ -933,7 +1159,8 @@ const MobileTabLabel = styled.span`
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: ${({ $active, theme }) => $active ? theme.colors.textPrimary : theme.colors.textTertiary};
+  color: ${({ $active, theme }) =>
+    $active ? theme.colors.textPrimary : theme.colors.textTertiary};
   transition: color 0.18s;
 `;
 
@@ -958,31 +1185,7 @@ const MobileTabCount = styled.span`
 const MobileTabIcon = styled.span`
   font-size: 18px;
   line-height: 1;
-  /* colour the icon based on active state */
   color: ${({ $active, $color, theme }) =>
-    $active ? ($color || "#FF2D6B") : theme.colors.textTertiary};
+    $active ? ($color || theme.colors.accentPink) : theme.colors.textTertiary};
   transition: color 0.18s;
-`;
-
-// ─── STEP 7: ADD this mobile header bar ──────────────────────
-const MobileHeader = styled.div`
-  display: none;
-
-  @media (max-width: 768px) {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 1rem 1.25rem 0;
-    color: ${({ theme }) => theme.colors.textTertiary};
-  
-  }
-`;
-
-const MobileHeaderBrand = styled.span`
-  font-family: ${({ theme }) => theme.fonts.heading};
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.textSecondary};
 `;
