@@ -1,6 +1,8 @@
-// ============================
-// ALL DUMMY DATA IN ONE FILE
-// ============================
+// ============================================================
+// siteData.js — Single source of truth for all portfolio data
+// Darshan Agrawal | Full Stack Engineer
+// Icons: react-icons/si — import { SiReact } from 'react-icons/si'
+// ============================================================
 
 export const personalInfo = {
   name: 'Darshan',
@@ -10,145 +12,121 @@ export const personalInfo = {
     'React + Python Developer',
     'Remote-First Builder',
   ],
-  bio: "I'm a full-stack engineer with 4+ years of experience building performant, scalable web applications. I thrive at the intersection of clean code and intuitive design, specializing in React ecosystems and Python backends.",
+  bio: "Full Stack Engineer with 4+ years building performant, data-driven web apps. I specialize in React ecosystems and Python backends — from real-time KPI dashboards to automated data pipelines — with a sharp eye for clean code and intuitive design.",
   email: 'darshanagrawal007@gmail.com',
-  location: 'Seattle, WA (Remote)',
+  location: 'India (Remote Worldwide)',
   resumeUrl: '/resume.pdf',
   socials: {
-    github: 'https://github.com/darshan12-code/',
+    github:   'https://github.com/darshan12-code/',
     linkedin: 'https://www.linkedin.com/in/darshan-agrawal-012/',
-    twitter: 'https://twitter.com',
+    twitter:  'https://twitter.com',
   },
 };
 
 export const navLinks = [
-  { label: 'Home', path: '/' },
+  { label: 'Home',         path: '/'            },
   { label: 'Case Studies', path: '/case-studies' },
-  { label: 'Blog', path: '/blog' },
-  { label: 'Contact', path: '/contact' },
+  { label: 'Blog',         path: '/blog'         },
+  { label: 'Contact',      path: '/contact'      },
 ];
 
+// ── Skills ──────────────────────────────────────────────────
+// icon: string name of the Si* export from 'react-icons/si'
+// Usage in component:
+//   import * as SiIcons from 'react-icons/si';
+//   const Icon = SiIcons[skill.icon];
+//   <Icon />
 export const skills = [
-  { name: 'React', icon: 'SiReact' },
-  { name: 'Python', icon: 'SiPython' },
-  { name: 'TypeScript', icon: 'SiTypescript' },
-  { name: 'Node.js', icon: 'SiNodedotjs' },
-  { name: 'PostgreSQL', icon: 'SiPostgresql' },
-  { name: 'Docker', icon: 'SiDocker' },
-  { name: 'AWS', icon: 'SiAmazonaws' },
-  { name: 'Azure', icon: 'SiMicrosoftazure' },
-  { name: 'GraphQL', icon: 'SiGraphql' },
-  { name: 'Redis', icon: 'SiRedis' },
-  { name: 'Tailwind CSS', icon: 'SiTailwindcss' },
-  { name: 'MongoDB', icon: 'SiMongodb' },
-  { name: 'Flask', icon: 'SiFlask' },
-  { name: 'D3.js', icon: 'SiD3Dotjs' },
-  { name: 'Git', icon: 'SiGit' },
+  { name: 'React.js',           icon: 'SiReact'             },
+  { name: 'TypeScript',         icon: 'SiTypescript'        },
+  { name: 'JavaScript',         icon: 'SiJavascript'        },
+  { name: 'Python',             icon: 'SiPython'            },
+  { name: 'Flask',              icon: 'SiFlask'             },
+  { name: 'Node.js',            icon: 'SiNodedotjs'         },
+  { name: 'Express.js',         icon: 'SiExpress'           },
+  { name: 'Angular',            icon: 'SiAngular'           },
+  { name: 'GraphQL',            icon: 'SiGraphql'           },
+  { name: 'D3.js',              icon: 'SiD3Dotjs'           },
+  { name: 'SCSS',               icon: 'SiSass'              },
+  { name: 'PostgreSQL',         icon: 'SiPostgresql'        },
+  { name: 'MySQL',              icon: 'SiMysql'             },
+  { name: 'MongoDB',            icon: 'SiMongodb'           },
+  { name: 'Azure Databricks',   icon: 'SiDatabricks'        },
+  { name: 'Azure Data Factory', icon: 'SiMicrosoftazure'    },
+  { name: 'Docker',             icon: 'SiDocker'            },
+  { name: 'Git',                icon: 'SiGit'               },
+  { name: 'Jira',               icon: 'SiJira'              },
+  { name: 'Pandas',             icon: 'SiPandas'            },
 ];
 
+// ── Experience ───────────────────────────────────────────────
 export const experience = [
   {
     id: 1,
     role: 'Full Stack Engineer',
     company: 'Rhombuz',
-    location: 'Seattle, Remote',
+    location: 'Remote — Seattle, USA',
     period: 'Feb 2023 – Present',
-    description: 'Led development of real-time KPI dashboards, reducing manual reporting by 75%. Built scalable React + Flask microservices on Azure.',
-    tech: ['React', 'Python', 'Azure', 'D3.js'],
+    description:
+      'Led full-stack delivery of a real-time KPI dashboard visualizing 26 metrics with D3.js graphs. Automated telecom data workflows processing 16+ public records, cutting PDF processing time by 70%. Optimized API performance, reduced query latency, and mentored junior developers.',
+    tech: ['React', 'Python', 'Flask', 'Azure Databricks', 'Azure Data Factory', 'D3.js', 'PostgreSQL', 'MySQL'],
   },
   {
     id: 2,
     role: 'Frontend Engineer',
     company: 'Rhombuz',
-    location: 'Seattle, Remote',
+    location: 'Remote — Seattle, USA',
     period: 'Dec 2021 – Jan 2023',
-    description: 'Built interactive data visualization components and optimized page load times by 45% through code splitting and lazy loading.',
-    tech: ['React', 'TypeScript', 'Redux', 'Chart.js'],
+    description:
+      'Reduced dashboard load times by 45% through architecture optimization and code splitting. Redesigned UI components for cross-platform compatibility. Delivered 3+ key frontend projects and improved feature rollout speed by 30%.',
+    tech: ['React', 'TypeScript', 'Angular', 'SCSS', 'D3.js', 'GraphQL'],
   },
   {
     id: 3,
-    role: 'Software Intern',
-    company: 'Western Coalfields Ltd',
-    location: 'India',
-    period: 'Jun 2020 – Aug 2020',
-    description: 'Developed an internal inventory management tool, digitizing manual paper-based workflows for 200+ employees.',
-    tech: ['Python', 'Django', 'PostgreSQL'],
+    role: 'System Engineer Intern',
+    company: 'Western Coalfields Ltd.',
+    location: 'Chandrapur, India',
+    period: 'Jun 2021 – Sep 2021',
+    description:
+      'Built a full-stack PHP tool to monitor equipment breakdown and system status for the GM Office, digitizing manual paper-based workflows.',
+    tech: ['PHP', 'MySQL'],
   },
 ];
 
+// ── Counters ─────────────────────────────────────────────────
+// All values directly sourced from resume bullet points.
+// "26 KPIs" = metrics built for the telecom dashboard project at Rhombuz.
+// Full project context lives in Case Studies.
 export const counters = [
-  { value: 4, suffix: '+', label: 'Years Experience' },
-  { value: 26, suffix: '', label: 'KPIs Built' },
-  { value: 45, suffix: '%', label: 'Load Time Reduced' },
-  { value: 75, suffix: '%', label: 'Manual Work Automated' },
+  { value: 4,  suffix: '+', label: 'Years Experience'       },
+  // { value: 26, suffix: '',  label: 'KPIs Shipped'           },
+  { value: 45, suffix: '%', label: 'Load Time Reduced'      },
+  { value: 70, suffix: '%', label: 'Faster PDF Processing'  },
 ];
 
-export const projects = [
-  {
-    id: 'kpi-dashboard',
-    title: 'KPI Analytics Dashboard',
-    description: 'Real-time executive dashboard tracking 26 business KPIs with interactive D3.js visualizations and Azure-hosted Flask backend.',
-    tags: ['React', 'D3.js', 'Flask', 'Azure'],
-    category: 'fullstack',
-    image: '/placeholder-project.png',
-    link: '/case-studies/kpi-dashboard',
-  },
-  {
-    id: 'ecommerce-platform',
-    title: 'E-Commerce Platform',
-    description: 'Full-stack marketplace with real-time inventory, Stripe payments, and admin analytics dashboard.',
-    tags: ['React', 'Node.js', 'PostgreSQL', 'Stripe'],
-    category: 'fullstack',
-    image: '/placeholder-project.png',
-    link: '/case-studies/ecommerce-platform',
-  },
-  {
-    id: 'ml-pipeline',
-    title: 'ML Data Pipeline',
-    description: 'Automated data ingestion and model training pipeline processing 2M+ records daily with real-time monitoring.',
-    tags: ['Python', 'AWS', 'Docker', 'Redis'],
-    category: 'backend',
-    image: '/placeholder-project.png',
-    link: '/case-studies/ml-pipeline',
-  },
-  {
-    id: 'design-system',
-    title: 'Component Design System',
-    description: 'Reusable UI component library with 40+ components, Storybook docs, and automated visual regression testing.',
-    tags: ['React', 'Storybook', 'CSS-in-JS'],
-    category: 'frontend',
-    image: '/placeholder-project.png',
-    link: '/case-studies/design-system',
-  },
-  {
-    id: 'chat-app',
-    title: 'Real-Time Chat App',
-    description: 'WebSocket-powered messaging app with typing indicators, read receipts, and file sharing.',
-    tags: ['React', 'Node.js', 'Socket.io', 'MongoDB'],
-    category: 'fullstack',
-    image: '/placeholder-project.png',
-    link: '/case-studies/chat-app',
-  },
-  {
-    id: 'portfolio-v2',
-    title: 'Portfolio Website v2',
-    description: 'This portfolio — dark luxury theme with animated floating shapes, page transitions, and glassmorphism effects.',
-    tags: ['React', 'Styled Components', 'Framer Motion'],
-    category: 'frontend',
-    image: '/placeholder-project.png',
-    link: '/case-studies/portfolio-v2',
-  },
-];
-
+// ── About Traits (flip cards) ────────────────────────────────
 export const aboutTraits = [
-  { emoji: '🎨', label: 'Creative', description: 'Design-driven development' },
-  { emoji: '🧠', label: 'Strategic', description: 'Scalable architecture thinking' },
-  { emoji: '🛠', label: 'Builder', description: 'Ship fast, iterate faster' },
+  {
+    emoji: '🎨',
+    label: 'Creative',
+    description: 'Clay, paint & digital art — design thinking runs deep.',
+  },
+  {
+    emoji: '🧠',
+    label: 'Strategic',
+    description: 'Architecture first, syntax second. Systems that scale.',
+  },
+  {
+    emoji: '🛠',
+    label: 'Builder',
+    description: 'Ship fast, iterate faster.',
+  },
 ];
 
+// ── Filter Categories (Case Studies page) ───────────────────
 export const filterCategories = [
-  { key: 'all', label: 'All' },
+  { key: 'all',       label: 'All'        },
   { key: 'fullstack', label: 'Full Stack' },
-  { key: 'frontend', label: 'Frontend' },
-  { key: 'backend', label: 'Backend' },
+  { key: 'frontend',  label: 'Frontend'   },
+  { key: 'backend',   label: 'Backend'    },
 ];

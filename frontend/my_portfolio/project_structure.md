@@ -1,14 +1,17 @@
 ﻿## Project Structure
 
 |-- public/
+|   |-- favicon.png
 |   |-- vite.svg
 |-- src/
 |   |-- assets/
+|   |   |-- favicon2.png
 |   |   |-- myphoto_cutout.png
 |   |   |-- myphoto_cutout2.png
 |   |   |-- noise.png
 |   |   |-- project_thumbnail.png
 |   |   |-- react.svg
+|   |   |-- Untitled design (1).png
 |   |-- components/
 |   |   |-- admin/
 |   |   |   |-- AdminContent.jsx
@@ -107,8 +110,8 @@
 ### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\.env
 
 ```
-# VITE_API_URL=http://127.0.0.1:5000/portfolio
-VITE_API_URL=https://portfolio-backend-x9am.onrender.com/portfolio
+VITE_API_URL=http://127.0.0.1:5000/portfolio
+# VITE_API_URL=https://portfolio-backend-x9am.onrender.com/portfolio
 ```
 
 
@@ -191,6 +194,8 @@ export default defineConfig([
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    
+    <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Darshan Agrawal â€” Full Stack Engineer</title>
     <meta name="description" content="Portfolio of Darshan Agrawal â€” Full Stack Engineer specializing in React, Python, and cloud-native applications." />
@@ -233,7 +238,6 @@ export const media2 = {
   desktop: `@media (max-width: ${breakpoints.desktop})`,
 }; 
 ```
-
 
 
 
@@ -1143,8 +1147,7 @@ export default ComicGrid;
 //                          â€¢ touchmove fallback if no gyro
 
 import { useEffect, useRef } from 'react';
-import styled, { keyframes } from 'styled-components';
-
+import styled, { keyframes, css } from 'styled-components';
 const IS_TOUCH = typeof window !== 'undefined' &&
   window.matchMedia('(pointer: coarse)').matches;
 
@@ -1161,19 +1164,19 @@ const ShapeWrap = styled.div`
   pointer-events: none;
   overflow: hidden;
 `;
-
 const ShapeEl = styled.div`
   position: absolute;
   will-change: transform;
   opacity: ${({ $opacity }) => $opacity};
-  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5))
+          drop-shadow(0 2px 4px rgba(0,0,0,0.3));
 
-  /* Auto-spin SVG on mobile when idle â€” JS transform overrides this once input arrives */
   svg {
-    ${IS_TOUCH ? `
-      animation: ${spinSlow} ${({ $spinDuration }) => $spinDuration || '12s'} linear infinite;
+    ${IS_TOUCH &&
+    css`
+      animation: ${spinSlow} ${({ $spinDuration }) => $spinDuration || "12s"} linear infinite;
       transform-origin: center;
-    ` : ''}
+    `}
   }
 `;
 
@@ -1341,8 +1344,8 @@ const FloatingShapes = ({ hideOnMobile = true }) => {
         const el = elRefs.current[i];
         if (!el) return;
 
-        const targetX = tx * shape.depth * 1200;
-        const targetY = ty * shape.depth * 1200;
+        const targetX = tx * shape.depth * 800;
+        const targetY = ty * shape.depth * 800;
 
         velocity[i].x += (targetX - currentRef.current[i].x) * STIFFNESS;
         velocity[i].y += (targetY - currentRef.current[i].y) * STIFFNESS;
@@ -1619,7 +1622,7 @@ export default WaterWaves;
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import SectionHeader from '../ui/SectionHeader';
-import { personalInfo, aboutTraits } from '../../data/siteData';
+import {  aboutTraits } from '../../data/siteData';
 import { media } from '../../../media';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 import SectionWave from '../effects/SectionWave';
@@ -1733,7 +1736,7 @@ const traitBackContent = {
   Builder: "Shipped in 3 companies. Always learning.",
 };
 
-const About = () => {
+const About = ({personalInfo}) => {
 const { ref, inView } = useScrollReveal();
 return (<Section  ref={ref}>
 {/* <SectionWave /> */}
@@ -1776,7 +1779,7 @@ export default About;
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useCountUp } from '../../hooks/useCountUp';
-import { counters } from '../../data/siteData';
+// import { counters } from '../../data/siteData';
 import { media } from '../../../media';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 
@@ -1834,7 +1837,7 @@ const Counter = ({ target, suffix, label }) => {
 };
 // animate={inView ? { y: 0, opacity: 1, scale: 1 } : {}}
 
-const Counters = () => {
+const Counters = ({counters}) => {
   const { ref, inView } = useScrollReveal();
   return (<Section ref={ref}>
     <Grid>
@@ -1976,7 +1979,7 @@ export default FeaturedProjects;
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTypewriter } from '../../hooks/useTypewriter';
-import { personalInfo } from '../../data/siteData';
+// import { personalInfo } from '../../data/siteData';
 import MagneticButton from '../ui/MagneticButton';
 import { media } from '../../../media';
 import photo from '../../assets/myphoto_cutout2.png';
@@ -2240,7 +2243,7 @@ const ResumeBtn = styled(motion.a)`
     justify-content: center;
   }
 `;
-const Hero = () => {
+const Hero = ({personalInfo}) => {
   const role = useTypewriter(personalInfo.roles);
 
   return (
@@ -2303,7 +2306,7 @@ export default Hero;
 
 ```
 import styled, { keyframes } from 'styled-components';
-import { skills } from '../../data/siteData';
+// import { skills } from '../../data/siteData';
 
 import Tilt from 'react-parallax-tilt';
 
@@ -2355,7 +2358,7 @@ const SkillDot = styled.span`
   flex-shrink: 0;
   box-shadow: 0 0 6px ${({ theme }) => theme.colors.gradientPinkBlue};
 `;
-const SkillsMarquee = () => {
+const SkillsMarquee = ({skills}) => {
   const doubled = [...skills, ...skills];
   return (
     <Wrapper>
@@ -2395,7 +2398,7 @@ import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useRef } from 'react';
 import SectionHeader from '../ui/SectionHeader';
 import Tag from '../ui/Tag';
-import { experience } from '../../data/siteData';
+// import { experience } from '../../data/siteData';
 import { media } from '../../../media';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 
@@ -2603,7 +2606,7 @@ const Tags = styled.div`
 `;
 
 /* â”€â”€ Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-const Timeline = () => {
+const Timeline = ({experience}) => {
   const sectionRef = useRef(null);
   const { ref: revealRef, inView } = useScrollReveal({ once: false, threshold: 0.05 });
 
@@ -4908,7 +4911,7 @@ export const filterCategories = [
 // React Query caches the result globally, so returning to a page = instant render.
 
 import { useQuery } from "@tanstack/react-query";
-import { blogAPI, caseStudyAPI } from "../services/apis";
+import { blogAPI, caseStudyAPI,portfolioAPI } from "../services/apis";
 
 /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
    QUERY KEYS â€” centralised so all components
@@ -4920,6 +4923,7 @@ export const QUERY_KEYS = {
   caseStudies:    ["case-studies"],
   caseStudyDetail:(slug) => ["case-study", slug],
   featuredWork:   ["featured-work"],
+  portfolio: ["portfolio-data"]
 };
 
 /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -5020,6 +5024,20 @@ export function useFeaturedWork() {
       }));
     },
     staleTime: 5 * 60 * 1000,
+  });
+}
+
+
+export function usePortfolioData() {
+  return useQuery({
+    queryKey: QUERY_KEYS.portfolio,
+    queryFn: async () => {
+      const res = await portfolioAPI.getAll();
+      return res.data;
+    },
+
+    // Portfolio content rarely changes
+    staleTime: 60 * 60 * 1000,
   });
 }
 ```
@@ -7226,7 +7244,7 @@ const SOCIALS = [
 
 const AVAILABILITY = [
   { label: "Status",    value: "Open to work",         color: "#00E89D" },
-  { label: "Type",      value: "Full-time / Freelance", color: "#3B82F6" },
+  { label: "Type",      value: "Full-time / Freelance / Contract", color: "#3B82F6" },
   { label: "Location",  value: "Remote Worldwide",      color: "#FF2D6B" },
   { label: "Response",  value: "Within 24 hours",       color: "#FF9F4A" },
 ];
@@ -7747,17 +7765,27 @@ import SkillsMarquee from '../components/home/SkillsMarquee';
 import Timeline from '../components/home/Timeline';
 import Counters from '../components/home/Counters';
 import FeaturedProjects from '../components/home/FeaturedProjects';
+import { usePortfolioData } from '../hooks/useApiData';
+import PageLoader from '../components/ui/PageLoader';
 
-const Home = () => (
-  <>
-    <Hero />
-    <About />
-    <SkillsMarquee />
-    <Counters />
-    <Timeline />
-    <FeaturedProjects />
-  </>
-);
+
+const Home = () => {
+  const { data, isLoading, error } = usePortfolioData();
+
+  if (isLoading) return <PageLoader label="Loading data..." />;
+  if (error) return <PageLoader label="Loading data..." />;
+
+  return (
+    <>
+      <Hero personalInfo={data.personalInfo} />
+      <About personalInfo={data.personalInfo} />
+      <SkillsMarquee skills={data.skills} />
+      <Counters counters={data.counters} />
+      <Timeline experience={data.experience} />
+      <FeaturedProjects />
+    </>
+  );
+};
 
 export default Home;
 ```
@@ -7891,6 +7919,10 @@ export const uploadAPI = {
     form.append(type === "video" ? "videos" : "images", file);
     return api.post("/upload", form);
   }
+};
+
+export const portfolioAPI = {
+  getAll: () => api.get("/portfolio-data/data"),
 };
 export default api;
 

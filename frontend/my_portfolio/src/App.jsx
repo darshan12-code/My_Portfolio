@@ -4,9 +4,9 @@ import { AnimatePresence } from "framer-motion";
 import { QueryClientProvider } from "@tanstack/react-query";
 
 // CHANGED: import the configured client instead of creating inline with no options
-import queryClient from "./services/Queryclient";
 
-import GlobalStyles from "./styles/globalStyles";
+
+
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 
 import Navbar from "./components/layout/Navbar";
@@ -34,6 +34,8 @@ import BlogDetail from "./pages/BlogDetails";
 import CaseStudyDetails from "./pages/CaseStudyDetails";
 import CustomCursor from "./components/ui/CustomCursor";
 import ComicGrid from "./components/effects/ComicGrid";
+import queryClient from "./services/queryClient";
+import GlobalStyles from "./styles/globalStyles";
 
 const ProtectedRoute = ({ children }) => {
   const { isAdmin, loading } = useAuth();
@@ -46,7 +48,7 @@ const AnimatedRoutes = () => {
   return (
     <>
       <ScrollToTop />
-      <AnimatePresence mode="sync" initial={false}>
+      <AnimatePresence mode="wait" initial={false}>
         <PageTransition key={location.pathname}>
           <Routes location={location} key={location.pathname}>
             <Route path="/"                   element={<Home />} />
@@ -71,11 +73,11 @@ const ThemedApp = () => {
   const { isDark } = useTheme();
   return (
     <StyledProvider theme={isDark ? darkTheme : lightTheme}>
-      <GlobalStyles />
+      <GlobalStyles/>
       <CustomCursor />
       <NoiseOverlay />
       <ComicGrid />
-      <FloatingShapes hideOnMobile={false} />
+      <FloatingShapes />
       <WaterWaves />
       <ScrollProgress />
       <Navbar />

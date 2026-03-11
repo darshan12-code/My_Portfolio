@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import SectionHeader from '../ui/SectionHeader';
-import { personalInfo, aboutTraits } from '../../data/siteData';
+import {  aboutTraits } from '../../data/siteData';
 import { media } from '../../../media';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 import SectionWave from '../effects/SectionWave';
@@ -115,7 +115,7 @@ const traitBackContent = {
   Builder: "Shipped in 3 companies. Always learning.",
 };
 
-const About = () => {
+const About = ({personalInfo}) => {
 const { ref, inView } = useScrollReveal();
 return (<Section  ref={ref}>
 {/* <SectionWave /> */}

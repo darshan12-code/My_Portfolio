@@ -7,7 +7,7 @@
 // React Query caches the result globally, so returning to a page = instant render.
 
 import { useQuery } from "@tanstack/react-query";
-import { blogAPI, caseStudyAPI } from "../services/apis";
+import { blogAPI, caseStudyAPI,portfolioAPI } from "../services/apis";
 
 /* ─────────────────────────────────────────────
    QUERY KEYS — centralised so all components
@@ -19,6 +19,7 @@ export const QUERY_KEYS = {
   caseStudies:    ["case-studies"],
   caseStudyDetail:(slug) => ["case-study", slug],
   featuredWork:   ["featured-work"],
+  portfolio: ["portfolio-data"]
 };
 
 /* ─────────────────────────────────────────────
@@ -119,5 +120,19 @@ export function useFeaturedWork() {
       }));
     },
     staleTime: 5 * 60 * 1000,
+  });
+}
+
+
+export function usePortfolioData() {
+  return useQuery({
+    queryKey: QUERY_KEYS.portfolio,
+    queryFn: async () => {
+      const res = await portfolioAPI.getAll();
+      return res.data;
+    },
+
+    // Portfolio content rarely changes
+    staleTime: 60 * 60 * 1000,
   });
 }

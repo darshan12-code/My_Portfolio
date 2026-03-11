@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useRef } from 'react';
 import SectionHeader from '../ui/SectionHeader';
 import Tag from '../ui/Tag';
-import { experience } from '../../data/siteData';
+// import { experience } from '../../data/siteData';
 import { media } from '../../../media';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 
@@ -212,7 +212,7 @@ const Tags = styled.div`
 `;
 
 /* ── Component ──────────────────────────────────────── */
-const Timeline = () => {
+const Timeline = ({experience}) => {
   const sectionRef = useRef(null);
   const { ref: revealRef, inView } = useScrollReveal({ once: false, threshold: 0.05 });
 

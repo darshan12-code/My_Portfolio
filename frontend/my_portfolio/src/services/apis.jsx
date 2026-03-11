@@ -124,5 +124,9 @@ export const uploadAPI = {
     return api.post("/upload", form);
   }
 };
+
+export const portfolioAPI = {
+  getAll: () => api.get("/portfolio-data/data"),
+};
 export default api;
 

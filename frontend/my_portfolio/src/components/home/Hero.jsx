@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTypewriter } from '../../hooks/useTypewriter';
-import { personalInfo } from '../../data/siteData';
+// import { personalInfo } from '../../data/siteData';
 import MagneticButton from '../ui/MagneticButton';
 import { media } from '../../../media';
 import photo from '../../assets/myphoto_cutout2.png';
@@ -265,7 +265,7 @@ const ResumeBtn = styled(motion.a)`
     justify-content: center;
   }
 `;
-const Hero = () => {
+const Hero = ({personalInfo}) => {
   const role = useTypewriter(personalInfo.roles);
 
   return (

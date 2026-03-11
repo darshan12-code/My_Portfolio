@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useCountUp } from '../../hooks/useCountUp';
-import { counters } from '../../data/siteData';
+// import { counters } from '../../data/siteData';
 import { media } from '../../../media';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 
@@ -59,7 +59,7 @@ const Counter = ({ target, suffix, label }) => {
 };
 // animate={inView ? { y: 0, opacity: 1, scale: 1 } : {}}
 
-const Counters = () => {
+const Counters = ({counters}) => {
   const { ref, inView } = useScrollReveal();
   return (<Section ref={ref}>
     <Grid>

@@ -1,8 +1,8 @@
 import styled, { keyframes } from 'styled-components';
-import { skills } from '../../data/siteData';
+// import { skills } from '../../data/siteData';
 
 import Tilt from 'react-parallax-tilt';
-
+import * as SiIcons from "react-icons/si";
 const scroll = keyframes`
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
@@ -20,7 +20,6 @@ const Track = styled.div`
   animation: ${scroll} 30s linear infinite;
   &:hover { animation-play-state: paused; }
 `;
-
 const Pill = styled.div`
   display: flex;
   align-items: center;
@@ -36,6 +35,13 @@ const Pill = styled.div`
   transition: ${({ theme }) => theme.transitions.fast};
   cursor: default;
 
+  svg {
+    font-size: 1rem;
+    opacity: 0.9;
+  }
+&:hover svg {
+  transform: scale(1.1);
+}
   &:hover {
     border-color: ${({ theme }) => theme.colors.borderAccent};
     color: ${({ theme }) => theme.colors.textPrimary};
@@ -51,28 +57,33 @@ const SkillDot = styled.span`
   flex-shrink: 0;
   box-shadow: 0 0 6px ${({ theme }) => theme.colors.gradientPinkBlue};
 `;
-const SkillsMarquee = () => {
+const SkillsMarquee = ({skills}) => {
   const doubled = [...skills, ...skills];
   return (
     <Wrapper>
       <Track>
-        {doubled.map((skill, i) => (
-          <Tilt
-          key={`${skill.name}-${i}`}
-  tiltMaxAngleX={15}
-  tiltMaxAngleY={15}
-  glareEnable={true}
-  glareMaxOpacity={0.08}
-  glareColor="#FF2D6B"
-  scale={1.05}
-  transitionSpeed={400}
->
-  <Pill key={`${skill.name}-${i}`}>
-    <SkillDot />
-    {skill.name}
-  </Pill>
-</Tilt>
-        ))}
+        {doubled.map((skill, i) => {
+  const Icon = SiIcons[skill.icon];
+
+  return (
+    <Tilt
+      key={`${skill.name}-${i}`}
+      tiltMaxAngleX={15}
+      tiltMaxAngleY={15}
+      glareEnable={true}
+      glareMaxOpacity={0.08}
+      glareColor="#FF2D6B"
+      scale={1.05}
+      transitionSpeed={400}
+    >
+      <Pill>
+        <SkillDot/>
+        {Icon && <Icon size={16} />}
+        {skill.name}
+      </Pill>
+    </Tilt>
+  );
+})}
       </Track>
     </Wrapper>
   );
