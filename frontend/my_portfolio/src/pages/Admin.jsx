@@ -11,6 +11,8 @@ import { blogAPI, caseStudyAPI, contactAPI, uploadAPI } from "../services/apis";
 import SectionHeader from "../components/ui/SectionHeader";
 import MagneticButton from "../components/ui/MagneticButton";
 import RichEditor from "../components/ui/RichEditor";
+import AdminCardSkeleton from "../components/ui/AdminCardSkeleton";
+import EmptyState from "../components/ui/EmptyState";
 
 
 
@@ -41,6 +43,7 @@ const Admin = () => {
   const [editItem, setEditItem] = useState(null);
   const [formData, setFormData] = useState({});
   const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(true);
   const savedScrollY = useRef(0);
 
   const schemas = {
@@ -100,14 +103,19 @@ const Admin = () => {
   }, [showForm, showPreview]);
 
   const fetchData = async () => {
-    const [b, c, m] = await Promise.all([
-      blogAPI.getAll(1, 100),
-      caseStudyAPI.getAll(1, 100),
-      contactAPI.getAll(1, 100),
-    ]);
-    setBlogs(b.data.data    || []);
-    setCases(c.data.data    || []);
-    setMessages(m.data.data || []);
+    setLoading(true);
+    try {
+      const [b, c, m] = await Promise.all([
+        blogAPI.getAll(1, 100),
+        caseStudyAPI.getAll(1, 100),
+        contactAPI.getAll(1, 100),
+      ]);
+      setBlogs(b.data.data    || []);
+      setCases(c.data.data    || []);
+      setMessages(m.data.data || []);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { fetchData(); }, []);
@@ -315,45 +323,69 @@ const TAB_CONFIG = [
 
           <GridWrap>
             <CardGrid>
-              {paginated.map((item, i) => (
-                <motion.div key={item.id}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: i * 0.04 }}>
-                  <Card>
-                    <CardShimmerBar />
-                    <CardHeader>
-                      <CardTitle>{item.title || item.name || "(no title)"}</CardTitle>
+              {loading ? (
+                <AdminCardSkeleton count={6} />
+              ) : paginated.length === 0 ? (
+                <EmptyStateWrap>
+                  <EmptyState
+                    icon={tab === "blogs" ? "📝" : tab === "cases" ? "📁" : "💬"}
+                    title={`No ${tab} yet`}
+                    message={
+                      tab === "messages"
+                        ? "When visitors send you messages they'll appear here."
+                        : `Create your first ${tab === "blogs" ? "blog post" : "case study"} to get started.`
+                    }
+                    action={
+                      tab !== "messages" ? (
+                        <CreateBtn onClick={openCreate}>
+                          <Plus size={15} />
+                          New {tab === "blogs" ? "Blog Post" : "Case Study"}
+                        </CreateBtn>
+                      ) : null
+                    }
+                  />
+                </EmptyStateWrap>
+              ) : (
+                paginated.map((item, i) => (
+                  <motion.div key={item.id}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: i * 0.04 }}>
+                    <Card>
+                      <CardShimmerBar />
+                      <CardHeader>
+                        <CardTitle>{item.title || item.name || "(no title)"}</CardTitle>
+                        {tab !== "messages" && (
+                          <CardActions>
+                            <IconBtn type="button" onClick={() => openEdit(item)} title="Edit">
+                              <Pencil size={13} />
+                            </IconBtn>
+                            <IconBtn type="button" $danger onClick={() => handleDelete(item.id)} title="Delete">
+                              <Trash2 size={13} />
+                            </IconBtn>
+                          </CardActions>
+                        )}
+                      </CardHeader>
+                      <CardBody>
+                        {tab === "blogs" && (<><CategoryChip>{item.category || "—"}</CategoryChip><CardPreview>{previewText(item.excerpt || item.content)}</CardPreview></>)}
+                        {tab === "cases" && (<><CategoryChip>{(item.tech_stack || "").split(",")[0] || "—"}</CategoryChip><CardPreview>{previewText(item.summary)}</CardPreview></>)}
+                        {tab === "messages" && (<><CategoryChip>{item.email}</CategoryChip><CardPreview>{previewText(item.message)}</CardPreview></>)}
+                      </CardBody>
                       {tab !== "messages" && (
-                        <CardActions>
-                          <IconBtn type="button" onClick={() => openEdit(item)} title="Edit">
-                            <Pencil size={13} />
-                          </IconBtn>
-                          <IconBtn type="button" $danger onClick={() => handleDelete(item.id)} title="Delete">
-                            <Trash2 size={13} />
-                          </IconBtn>
-                        </CardActions>
+                        <CardStatusRow>
+                          <StatusDot $on={item.is_published} />
+                          <span>{item.is_published ? "Published" : "Draft"}</span>
+                        </CardStatusRow>
                       )}
-                    </CardHeader>
-                    <CardBody>
-                      {tab === "blogs" && (<><CategoryChip>{item.category || "—"}</CategoryChip><CardPreview>{previewText(item.excerpt || item.content)}</CardPreview></>)}
-                      {tab === "cases" && (<><CategoryChip>{(item.tech_stack || "").split(",")[0] || "—"}</CategoryChip><CardPreview>{previewText(item.summary)}</CardPreview></>)}
-                      {tab === "messages" && (<><CategoryChip>{item.email}</CategoryChip><CardPreview>{previewText(item.message)}</CardPreview></>)}
-                    </CardBody>
-                    {tab !== "messages" && (
-                      <CardStatusRow>
-                        <StatusDot $on={item.is_published} />
-                        <span>{item.is_published ? "Published" : "Draft"}</span>
-                      </CardStatusRow>
-                    )}
-                  </Card>
-                </motion.div>
-              ))}
+                    </Card>
+                  </motion.div>
+                ))
+              )}
             </CardGrid>
-            {paginated.length >= 6 && <GridFog />}
+            {!loading && paginated.length >= 6 && <GridFog />}
           </GridWrap>
 
-          {totalPages > 1 && (
+          {!loading && totalPages > 1 && (
             <Pagination>
               <MagneticButton variant="nav" size="sm" disabled={page === 1} onClick={() => setPage((p) => p - 1)}>
                 <ArrowBigLeft size={18} />
@@ -500,7 +532,7 @@ const CreateBtn = styled.button`
   border-radius: 999px;
   border: none;
   background: ${({ theme }) => theme.colors.gradientPinkBlue};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.textWhite};
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
@@ -591,7 +623,8 @@ const IconBtn = styled.button`
   &:hover {
     background: ${({ $danger, theme }) =>
       $danger ? theme.colors.accentDangerBgHover : theme.colors.borderHover};
-    color: #fff;
+    color: ${({ $danger, theme }) =>
+      $danger ? theme.colors.accentDangerLight : theme.colors.textWhite};
     transform: scale(1.1);
   }
 `;
@@ -648,6 +681,10 @@ const GridFog = styled.div`
   background: linear-gradient(to bottom, transparent 0%, ${({ theme }) => theme.colors.bgPrimary} 100%);
   pointer-events: none;
   z-index: 2;
+`;
+
+const EmptyStateWrap = styled.div`
+  grid-column: 1 / -1;
 `;
 
 const Pagination = styled.div`
@@ -778,7 +815,7 @@ const ModalBtn = styled.button`
   /* Save */
   ${({ $v, theme }) => $v === "save" && `
     background: ${theme.colors.gradientPinkBlue};
-    color: #fff;
+    color: ${theme.colors.textWhite};
     &:hover {
       box-shadow: ${theme.colors.shadowBlueBtnHover};
       transform: translateY(-1px);
@@ -941,7 +978,7 @@ const ToggleTrack = styled.span`
     width: 18px; height: 18px;
     left: 2px; top: 50%;
     transform: translateY(-50%);
-    background: #fff;
+    background: ${({ theme }) => theme.colors.textWhite};
     border-radius: 50%;
     transition: transform 0.3s;
     box-shadow: 0 1px 4px ${({ theme }) => theme.colors.overlayBg};
@@ -1100,7 +1137,7 @@ const CountPill = styled.span`
   padding: 2px 7px;
   border-radius: 999px;
   background: ${({ $active, theme }) => $active ? "" : theme.colors.bgGlassLight};
-  color: ${({ $active, theme }) => $active ? "#fff" : "inherit"};
+  color: ${({ $active, theme }) => $active ? theme.colors.textWhite : "inherit"};
   font-weight: 700;
   min-width: 20px;
   text-align: center;
@@ -1173,7 +1210,7 @@ const MobileTabCount = styled.span`
   padding: 0 4px;
   border-radius: 999px;
   background: ${({ $color }) => $color || "#FF2D6B"};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.textWhite};
   font-size: 0.6rem;
   font-weight: 800;
   display: flex;
