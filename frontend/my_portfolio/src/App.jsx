@@ -77,7 +77,11 @@ const ThemedApp = () => {
       <CustomCursor />
       <NoiseOverlay />
       <ComicGrid />
-      <FloatingShapes hideOnMobile={false} />
+      <FloatingShapes
+        mobileMode="gyro"
+        gyroSensitivity={15}
+        desktopParallax={true}
+      />
       <WaterWaves />
       <ScrollProgress />
       <Navbar />

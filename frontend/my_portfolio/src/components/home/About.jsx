@@ -110,9 +110,9 @@ const CardBack = styled(CardFace)`
 
 // Extra facts to show on card back:
 const traitBackContent = {
-  Creative: "Building things that feel alive, not just functional.",
-  Strategic: "I map systems before I write the first line.",
-  Builder: "Shipped in 3 companies. Always learning.",
+  Creative: "Designing experiences that feel intuitive and alive.",
+  Strategic: "Thinking in systems before writing code.",
+  Builder: "Learning fastest by building real products.",
 };
 
 const About = ({personalInfo}) => {
