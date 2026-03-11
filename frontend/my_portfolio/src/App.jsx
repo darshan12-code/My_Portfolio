@@ -79,7 +79,8 @@ const ThemedApp = () => {
       <ComicGrid />
       <FloatingShapes
         mobileMode="gyro"
-        gyroSensitivity={15}
+        gyroSensitivity={30}
+        desktopSpin={false} 
         desktopParallax={true}
       />
       <WaterWaves />

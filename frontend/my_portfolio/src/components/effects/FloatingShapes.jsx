@@ -1,42 +1,30 @@
 // src/components/effects/FloatingShapes.jsx
 //
-// FIXES vs previous version:
-// 1. SPIN STOPS ON SCROLL → ShapeEl now position:fixed (not absolute inside a fixed wrap).
-//    Each shape is independently composited → iOS Safari can't pause them on scroll.
-//    will-change:transform set permanently on mobile so the GPU layer is always ready.
+// ROOT CAUSE FIX (desktop parallax + spin conflict):
+// The RAF loop wrote `el.style.transform = translate(x,y)` which overwrote the
+// CSS `animation: rotate()` on the same element every frame — killing the spin,
+// and the spin's rotate() overwrote the translate — killing the parallax.
 //
-// 2. GYRO NOT WORKING → iOS requestPermission MUST be called synchronously inside a
-//    user-gesture handler. async/await breaks the gesture chain on iOS 13+.
-//    Fixed by using .then() chaining entirely inside the touchstart callback.
+// Fix: two-layer DOM structure.
+//   • ShapeEl (outer div) → RAF writes translate(x,y)   — parallax only
+//   • SpinEl  (inner div) → CSS animation rotate()      — spin only
+// The two transforms live on separate elements and can NEVER conflict.
 //
-// 3. GYRO TOO SUBTLE → depth multiplier raised from 200→500, gyro divisor 30→18,
-//    mobile STIFFNESS raised from 0.04→0.10 for snappier response.
-//
-// 4. NEW PROPS (all optional, zero breaking changes):
-//    • mobileMode="hide"   — hides shapes entirely on touch devices (original default)
-//    • mobileMode="spin"   — shapes spin only, no gyro/parallax (lightweight)
-//    • mobileMode="gyro"   — full gyroscope parallax on mobile (default now)
-//    • gyroSensitivity=18  — lower = more sensitive (range 10–40 recommended)
-//    • desktopParallax=true — toggle mouse parallax on desktop
-//
-// 5. PERFORMANCE:
-//    • RAF write-guard kept (skip style.transform when velocity < 0.001)
-//    • No filter:drop-shadow on animated elements (baked into SVG <filter>)
-//    • touchmove listener never added — only gyro drives mobile parallax
-//    • will-change only set on elements that actually animate
+// PROPS (all optional):
+//   mobileMode       'hide' | 'spin' | 'gyro'    default 'gyro'
+//   desktopSpin      boolean                       default true
+//   desktopParallax  boolean                       default true
+//   gyroSensitivity  number (degrees)              default 18
 
 import { useEffect, useRef } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 
-/* ─── Constants ──────────────────────────────────────────────────────────── */
-
-/** Detect touch device once at module level — reliable for the session lifetime */
+/* ─── Touch detection ────────────────────────────────────────────────────── */
 const IS_TOUCH =
   typeof window !== 'undefined' &&
   window.matchMedia('(pointer: coarse)').matches;
 
 /* ─── Keyframe ───────────────────────────────────────────────────────────── */
-
 const spinSlow = keyframes`
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
@@ -45,34 +33,37 @@ const spinSlow = keyframes`
 /* ─── Styled components ──────────────────────────────────────────────────── */
 
 /**
- * ShapeEl is now position:FIXED rather than absolute inside a fixed wrapper.
- * This gives each shape its own GPU compositing layer independent of scroll,
- * so iOS Safari cannot pause the CSS animation during scrolling.
- *
- * will-change:transform is set permanently on mobile because:
- *  - The element is already animating (GPU layer is justified, not wasted)
- *  - It prevents the browser from dropping the layer budget mid-scroll
+ * OUTER wrapper — RAF writes translate(x, y) here for parallax.
+ * position:fixed so scroll never repositions it.
+ * will-change:transform reserves a GPU compositing layer permanently.
  */
 const ShapeEl = styled.div`
   position: fixed;
   pointer-events: none;
-  opacity: ${({ $opacity }) => $opacity};
-  /* z-index low enough to never interfere with content */
   z-index: 3;
+  opacity: ${({ $opacity }) => $opacity};
+  will-change: transform;   /* GPU layer always ready — safe because it's already composited */
+`;
+
+/**
+ * INNER wrapper — CSS animation rotate() lives here exclusively.
+ * RAF never touches this element, so rotate is never clobbered.
+ */
+const SpinEl = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center;
 
   ${({ $spin, $dur }) =>
     $spin &&
     css`
       animation: ${spinSlow} ${$dur} linear infinite;
-      transform-origin: center;
-      /* Permanent will-change so the GPU layer survives scroll repaints */
       will-change: transform;
     `}
 `;
 
-/* ─── Shape definitions ──────────────────────────────────────────────────── */
-// SVG drop-shadows baked via <feDropShadow> — zero runtime repaint cost.
-
+/* ─── Shape data ─────────────────────────────────────────────────────────── */
 const shapes = [
   {
     svg: (
@@ -177,42 +168,37 @@ const shapes = [
 
 /* ─── Component ──────────────────────────────────────────────────────────── */
 
-/**
- * @param {'hide'|'spin'|'gyro'} mobileMode
- *   'hide' — shapes not rendered on touch devices
- *   'spin' — shapes spin in place, no gyro/parallax (lowest cost)
- *   'gyro' — shapes spin + respond to device tilt via gyroscope (default)
- *
- * @param {number} gyroSensitivity
- *   How many degrees of tilt = full parallax travel. Lower = more sensitive.
- *   Default 18. Recommended range 10–40.
- *
- * @param {boolean} desktopParallax
- *   Toggle mouse-parallax on desktop. Default true.
- */
 const FloatingShapes = ({
-  mobileMode       = 'gyro',   // 'hide' | 'spin' | 'gyro'
-  gyroSensitivity  = 18,       // degrees for full travel
-  desktopParallax  = true,
+  mobileMode       = 'gyro',  // 'hide' | 'spin' | 'gyro'
+  desktopSpin      = true,    // spin shapes on desktop
+  desktopParallax  = true,    // mouse parallax on desktop
+  gyroSensitivity  = 18,      // tilt degrees for full travel (lower = more sensitive)
 }) => {
   const elRefs     = useRef([]);
   const targetRef  = useRef({ x: 0, y: 0 });
   const currentRef = useRef(shapes.map(() => ({ x: 0, y: 0 })));
   const frameRef   = useRef(null);
 
-  // Derived flags
   const hidden      = IS_TOUCH && mobileMode === 'hide';
   const spinOnly    = IS_TOUCH && mobileMode === 'spin';
   const gyroEnabled = IS_TOUCH && mobileMode === 'gyro';
 
+  // Should SpinEl rotate?
+  const shouldSpin = IS_TOUCH
+    ? mobileMode === 'spin' || mobileMode === 'gyro'
+    : desktopSpin;
+
+  // Should RAF parallax loop run?
+  const needsRAF = !hidden && !spinOnly && (gyroEnabled || (!IS_TOUCH && desktopParallax));
+
   /* ── Desktop mouse parallax ─────────────────────────────────────────── */
   useEffect(() => {
-    if (!desktopParallax || IS_TOUCH) return;
+    if (IS_TOUCH || !desktopParallax) return;
 
     const onMouseMove = (e) => {
       targetRef.current = {
-        x:  e.clientX / window.innerWidth  - 0.5,
-        y:  e.clientY / window.innerHeight - 0.5,
+        x: e.clientX / window.innerWidth  - 0.5,
+        y: e.clientY / window.innerHeight - 0.5,
       };
     };
 
@@ -220,62 +206,45 @@ const FloatingShapes = ({
     return () => window.removeEventListener('mousemove', onMouseMove);
   }, [desktopParallax]);
 
-  /* ── Gyroscope (mobile only) ────────────────────────────────────────── */
+  /* ── Gyroscope (mobile gyro mode only) ──────────────────────────────── */
   useEffect(() => {
     if (!gyroEnabled) return;
 
     const gyroHandler = (e) => {
-      // gamma = left/right tilt (-90…+90), beta = front/back tilt (-180…+180)
       const gx = Math.max(-1, Math.min(1, (e.gamma || 0) / gyroSensitivity));
       const gy = Math.max(-1, Math.min(1, ((e.beta  || 0) - 45) / gyroSensitivity));
       targetRef.current = { x: gx, y: gy };
     };
 
-    const attachGyro = () => {
+    const attachGyro = () =>
       window.addEventListener('deviceorientation', gyroHandler, { passive: true });
-    };
 
-    /**
-     * iOS 13+ REQUIRES requestPermission to be called SYNCHRONOUSLY
-     * inside the user-gesture handler (touchstart). Using async/await
-     * breaks the gesture chain because the microtask checkpoint moves
-     * execution outside the gesture. We use .then() chaining instead,
-     * which keeps us inside the synchronous gesture flush.
-     */
+    // iOS 13+: must call requestPermission synchronously inside a user gesture.
+    // .then() keeps execution in the synchronous gesture flush; async/await does not.
     const onTouchStart = () => {
       if (typeof DeviceOrientationEvent?.requestPermission === 'function') {
-        // iOS 13+ — must be synchronously triggered from user gesture
         DeviceOrientationEvent.requestPermission()
-          .then((result) => {
-            if (result === 'granted') attachGyro();
-          })
-          .catch(() => {
-            // Permission denied or dialog dismissed — silently fall back to spin
-          });
+          .then((result) => { if (result === 'granted') attachGyro(); })
+          .catch(() => { /* denied — silently stays as spin */ });
       } else {
-        // Android + other browsers — no permission needed
-        attachGyro();
+        attachGyro(); // Android + non-iOS
       }
     };
 
     window.addEventListener('touchstart', onTouchStart, { once: true, passive: true });
-
     return () => {
       window.removeEventListener('touchstart', onTouchStart);
       window.removeEventListener('deviceorientation', gyroHandler);
     };
   }, [gyroEnabled, gyroSensitivity]);
 
-  /* ── RAF spring loop (parallax animation) ───────────────────────────── */
+  /* ── RAF spring loop ────────────────────────────────────────────────── */
   useEffect(() => {
-    // No RAF needed for spin-only or hidden modes
-    if (hidden || spinOnly) return;
+    if (!needsRAF) return;
 
-    // Higher stiffness on mobile = snappier, more noticeable response
-    const STIFFNESS = IS_TOUCH ? 0.10 : 0.08;
-    const DAMPING   = IS_TOUCH ? 0.80 : 0.82;
-    // Raise depth multiplier: 200→500 so the subtle depth values produce visible movement
-    const DEPTH_SCALE = IS_TOUCH ? 500 : 350;
+    const STIFFNESS   = IS_TOUCH ? 0.10 : 0.08;
+    const DAMPING     = IS_TOUCH ? 0.80 : 0.82;
+    const DEPTH_SCALE = IS_TOUCH ? 500  : 350;
 
     const velocity = shapes.map(() => ({ x: 0, y: 0 }));
 
@@ -297,10 +266,10 @@ const FloatingShapes = ({
         currentRef.current[i].x += velocity[i].x;
         currentRef.current[i].y += velocity[i].y;
 
-        // Skip style write when at rest — avoids thrashing
+        // Write guard: skip style mutation when shapes are at rest
         if (Math.abs(velocity[i].x) > 0.001 || Math.abs(velocity[i].y) > 0.001) {
-          el.style.transform =
-            `translate(${currentRef.current[i].x.toFixed(2)}px, ${currentRef.current[i].y.toFixed(2)}px)`;
+          // Writes ONLY to ShapeEl (outer). SpinEl (inner) is untouched → spin preserved.
+          el.style.transform = `translate(${currentRef.current[i].x.toFixed(2)}px, ${currentRef.current[i].y.toFixed(2)}px)`;
         }
       });
 
@@ -309,7 +278,7 @@ const FloatingShapes = ({
 
     frameRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frameRef.current);
-  }, [hidden, spinOnly]);
+  }, [needsRAF]);
 
   /* ── Render ─────────────────────────────────────────────────────────── */
   if (hidden) return null;
@@ -321,12 +290,11 @@ const FloatingShapes = ({
           key={i}
           ref={(el) => (elRefs.current[i] = el)}
           $opacity={s.opacity}
-          // Spin when: desktop always, mobile spin/gyro both spin
-          $spin={!IS_TOUCH || mobileMode === 'spin' || mobileMode === 'gyro'}
-          $dur={s.spinDur}
           style={{ left: s.x, top: s.y }}
         >
-          {s.svg}
+          <SpinEl $spin={shouldSpin} $dur={s.spinDur}>
+            {s.svg}
+          </SpinEl>
         </ShapeEl>
       ))}
     </>
