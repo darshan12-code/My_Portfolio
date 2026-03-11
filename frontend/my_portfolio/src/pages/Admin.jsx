@@ -128,11 +128,14 @@ const Admin = () => {
 
   const closeForm = () => { setShowForm(false); setEditItem(null); setFormData({}); };
 
+  // Fields that must always be boolean regardless of what the API returns
+  const BOOLEAN_FIELDS = new Set(["is_published", "company_project"]);
+
   const openCreate = () => {
     setEditItem(null);
     const empty = {};
     schemas[tab].forEach(({ name }) => {
-      if (name === "is_published") empty[name] = true;
+      if (BOOLEAN_FIELDS.has(name)) empty[name] = name === "is_published" ? true : false;
       else if (name === "content_type") empty[name] = "rich";
       else empty[name] = "";
     });
@@ -143,7 +146,14 @@ const Admin = () => {
   const openEdit = (item) => {
     setEditItem(item);
     const filtered = {};
-    schemas[tab].forEach(({ name }) => { filtered[name] = item[name] ?? ""; });
+    schemas[tab].forEach(({ name }) => {
+      if (BOOLEAN_FIELDS.has(name)) {
+        // Coerce to boolean — handles 0/1, "true"/"false", null, undefined from API
+        filtered[name] = Boolean(item[name]);
+      } else {
+        filtered[name] = item[name] ?? "";
+      }
+    });
     if (tab === "blogs") filtered.content_type = item.content_type || "rich";
     setFormData(filtered);
     setShowForm(true);
