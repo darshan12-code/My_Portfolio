@@ -1,204 +1,184 @@
 ﻿## Project Structure
 
-|-- models/
-|   |-- blog.py
-|   |-- case_study.py
-|   |-- message.py
-|   |-- user.py
-|   |-- __init__.py
-|-- routes/
-|   |-- auth.py
-|   |-- blogs.py
-|   |-- case_studies.py
-|   |-- contact.py
-|   |-- upload.py
-|   |-- __init__.py
-|-- services/
-|   |-- email_service.py
-|   |-- seed.py
-|-- uploads/
-|-- utils/
-|   |-- decorators.py
-|   |-- helpers.py
-|-- .env
-|-- app.py
-|-- config.py
-|-- extensions.py
-|-- Procfile
-|-- project_structure.md
-|-- requirements.txt
-|-- runtime.txt
+Folder PATH listing for volume Data
+Volume serial number is F8CC-00EB
+D:.
+|   .env
+|   app.py
+|   config.py
+|   extensions.py
+|   Procfile
+|   project_structure.md
+|   requirements.txt
+|   runtime.txt
+|   
++---data
+|       portfolio_data.json
+|       
++---models
+|   |   blog.py
+|   |   case_study.py
+|   |   message.py
+|   |   user.py
+|   |   __init__.py
+|   |   
++---routes
+|   |   auth.py
+|   |   blogs.py
+|   |   case_studies.py
+|   |   contact.py
+|   |   information.py
+|   |   upload.py
+|   |   __init__.py
+|   |   
++---services
+|   |   email_service.py
+|   |   seed.py
+|   |   
++---uploads
++---utils
+|   |   decorators.py
+|   |   helpers.py
+|   |   
 
 ## File Contents
 
 
-### D:\Darshan\Projects\My Portfolio\backend\.env
+### data\portfolio_data.json
 
 ```
-# DATABASE_URL=postgresql://postgres:1234@localhost:5432/portfolio_db
-DATABASE_URL=postgresql://postgres.tkzejgpedeycvlopdoqy:Portfolio2024Dx@aws-1-ap-south-1.pooler.supabase.com:6543/postgres
-# DATABASE_URL=postgresql://postgres:Portfolio2024Dx@aws-0-ap-south-1.pooler.supabase.com:6543/postgres
-SECRET_KEY=supersecretkey
-FLASK_ENV=development
+{
+  "personalInfo": {
+    "name": "Darshan",
+    "lastName": "Agrawal",
+    "roles": [
+      "Full Stack Engineer",
+      "React + Python Developer",
+      "Remote-First Builder"
+    ],
+    "bio": "Full Stack Engineer with 4+ years building performant, data-driven web apps. I specialize in React ecosystems and Python backends - from real-time KPI dashboards to automated data pipelines - with a sharp eye for clean code and intuitive design.",
+    "email": "darshanagrawal007@gmail.com",
+    "location": "India (Remote Worldwide)",
+    "resumeUrl": "/resume.pdf",
+    "socials": {
+      "github": "https://github.com/darshan12-code/",
+      "linkedin": "https://www.linkedin.com/in/darshan-agrawal-012/",
+      "twitter": "https://twitter.com"
+    }
+  },
 
+  "navLinks": [
+    { "label": "Home", "path": "/" },
+    { "label": "Case Studies", "path": "/case-studies" },
+    { "label": "Blog", "path": "/blog" },
+    { "label": "Contact", "path": "/contact" }
+  ],
 
-CLOUDINARY_CLOUD_NAME=dsihbznoc
-CLOUDINARY_API_KEY=111695531584429
-CLOUDINARY_API_SECRET=IiYLmYnj77mVQ9lbsC0kSIpxgrE
+  "skills": [
+    { "name": "React.js", "icon": "SiReact" },
+    { "name": "TypeScript", "icon": "SiTypescript" },
+    { "name": "JavaScript", "icon": "SiJavascript" },
+    { "name": "Python", "icon": "SiPython" },
+    { "name": "Flask", "icon": "SiFlask" },
+    { "name": "Node.js", "icon": "SiNodedotjs" },
+    { "name": "Express.js", "icon": "SiExpress" },
+    { "name": "Angular", "icon": "SiAngular" },
+    { "name": "GraphQL", "icon": "SiGraphql" },
+    { "name": "D3.js", "icon": "SiD3Dotjs" },
+    { "name": "SCSS", "icon": "SiSass" },
+    { "name": "PostgreSQL", "icon": "SiPostgresql" },
+    { "name": "MySQL", "icon": "SiMysql" },
+    { "name": "MongoDB", "icon": "SiMongodb" },
+    { "name": "Azure Databricks", "icon": "SiDatabricks" },
+    { "name": "Azure Data Factory", "icon": "SiMicrosoftazure" },
+    { "name": "Docker", "icon": "SiDocker" },
+    { "name": "Git", "icon": "SiGit" },
+    { "name": "Jira", "icon": "SiJira" },
+    { "name": "Pandas", "icon": "SiPandas" }
+  ],
 
-CONTACT_SENDER_EMAIL=onboarding@resend.dev
-CONTACT_RECEIVER_EMAIL=darshanagrawal007@gmail.com
-RESEND_API_KEY=re_jifFrKiA_BRg4PfDifsZ8jVgzDBVMG9Kg
-```
+  "experience": [
+    {
+      "id": 1,
+      "role": "Full Stack Engineer",
+      "company": "Rhombuz",
+      "location": "Remote — Seattle, USA",
+      "period": "Feb 2023 – Present",
+      "description": "Led full-stack delivery of a real-time KPI dashboard visualizing 26 metrics with D3.js graphs. Automated telecom data workflows processing 16+ public records, cutting PDF processing time by 70%. Optimized API performance, reduced query latency, and mentored junior developers.",
+      "tech": [
+        "React",
+        "Python",
+        "Flask",
+        "Azure Databricks",
+        "Azure Data Factory",
+        "D3.js",
+        "PostgreSQL",
+        "MySQL"
+      ]
+    },
+    {
+      "id": 2,
+      "role": "Frontend Engineer",
+      "company": "Rhombuz",
+      "location": "Remote — Seattle, USA",
+      "period": "Dec 2021 – Jan 2023",
+      "description": "Reduced dashboard load times by 45% through architecture optimization and code splitting. Redesigned UI components for cross-platform compatibility. Delivered 3+ key frontend projects and improved feature rollout speed by 30%.",
+      "tech": [
+        "React",
+        "TypeScript",
+        "Angular",
+        "SCSS",
+        "D3.js",
+        "GraphQL"
+      ]
+    },
+    {
+      "id": 3,
+      "role": "System Engineer Intern",
+      "company": "Western Coalfields Ltd.",
+      "location": "Chandrapur, India",
+      "period": "Jun 2021 – Sep 2021",
+      "description": "Built a full-stack PHP tool to monitor equipment breakdown and system status for the GM Office, digitizing manual paper-based workflows.",
+      "tech": ["PHP", "MySQL"]
+    }
+  ],
 
+  "counters": [
+    { "value": 4, "suffix": "+", "label": "Years Experience" },
+    { "value": 45, "suffix": "%", "label": "Load Time Reduced" },
+    { "value": 8, "suffix": "+", "label": "Projects Delivered" },
+    { "value": 70, "suffix": "%", "label": "Faster PDF Processing" }
+  ],
 
-### D:\Darshan\Projects\My Portfolio\backend\app.py
+  "aboutTraits": [
+    {
+      "emoji": "🎨",
+      "label": "Creative",
+      "description": "Clay, paint & digital art — design thinking runs deep."
+    },
+    {
+      "emoji": "🧠",
+      "label": "Strategic",
+      "description": "Architecture first, syntax second. Systems that scale."
+    },
+    {
+      "emoji": "🛠",
+      "label": "Builder",
+      "description": "Ship fast, iterate faster."
+    }
+  ],
 
-```
-from flask import Flask, jsonify, send_from_directory
-from flask_cors import CORS
-from config import Config
-from extensions import db, jwt
-from routes import register_routes
-import os
-import cloudinary
-
-def create_app():
-
-    app = Flask(__name__)
-    app.config.from_object(Config)
-
-    # Configure Cloudinary
-    cloudinary.config(
-        cloud_name=app.config["CLOUDINARY_CLOUD_NAME"],
-        api_key=app.config["CLOUDINARY_API_KEY"],
-        api_secret=app.config["CLOUDINARY_API_SECRET"]
-    )
-
-
-    # Enable CORS
-    CORS(app)
-
-    # Initialize extensions
-    db.init_app(app)
-    jwt.init_app(app)
-
-    # Register routes
-    register_routes(app)
-    
-    @app.route('/health')
-    def health():
-        return {'status': 'ok'}, 200
-    
-    # # Serve uploaded images
-    # @app.route("/uploads/<path:filename>")
-    # def uploaded_file(filename):
-    #     return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
-
-    # Error handlers
-    @app.errorhandler(404)
-    def not_found(e):
-        return jsonify({"error": "Resource not found"}), 404
-
-    @app.errorhandler(500)
-    def server_error(e):
-        return jsonify({"error": "Internal server error"}), 500
-
-    return app
-
-
-app = create_app()
-
-if __name__ == "__main__":
-    app.run(debug=True)
-```
-
-
-### D:\Darshan\Projects\My Portfolio\backend\config.py
-
-```
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-from datetime import timedelta
-
-class Config:
-    SECRET_KEY = os.getenv("SECRET_KEY")
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-    CLOUDINARY_CLOUD_NAME = os.environ.get("CLOUDINARY_CLOUD_NAME")
-    CLOUDINARY_API_KEY = os.environ.get("CLOUDINARY_API_KEY")
-    CLOUDINARY_API_SECRET = os.environ.get("CLOUDINARY_API_SECRET")
-    JWT_SECRET_KEY = os.getenv("SECRET_KEY")
-
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)
-    JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=7)
-```
-
-
-### D:\Darshan\Projects\My Portfolio\backend\extensions.py
-
-```
-# extensions.py
-from flask_sqlalchemy import SQLAlchemy
-from flask_jwt_extended import JWTManager
-
-db = SQLAlchemy()
-jwt = JWTManager()
-```
-
-
-### D:\Darshan\Projects\My Portfolio\backend\Procfile
-
-```
-web: gunicorn app:app --workers 2 --bind 0.0.0.0:$PORT
-```
-
-
-### D:\Darshan\Projects\My Portfolio\backend\requirements.txt
-
-```
-bcrypt==5.0.0
-blinker==1.9.0
-certifi==2026.2.25
-charset-normalizer==3.4.5
-click==8.3.1
-cloudinary==1.44.1
-colorama==0.4.6
-Flask==3.1.3
-flask-cors==6.0.2
-Flask-JWT-Extended==4.7.1
-Flask-SQLAlchemy==3.1.1
-greenlet==3.3.2
-gunicorn==25.1.0
-idna==3.11
-itsdangerous==2.2.0
-Jinja2==3.1.6
-MarkupSafe==3.0.3
-packaging==26.0
-psycopg2-binary==2.9.11
-PyJWT==2.11.0
-python-dotenv==1.2.2
-requests==2.32.5
-resend==2.23.0
-six==1.17.0
-SQLAlchemy==2.0.47
-typing_extensions==4.15.0
-urllib3==2.6.3
-Werkzeug==3.1.6
+  "filterCategories": [
+    { "key": "all", "label": "All" },
+    { "key": "fullstack", "label": "Full Stack" },
+    { "key": "frontend", "label": "Frontend" },
+    { "key": "backend", "label": "Backend" }
+  ]
+}
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\runtime.txt
-
-```
-python-3.11.0
-```
-
-
-### D:\Darshan\Projects\My Portfolio\backend\models\blog.py
+### models\blog.py
 
 ```
 from datetime import datetime
@@ -232,7 +212,7 @@ class Blog(db.Model):
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\models\case_study.py
+### models\case_study.py
 
 ```
 from datetime import datetime
@@ -288,7 +268,7 @@ class CaseStudy(db.Model):
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\models\message.py
+### models\message.py
 
 ```
 from datetime import datetime
@@ -309,7 +289,7 @@ class Message(db.Model):
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\models\user.py
+### models\user.py
 
 ```
 from datetime import datetime
@@ -331,7 +311,7 @@ class User(db.Model):
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\models\__init__.py
+### models\__init__.py
 
 ```
 from .user import User
@@ -341,7 +321,7 @@ from .message import Message
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\routes\auth.py
+### routes\auth.py
 
 ```
 from flask import Blueprint, request, jsonify
@@ -393,12 +373,12 @@ def login():
         return {"error": "Invalid credentials"}, 401
 
     access_token = create_access_token(
-        identity=str(user.id),   # âœ… FIX
+        identity=str(user.id),   # ✅ FIX
         additional_claims={"role": user.role}
     )
 
     refresh_token = create_refresh_token(
-        identity=str(user.id)    # âœ… FIX
+        identity=str(user.id)    # ✅ FIX
     )
 
     return {
@@ -441,7 +421,7 @@ def me():
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\routes\blogs.py
+### routes\blogs.py
 
 ```
 from flask import Blueprint, request, jsonify
@@ -605,7 +585,7 @@ def delete_blog(id):
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\routes\case_studies.py
+### routes\case_studies.py
 
 ```
 from flask import Blueprint, request, jsonify
@@ -629,7 +609,7 @@ def serialize_case(case):
         "summary": case.summary,
         "content": case.content,
         "tech_stack": case.tech_stack,
-        "thumbnail": case.thumbnail,        # â† single URL string, no JSON parsing
+        "thumbnail": case.thumbnail,        # ← single URL string, no JSON parsing
         "github_url": case.github_url,
         "live_url": case.live_url,
         "category": case.category,
@@ -694,7 +674,7 @@ def create_case():
             summary=data.get("summary"),
             content=data.get("content"),
             tech_stack=data.get("tech_stack"),
-            thumbnail=data.get("thumbnail") or None,   # â† single URL
+            thumbnail=data.get("thumbnail") or None,   # ← single URL
             github_url=data.get("github_url") or None,
             live_url=data.get("live_url") or None,
             category=data.get("category") or None,
@@ -762,7 +742,7 @@ def delete_case(id):
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\routes\contact.py
+### routes\contact.py
 
 ```
 from flask import Blueprint, request, jsonify
@@ -811,13 +791,79 @@ def get_all():
            "id": c.id,
         "name": c.name,
         "email": c.email,
-        "message": c.message
+        "message": c.message,
+        "created_at":c.created_at
         } for c in pagination.items]
     })
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\routes\upload.py
+### routes\information.py
+
+```
+from flask import Blueprint, jsonify
+import json
+import os
+
+portfolio_bp = Blueprint(
+    "portfolio",
+    __name__,
+    url_prefix="/portfolio/portfolio-data"
+)
+@portfolio_bp.route("/data", methods=["GET"])
+def get_portfolio_data():
+    file_path = os.path.join("data", "portfolio_data.json")
+
+    with open(file_path, "r") as f:
+        data = json.load(f)
+
+    return jsonify(data)
+
+@portfolio_bp.route("/personalInfo", methods=["GET"])
+def get_personalInfo():
+    file_path = os.path.join("data", "portfolio_data.json")
+
+    with open(file_path) as f:
+        data = json.load(f)
+
+    return jsonify(data["personalInfo"])
+
+@portfolio_bp.route("/experience", methods=["GET"])
+def get_experience():
+    file_path = os.path.join("data", "portfolio_data.json")
+
+    with open(file_path) as f:
+        data = json.load(f)
+
+    return jsonify(data["experience"])
+@portfolio_bp.route("/counters", methods=["GET"])
+def get_counters():
+    file_path = os.path.join("data", "portfolio_data.json")
+
+    with open(file_path) as f:
+        data = json.load(f)
+
+    return jsonify(data["counters"])
+# @portfolio_bp.route("/aboutTraits", methods=["GET"])
+# def get_aboutTraits():
+#     file_path = os.path.join("data", "portfolio_data.json")
+
+#     with open(file_path) as f:
+#         data = json.load(f)
+
+#     return jsonify(data["aboutTraits"])
+@portfolio_bp.route("/skills", methods=["GET"])
+def get_skills():
+    file_path = os.path.join("data", "portfolio_data.json")
+
+    with open(file_path) as f:
+        data = json.load(f)
+
+    return jsonify(data["skills"])
+```
+
+
+### routes\upload.py
 
 ```
 import cloudinary
@@ -861,7 +907,7 @@ def upload_media():
                 result = cloudinary.uploader.upload(
                     file,
                     folder="portfolio/content",
-                    resource_type="video"  # â† video resource type
+                    resource_type="video"  # ← video resource type
                 )
                 uploaded_urls.append({
                     "url": result["secure_url"],
@@ -878,24 +924,26 @@ def upload_media():
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\routes\__init__.py
+### routes\__init__.py
 
 ```
 from .auth import auth_bp
 from .case_studies import case_bp
 from .blogs import blog_bp
 from .contact import contact_bp
-from .upload import upload_bp  
+from .upload import upload_bp 
+from .information import portfolio_bp 
 def register_routes(app):
     app.register_blueprint(auth_bp)
     app.register_blueprint(case_bp)
     app.register_blueprint(blog_bp)
     app.register_blueprint(contact_bp)
-    app.register_blueprint(upload_bp)    
+    app.register_blueprint(upload_bp)
+    app.register_blueprint(portfolio_bp)    
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\services\email_service.py
+### services\email_service.py
 
 ```
 import resend
@@ -915,7 +963,7 @@ def send_contact_notification(name, email, subject, message):
     params = {
         "from": f"Portfolio Contact <{SENDER_EMAIL}>",
         "to": [RECEIVER_EMAIL],
-        "subject": f"ðŸ“¬ New Contact: {subject}",
+        "subject": f"📬 New Contact: {subject}",
         "html": html,
     }
 
@@ -942,7 +990,7 @@ def build_notification_email(name, email, subject, message):
               <tr>
                 <td style="background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:40px;border-radius:16px 16px 0 0;text-align:center;">
                   <p style="margin:0 0 8px 0;color:rgba(255,255,255,0.7);font-size:13px;letter-spacing:3px;text-transform:uppercase;">Portfolio Contact Form</p>
-                  <h1 style="margin:0;color:#ffffff;font-size:28px;font-weight:700;">Someone reached out! ðŸ‘‹</h1>
+                  <h1 style="margin:0;color:#ffffff;font-size:28px;font-weight:700;">Someone reached out! 👋</h1>
                 </td>
               </tr>
 
@@ -1022,7 +1070,7 @@ def build_notification_email(name, email, subject, message):
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\services\seed.py
+### services\seed.py
 
 ```
 # from app import create_app
@@ -1133,7 +1181,7 @@ print("Dummy data inserted successfully.")
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\utils\decorators.py
+### utils\decorators.py
 
 ```
 from functools import wraps
@@ -1158,7 +1206,7 @@ def admin_required(fn):
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\utils\helpers.py
+### utils\helpers.py
 
 ```
 import re
@@ -1171,9 +1219,168 @@ def generate_slug(title):
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\venv\.gitignore
+### .env
 
 ```
-# Created by venv; see https://docs.python.org/3/library/venv.html
-*
+# DATABASE_URL=postgresql://postgres:1234@localhost:5432/portfolio_db
+DATABASE_URL=postgresql://postgres.tkzejgpedeycvlopdoqy:Portfolio2024Dx@aws-1-ap-south-1.pooler.supabase.com:6543/postgres
+# DATABASE_URL=postgresql://postgres:Portfolio2024Dx@aws-0-ap-south-1.pooler.supabase.com:6543/postgres
+SECRET_KEY=supersecretkey
+FLASK_ENV=development
+
+
+CLOUDINARY_CLOUD_NAME=dsihbznoc
+CLOUDINARY_API_KEY=111695531584429
+CLOUDINARY_API_SECRET=IiYLmYnj77mVQ9lbsC0kSIpxgrE
+
+CONTACT_SENDER_EMAIL=onboarding@resend.dev
+CONTACT_RECEIVER_EMAIL=darshanagrawal007@gmail.com
+RESEND_API_KEY=re_jifFrKiA_BRg4PfDifsZ8jVgzDBVMG9Kg
 ```
+
+
+### app.py
+
+```
+from flask import Flask, jsonify, send_from_directory
+from flask_cors import CORS
+from config import Config
+from extensions import db, jwt
+from routes import register_routes
+import os
+import cloudinary
+
+def create_app():
+
+    app = Flask(__name__)
+    app.config.from_object(Config)
+
+    # Configure Cloudinary
+    cloudinary.config(
+        cloud_name=app.config["CLOUDINARY_CLOUD_NAME"],
+        api_key=app.config["CLOUDINARY_API_KEY"],
+        api_secret=app.config["CLOUDINARY_API_SECRET"]
+    )
+
+
+    # Enable CORS
+    CORS(app)
+
+    # Initialize extensions
+    db.init_app(app)
+    jwt.init_app(app)
+
+    # Register routes
+    register_routes(app)
+    
+    @app.route('/health')
+    def health():
+        return {'status': 'ok'}, 200
+    
+    # # Serve uploaded images
+    # @app.route("/uploads/<path:filename>")
+    # def uploaded_file(filename):
+    #     return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
+
+    # Error handlers
+    @app.errorhandler(404)
+    def not_found(e):
+        return jsonify({"error": "Resource not found"}), 404
+
+    @app.errorhandler(500)
+    def server_error(e):
+        return jsonify({"error": "Internal server error"}), 500
+
+    return app
+
+
+app = create_app()
+
+if __name__ == "__main__":
+    app.run(debug=True)
+```
+
+
+### config.py
+
+```
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+from datetime import timedelta
+
+class Config:
+    SECRET_KEY = os.getenv("SECRET_KEY")
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    CLOUDINARY_CLOUD_NAME = os.environ.get("CLOUDINARY_CLOUD_NAME")
+    CLOUDINARY_API_KEY = os.environ.get("CLOUDINARY_API_KEY")
+    CLOUDINARY_API_SECRET = os.environ.get("CLOUDINARY_API_SECRET")
+    JWT_SECRET_KEY = os.getenv("SECRET_KEY")
+
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)
+    JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=7)
+```
+
+
+### extensions.py
+
+```
+# extensions.py
+from flask_sqlalchemy import SQLAlchemy
+from flask_jwt_extended import JWTManager
+
+db = SQLAlchemy()
+jwt = JWTManager()
+```
+
+
+### Procfile
+
+```
+web: gunicorn app:app --workers 2 --bind 0.0.0.0:$PORT
+```
+
+
+### requirements.txt
+
+```
+bcrypt==5.0.0
+blinker==1.9.0
+certifi==2026.2.25
+charset-normalizer==3.4.5
+click==8.3.1
+cloudinary==1.44.1
+colorama==0.4.6
+Flask==3.1.3
+flask-cors==6.0.2
+Flask-JWT-Extended==4.7.1
+Flask-SQLAlchemy==3.1.1
+greenlet==3.3.2
+gunicorn==25.1.0
+idna==3.11
+itsdangerous==2.2.0
+Jinja2==3.1.6
+MarkupSafe==3.0.3
+packaging==26.0
+psycopg2-binary==2.9.11
+PyJWT==2.11.0
+python-dotenv==1.2.2
+requests==2.32.5
+resend==2.23.0
+six==1.17.0
+SQLAlchemy==2.0.47
+typing_extensions==4.15.0
+urllib3==2.6.3
+Werkzeug==3.1.6
+```
+
+
+### runtime.txt
+
+```
+python-3.11.0
+```
+
