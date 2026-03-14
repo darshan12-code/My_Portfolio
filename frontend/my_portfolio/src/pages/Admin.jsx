@@ -839,6 +839,7 @@ const Overlay = styled.div`
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
+  height: 100dvh; /* ← real visible height on mobile */
   background: ${({ theme }) => theme.colors.overlayBg};
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
@@ -850,25 +851,28 @@ const Overlay = styled.div`
   @media (max-width: 480px) { padding: 0; align-items: flex-end; }
 `;
 
+
 const ModalCard = styled.div`
   display: flex;
   flex-direction: column;
   width: 92vw;
   max-width: 880px;
   max-height: 88vh;
+  max-height: 88dvh; /* ← dvh fallback */
   background: ${({ theme }) => theme.colors.bgSecondary};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   border: 1px solid ${({ theme }) => theme.colors.borderDefault};
   overflow: hidden;
   box-shadow: ${({ theme }) => theme.colors.shadowModal},
               0 0 0 1px ${({ theme }) => theme.colors.accentPinkRingShadow};
+
   @media (max-width: 480px) {
     width: 100vw;
-    max-height: 96vh;
+    height: 92dvh;        /* ← fixed height so footer is always in frame */
+    max-height: 92dvh;
     border-radius: ${({ theme }) => theme.borderRadius.xl} ${({ theme }) => theme.borderRadius.xl} 0 0;
   }
 `;
-
 const ModalHeader = styled.div`
   flex-shrink: 0;
   padding: 18px 24px;
@@ -904,12 +908,13 @@ const ModalCloseBtn = styled.button`
     color: ${({ theme }) => theme.colors.accentPink};
   }
 `;
-
 const FormBody = styled.div`
   flex: 1;
+  min-height: 0;          /* ← critical: prevents flex child from overflowing */
   overflow-y: auto;
   padding: 22px 24px;
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch; /* ← smooth scroll on iOS/Android */
   &::-webkit-scrollbar { width: 5px; }
   &::-webkit-scrollbar-track { background: transparent; }
   &::-webkit-scrollbar-thumb {
@@ -927,7 +932,13 @@ const ModalFooter = styled.div`
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  @media (max-width: 480px) { padding: 12px 16px; & > * { flex: 1; min-width: 80px; } }
+
+  /* Extra bottom padding for phones with gesture nav bar */
+  @media (max-width: 480px) {
+    padding: 12px 16px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+    & > * { flex: 1; min-width: 80px; }
+  }
 `;
 
 const ModalBtn = styled.button`
@@ -978,6 +989,10 @@ const ModalBtn = styled.button`
     box-shadow: none !important;
   }
 `;
+
+
+
+
 
 const FormGrid = styled.div`
   display: grid;
