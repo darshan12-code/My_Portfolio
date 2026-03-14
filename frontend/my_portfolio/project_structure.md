@@ -1,595 +1,137 @@
-﻿frontend strcuture
+﻿## Project Structure
 
-## Project Structure
-
-|-- public/
-|   |-- favicon.png
-|   |-- vite.svg
-|-- src/
-|   |-- assets/
-|   |   |-- favicon2.png
-|   |   |-- myphoto_cutout.png
-|   |   |-- myphoto_cutout2.png
-|   |   |-- noise.png
-|   |   |-- project_thumbnail.png
-|   |   |-- react.svg
-|   |   |-- Untitled design (1).png
-|   |-- components/
-|   |   |-- admin/
-|   |   |   |-- AdminContent.jsx
-|   |   |   |-- AdminLogin.jsx
-|   |   |   |-- AdminSidebar.jsx
-|   |   |   |-- BlogManager.jsx
-|   |   |   |-- ProjectManager.jsx
-|   |   |-- cards/
-|   |   |   |-- BlogCard.jsx
-|   |   |   |-- ProjectCard.jsx
-|   |   |-- effects/
-|   |   |   |-- ComicGrid.jsx
-|   |   |   |-- FloatingShapes.jsx
-|   |   |   |-- ParallaxWrapper.jsx
-|   |   |   |-- SectionWave.jsx
-|   |   |   |-- WaterWaves.jsx
-|   |   |-- home/
-|   |   |   |-- About.jsx
-|   |   |   |-- Counters.jsx
-|   |   |   |-- FeaturedProjects.jsx
-|   |   |   |-- Hero.jsx
-|   |   |   |-- SkillsMarquee.jsx
-|   |   |   |-- Timeline.jsx
-|   |   |-- layout/
-|   |   |   |-- Footer.jsx
-|   |   |   |-- Navbar.jsx
-|   |   |   |-- NoiseOverlay.jsx
-|   |   |   |-- PageTransition.jsx
-|   |   |   |-- ScrollProgress.jsx
-|   |   |   |-- ScrollToTop.jsx
-|   |   |-- ui/
-|   |   |   |-- CustomCursor.jsx
-|   |   |   |-- FilterTab.jsx
-|   |   |   |-- FloatingInput.jsx
-|   |   |   |-- LoadingScreen.jsx
-|   |   |   |-- MagneticButton.jsx
-|   |   |   |-- NotFound.jsx
-|   |   |   |-- PageHero.jsx
-|   |   |   |-- PageLoader.jsx
-|   |   |   |-- RichEditor.jsx
-|   |   |   |-- SectionHeader.jsx
-|   |   |   |-- Tag.jsx
-|   |   |   |-- ThemeToggle.jsx
-|   |-- contexts/
-|   |   |-- AuthContext.jsx
-|   |   |-- ThemeContext.jsx
-|   |-- data/
-|   |   |-- siteData.jsx
-|   |-- hooks/
-|   |   |-- useApiData.jsx
-|   |   |-- useCountUp.jsx
-|   |   |-- useFetch.jsx
-|   |   |-- useMousePosition.jsx
-|   |   |-- usePost.jsx
-|   |   |-- useScrollProgress.jsx
-|   |   |-- useScrollReveal.jsx
-|   |   |-- useTypewriter.jsx
-|   |-- pages/
-|   |   |-- Admin.jsx
-|   |   |-- AdminLogin.jsx
-|   |   |-- Blog.jsx
-|   |   |-- BlogDetails.jsx
-|   |   |-- CaseStudies.jsx
-|   |   |-- CaseStudyDetails.jsx
-|   |   |-- Contact.jsx
-|   |   |-- Home.jsx
-|   |-- services/
-|   |   |-- apis.jsx
-|   |   |-- queryClient.jsx
-|   |-- styles/
-|   |   |-- globalStyles.js
-|   |   |-- theme.js
-|   |-- utils/
-|   |   |-- categoryColors.js
-|   |-- App.css
-|   |-- App.jsx
-|   |-- index.css
-|   |-- main.jsx
-|-- .env
-|-- .env.production
-|-- .gitignore
-|-- eslint.config.js
-|-- index.html
-|-- media.js
-|-- package-lock.json
-|-- package.json
-|-- project_structure.md
-|-- README.md
-|-- resume.pdf
-|-- vercel.json
-|-- vite.config.js
+Folder PATH listing for volume Data
+Volume serial number is F8CC-00EB
+D:.
+|   .env
+|   .env.production
+|   .gitignore
+|   dump.ps1
+|   eslint.config.js
+|   index.html
+|   media.js
+|   package-lock.json
+|   package.json
+|   project_structure.md
+|   README.md
+|   resume.pdf
+|   vercel.json
+|   vite.config.js
+|   
++---public
+|       favicon.png
+|       vite.svg
+|       
+\---src
+    |   App.css
+    |   App.jsx
+    |   index.css
+    |   main.jsx
+    |   
+    +---assets
+    |       favicon2.png
+    |       myphoto_cutout.png
+    |       myphoto_cutout2.png
+    |       noise.png
+    |       project_thumbnail.png
+    |       react.svg
+    |       Untitled design (1).png
+    |       
+    +---components
+    |   +---admin
+    |   |       AdminContent.jsx
+    |   |       AdminLogin.jsx
+    |   |       AdminSidebar.jsx
+    |   |       BlogManager.jsx
+    |   |       ProjectManager.jsx
+    |   |       
+    |   +---cards
+    |   |       BlogCard.jsx
+    |   |       ProjectCard.jsx
+    |   |       
+    |   +---effects
+    |   |       ComicGrid.jsx
+    |   |       FloatingShapes.jsx
+    |   |       ParallaxWrapper.jsx
+    |   |       SectionWave.jsx
+    |   |       WaterWaves.jsx
+    |   |       
+    |   +---home
+    |   |       About.jsx
+    |   |       Counters.jsx
+    |   |       FeaturedProjects.jsx
+    |   |       Hero.jsx
+    |   |       SkillsMarquee.jsx
+    |   |       Timeline.jsx
+    |   |       
+    |   +---layout
+    |   |       Footer.jsx
+    |   |       Navbar.jsx
+    |   |       NoiseOverlay.jsx
+    |   |       PageTransition.jsx
+    |   |       ScrollProgress.jsx
+    |   |       ScrollToTop.jsx
+    |   |       
+    |   \---ui
+    |           AdminCardSkeleton.jsx
+    |           CustomCursor.jsx
+    |           EmptyState.jsx
+    |           FilterTab.jsx
+    |           FloatingInput.jsx
+    |           LoadingScreen.jsx
+    |           MagneticButton.jsx
+    |           NotFound.jsx
+    |           PageHero.jsx
+    |           PageLoader.jsx
+    |           ProseContent.jsx
+    |           RichEditor.jsx
+    |           SectionHeader.jsx
+    |           Tag.jsx
+    |           ThemeToggle.jsx
+    |           
+    +---contexts
+    |       AuthContext.jsx
+    |       ThemeContext.jsx
+    |       
+    +---data
+    |       siteData.jsx
+    |       
+    +---hooks
+    |       useApiData.jsx
+    |       useCountUp.jsx
+    |       useFetch.jsx
+    |       useMousePosition.jsx
+    |       usePost.jsx
+    |       useScrollProgress.jsx
+    |       useScrollReveal.jsx
+    |       useTypewriter.jsx
+    |       
+    +---pages
+    |       Admin.jsx
+    |       AdminLogin.jsx
+    |       Blog.jsx
+    |       BlogDetails.jsx
+    |       CaseStudies.jsx
+    |       CaseStudyDetails.jsx
+    |       Contact.jsx
+    |       Home.jsx
+    |       
+    +---services
+    |       apis.jsx
+    |       queryClient.jsx
+    |       
+    +---styles
+    |       globalStyles.jsx
+    |       theme.js
+    |       
+    \---utils
+            categoryColors.js
+            
 
 ## File Contents
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\.env
-
-```
-VITE_API_URL=http://127.0.0.1:5000/portfolio
-# VITE_API_URL=https://portfolio-backend-x9am.onrender.com/portfolio
-```
-
-
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\.env.production
-
-```
-VITE_API_URL=https://portfolio-backend-x9am.onrender.com/portfolio
-```
-
-
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\.gitignore
-
-```
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-```
-
-
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\eslint.config.js
-
-```
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import { defineConfig, globalIgnores } from 'eslint/config'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{js,jsx}'],
-    extends: [
-      js.configs.recommended,
-      reactHooks.configs.flat.recommended,
-      reactRefresh.configs.vite,
-    ],
-    languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
-      parserOptions: {
-        ecmaVersion: 'latest',
-        ecmaFeatures: { jsx: true },
-        sourceType: 'module',
-      },
-    },
-    rules: {
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
-    },
-  },
-])
-```
-
-
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\index.html
-
-```
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Darshan Agrawal â€” Full Stack Engineer</title>
-    <meta name="description" content="Portfolio of Darshan Agrawal â€” Full Stack Engineer specializing in React, Python, and cloud-native applications." />
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400;500;600;700&display=swap" rel="stylesheet" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
-</html>
-```
-
-
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\media.js
-
-```
-const breakpoints = {
-  mobile: '480px',
-  tablet: '768px',
-  laptop: '1024px',
-  desktop: '1280px',
-};
-
-export const media = {
-  mobile: `@media (max-width: ${breakpoints.mobile})`,
-  tablet: `@media (max-width: ${breakpoints.tablet})`,
-  laptop: `@media (max-width: ${breakpoints.laptop})`,
-  desktop: `@media (max-width: ${breakpoints.desktop})`,
-}; 
-
-export const media2 = {
-  mobile: `@media (max-width: ${breakpoints.mobile})`,
-  tablet: `@media (max-width: ${breakpoints.tablet})`,
-  laptop: `@media (max-width: ${breakpoints.laptop})`,
-  desktop: `@media (max-width: ${breakpoints.desktop})`,
-}; 
-```
-
-
-
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\vercel.json
-
-```
-{
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
-}
-```
-
-
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\vite.config.js
-
-```
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [
-    react({
-      babel: {
-        plugins: [['babel-plugin-react-compiler']],
-      },
-    }),
-  ],
-})
-```
-
-
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\App.css
-
-```
-/* App.css
-   FIXED: Removed max-width and padding from #root â€” these were causing
-   extra right-side space on mobile because they conflicted with full-width
-   fixed/absolute positioned elements (navbar, waves, floating shapes).
-   Layout padding is now handled per-section in individual components. */
-
-#root {
-  /* max-width: 1280px; â† REMOVED */
-  /* padding: 2rem;     â† REMOVED */
-  /* text-align: center;â† REMOVED */
-  width: 100%;
-  overflow-x: hidden;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
-@keyframes float-drift {
-  0%, 100% { transform: translateY(0) rotate(var(--start-rotation)); }
-  25%      { transform: translateY(-20px) rotate(calc(var(--start-rotation) + 5deg)); }
-  50%      { transform: translateY(-10px) rotate(calc(var(--start-rotation) + 10deg)); }
-  75%      { transform: translateY(-25px) rotate(calc(var(--start-rotation) + 3deg)); }
-}
-@keyframes slow-spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-.floating-shape {
-  position: absolute;
-  animation: float-drift var(--duration, 25s) ease-in-out infinite,
-             slow-spin var(--spin-duration, 60s) linear infinite;
-  will-change: transform;
-  filter: blur(0.5px);
-}
-```
-
-
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\App.jsx
-
-```
-// src/App.jsx
-import { Routes, Route, useLocation, Navigate } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
-import { QueryClientProvider } from "@tanstack/react-query";
-
-// CHANGED: import the configured client instead of creating inline with no options
-import queryClient from "./services/Queryclient";
-
-import GlobalStyles from "./styles/globalStyles";
-import { AuthProvider, useAuth } from "./contexts/AuthContext";
-
-import Navbar from "./components/layout/Navbar";
-import Footer from "./components/layout/Footer";
-import ScrollProgress from "./components/layout/ScrollProgress";
-import NoiseOverlay from "./components/layout/NoiseOverlay";
-import FloatingShapes from "./components/effects/FloatingShapes";
-import WaterWaves from "./components/effects/WaterWaves";
-import PageTransition from "./components/layout/PageTransition";
-import ScrollToTop from "./components/layout/ScrollToTop";
-import LoadingScreen from "./components/ui/LoadingScreen";
-
-import { ThemeProvider as StyledProvider } from "styled-components";
-import { ThemeProvider, useTheme } from "./contexts/ThemeContext";
-import { darkTheme, lightTheme } from "./styles/theme";
-
-import Home from "./pages/Home";
-import CaseStudies from "./pages/CaseStudies";
-import Blog from "./pages/Blog";
-import Contact from "./pages/Contact";
-import AdminLogin from "./pages/AdminLogin";
-import Admin from "./pages/Admin";
-import NotFound from "./components/ui/NotFound";
-import BlogDetail from "./pages/BlogDetails";
-import CaseStudyDetails from "./pages/CaseStudyDetails";
-import CustomCursor from "./components/ui/CustomCursor";
-import ComicGrid from "./components/effects/ComicGrid";
-
-const ProtectedRoute = ({ children }) => {
-  const { isAdmin, loading } = useAuth();
-  if (loading) return <LoadingScreen />;
-  return isAdmin ? children : <Navigate to="/admin/login" replace />;
-};
-
-const AnimatedRoutes = () => {
-  const location = useLocation();
-  return (
-    <>
-      <ScrollToTop />
-      <AnimatePresence mode="sync" initial={false}>
-        <PageTransition key={location.pathname}>
-          <Routes location={location} key={location.pathname}>
-            <Route path="/"                   element={<Home />} />
-            <Route path="/case-studies"       element={<CaseStudies />} />
-            <Route path="/case-studies/:slug" element={<CaseStudyDetails />} />
-            <Route path="/blog"               element={<Blog />} />
-            <Route path="/blog/:slug"         element={<BlogDetail />} />
-            <Route path="/contact"            element={<Contact />} />
-            <Route path="/admin/login"        element={<AdminLogin />} />
-            <Route path="/admin"
-              element={<ProtectedRoute><Admin /></ProtectedRoute>}
-            />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </PageTransition>
-      </AnimatePresence>
-    </>
-  );
-};
-
-const ThemedApp = () => {
-  const { isDark } = useTheme();
-  return (
-    <StyledProvider theme={isDark ? darkTheme : lightTheme}>
-      <GlobalStyles />
-      <CustomCursor />
-      <NoiseOverlay />
-      <ComicGrid />
-      <FloatingShapes hideOnMobile={false} />
-      <WaterWaves />
-      <ScrollProgress />
-      <Navbar />
-      <AnimatedRoutes />
-      <Footer />
-    </StyledProvider>
-  );
-};
-
-function App() {
-  return (
-    <ThemeProvider>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <ThemedApp />
-        </AuthProvider>
-      </QueryClientProvider>
-    </ThemeProvider>
-  );
-}
-
-export default App;
-```
-
-
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\index.css
-
-```
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  /* FIXED: removed "place-items: center" and "display: flex" which caused 
-     horizontal overflow / extra right-side space on mobile */
-  min-width: 20rem;
-  min-height: 100vh;
-  /* Prevent horizontal scroll globally */
-  overflow-x: hidden;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 0.5rem;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 0.25rem auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
-
-/* globalStyles.js using createGlobalStyle */
-*, *::before, *::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-html {
-  scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  /* Prevent horizontal overflow at root */
-  overflow-x: hidden;
-}
-body {
-  font-family: 'DM Sans', sans-serif;
-  background-color: #0D0F14;
-  color: #EAEDF3;
-  overflow-x: hidden;
-  line-height: 1.6;
-}
-::selection {
-  background: rgba(255, 45, 107, 0.3);
-  color: #fff;
-}
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 0.375rem;
-}
-::-webkit-scrollbar-track {
-  background: #0D0F14;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 0.1875rem;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-a {
-  color: inherit;
-  text-decoration: none;
-}
-img {
-  max-width: 100%;
-  display: block;
-}
-```
-
-
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\main.jsx
-
-```
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import App from './App';
-
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>
-);
-```
-
-
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\admin\AdminContent.jsx
+### src\components\admin\AdminContent.jsx
 
 ```
 export const AdminContent = styled.main`
@@ -601,13 +143,13 @@ export const AdminContent = styled.main`
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\admin\AdminLogin.jsx
+### src\components\admin\AdminLogin.jsx
 
 ```
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\admin\AdminSidebar.jsx
+### src\components\admin\AdminSidebar.jsx
 
 ```
 export const AdminSidebar = styled.aside`
@@ -623,27 +165,27 @@ export const AdminSidebar = styled.aside`
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\admin\BlogManager.jsx
+### src\components\admin\BlogManager.jsx
 
 ```
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\admin\ProjectManager.jsx
+### src\components\admin\ProjectManager.jsx
 
 ```
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\cards\BlogCard.jsx
+### src\components\cards\BlogCard.jsx
 
 ```
-import styled from "styled-components";
+import { styled, useTheme } from "styled-components";
 import { motion } from "framer-motion";
 import React from "react";
 import { getCategoryColor } from "../../utils/categoryColors";
 import { useNavigate } from "react-router-dom";
-
+import Tilt from "react-parallax-tilt";
 /* ---------- Badge ---------- */
 
 const CategoryBadge = styled.span`
@@ -654,9 +196,36 @@ const CategoryBadge = styled.span`
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  background: ${({ $colors }) => $colors.bg};
-  border: 1px solid ${({ $colors }) => $colors.border};
-  color: ${({ $colors }) => $colors.text};
+  background: ${({ $c }) => $c.bg};
+  border: 1px solid ${({ $c }) => $c.border};
+  color: ${({ $c }) => $c.text};
+  /* truncate long single category */
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const MoreBadge = styled.span`
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: ${({ theme }) => theme.colors.bgGlassLight};
+  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  color: ${({ theme }) => theme.colors.textTertiary};
+  white-space: nowrap;
+  flex-shrink: 0;
+`;
+
+const BadgeRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  max-width: 100%;
 `;
 
 /* ---------- Card ---------- */
@@ -806,9 +375,28 @@ const ArrowChip = styled(motion.span)`
 
 const BlogCard = ({ post }) => {
   const navigate = useNavigate();
-  const colors = getCategoryColor(post.category);
+  const theme = useTheme();
+
+  // split on comma, trim, filter empty
+  const categories = (post.category || "")
+    .split(",")
+    .map((c) => c.trim())
+    .filter(Boolean);
+
+  const shown     = categories.slice(0, 2);
+  const extraCount = categories.length - 2;
 
   return (
+     <Tilt
+      tiltMaxAngleX={8}
+      tiltMaxAngleY={8}
+      glareEnable
+      glareMaxOpacity={0.07}
+      glareColor="#3B82F6"
+      scale={1.02}
+      transitionSpeed={500}
+      style={{ borderRadius: "14px", transformStyle: "preserve-3d", height: "100%" }}
+    >
     <CardLink
       onClick={() => navigate(post.link)}
       initial={{ y: 20, opacity: 0 }}
@@ -819,26 +407,28 @@ const BlogCard = ({ post }) => {
     >
       <div>
         <Meta>
-          <CategoryBadge $colors={colors}>
-            {post.category}
-          </CategoryBadge>
-          <span>Â·</span>
+          <BadgeRow>
+            {shown.map((cat, i) => (
+              <CategoryBadge key={i} $c={getCategoryColor(cat, theme.mode)}>
+                {cat}
+              </CategoryBadge>
+            ))}
+            {extraCount > 0 && <MoreBadge>+{extraCount}</MoreBadge>}
+          </BadgeRow>
+          <span>·</span>
           <span>{post.readTime}</span>
         </Meta>
 
         <Title>{post.title}</Title>
-
         <Excerpt>{post.excerpt}</Excerpt>
       </div>
 
       <Footer>
         <Date>{post.date}</Date>
-
-        <ArrowChip whileHover={{ x: 4 }}>
-          Read more â†’
-        </ArrowChip>
+        <ArrowChip whileHover={{ x: 4 }}>Read more →</ArrowChip>
       </Footer>
     </CardLink>
+    </Tilt>
   );
 };
 
@@ -846,7 +436,7 @@ export default React.memo(BlogCard);
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\cards\ProjectCard.jsx
+### src\components\cards\ProjectCard.jsx
 
 ```
 import styled, { keyframes } from "styled-components";
@@ -856,10 +446,18 @@ import Tag from "../ui/Tag";
 import Tilt from "react-parallax-tilt";
 import { getCategoryColor } from "../../utils/categoryColors";
 import ProjectThumbnail from "../../assets/project_thumbnail.png";
-
+import { useTheme } from "styled-components";
 const ProjectCard = ({ project }) => {
   const navigate = useNavigate();
-  const colors = getCategoryColor(project.category || (project.tags && project.tags[0]));
+  const theme = useTheme();
+
+  const categories = (project.category || "")
+    .split(",")
+    .map((c) => c.trim())
+    .filter(Boolean);
+
+  const shownCats   = categories.slice(0, 2);
+  const extraCount  = categories.length - 2;
 
   return (
     <Tilt
@@ -886,14 +484,20 @@ const ProjectCard = ({ project }) => {
             loading="lazy"
           />
           <ImageOverlay />
-          {project.category && (
-            <CategoryBadge $c={colors}>{project.category}</CategoryBadge>
+          {categories.length > 0 && (
+            <CategoryBadge>
+              {shownCats.map((cat, i) => (
+                <CategoryPill key={i} $c={getCategoryColor(cat, theme.mode)}>
+                  {cat}
+                </CategoryPill>
+              ))}
+              {extraCount > 0 && <MorePill>+{extraCount}</MorePill>}
+            </CategoryBadge>
           )}
         </ImageWrap>
 
         <CardBody>
           <Title>{project.title}</Title>
-          {/* Fixed height desc â€” always 3 lines regardless of content length */}
           <Desc>{project.description}</Desc>
 
           {project.tags && project.tags.length > 0 && (
@@ -907,9 +511,8 @@ const ProjectCard = ({ project }) => {
             </Tags>
           )}
 
-          {/* Pushed to bottom via flex */}
           <ArrowChip whileHover={{ x: 5 }} transition={{ type: "spring", stiffness: 400 }}>
-            View Case Study â†’
+            View Case Study →
           </ArrowChip>
         </CardBody>
 
@@ -918,14 +521,13 @@ const ProjectCard = ({ project }) => {
     </Tilt>
   );
 };
-
 export default ProjectCard;
 
-/* â”€â”€â”€ STYLES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─── STYLES ─────────────────────────────────────────── */
 
 const CardLink = styled(motion.div)`
   position: relative;
-  /* Fixed total card height â€” all cards identical regardless of content */
+  /* Fixed total card height — all cards identical regardless of content */
   height: 420px;
   display: flex;
   flex-direction: column;
@@ -957,7 +559,7 @@ const TopBar = styled.span`
   }
 `;
 
-/* Fixed image height â€” always same slice of the card */
+/* Fixed image height — always same slice of the card */
 const ImageWrap = styled.div`
   position: relative;
   width: 100%;
@@ -992,11 +594,21 @@ const ImageOverlay = styled.div`
     opacity: 0.8;
   }
 `;
-
 const CategoryBadge = styled.span`
   position: absolute;
   bottom: 0.65rem;
   left: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+  max-width: calc(100% - 1.5rem);  /* never overflow the image */
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+`;
+
+// individual pill inside the image badge row
+const CategoryPill = styled.span`
   display: inline-block;
   padding: 0.2rem 0.65rem;
   border-radius: 999px;
@@ -1007,6 +619,25 @@ const CategoryBadge = styled.span`
   background: ${({ $c }) => $c.bg};
   border: 1px solid ${({ $c }) => $c.border};
   color: ${({ $c }) => $c.text};
+  white-space: nowrap;
+  /* truncate if single category is very long */
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  backdrop-filter: blur(8px);
+`;
+
+const MorePill = styled.span`
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.8);
+  white-space: nowrap;
+  flex-shrink: 0;
   backdrop-filter: blur(8px);
 `;
 
@@ -1016,25 +647,35 @@ const CardBody = styled.div`
   display: flex;
   flex-direction: column;
   padding: 1.25rem 1.25rem 1.5rem;
-  /* Clip anything that overflows â€” belt-and-suspenders */
+  /* Clip anything that overflows — belt-and-suspenders */
   overflow: hidden;
 `;
-
 const Title = styled.h3`
   font-family: ${({ theme }) => theme.fonts.heading};
   font-size: ${({ theme }) => theme.fontSizes.h3};
   color: ${({ theme }) => theme.colors.textPrimary};
   margin-bottom: 0.5rem;
   line-height: 1.25;
-  /* Always 2 lines max so titles don't push content down */
+
+  /* truncate to 2 lines with ellipsis — works on all content lengths */
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  word-break: break-word;       /* breaks very long single words like URLs */
+
   transition: color 0.2s ease;
 
   ${CardLink}:hover & {
-    color: ${({ theme }) => theme.colors.gradientPinkBlue};
+    background: ${({ theme }) => theme.colors.gradientPinkBlue};
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    /* re-assert clamp so ellipsis survives gradient paint */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 `;
 
@@ -1043,7 +684,7 @@ const Desc = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   margin-bottom: 1rem;
   line-height: 1.6;
-  /* Always exactly 3 lines â€” long or short descriptions look identical */
+  /* Always exactly 3 lines — long or short descriptions look identical */
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -1093,7 +734,7 @@ const ArrowChip = styled(motion.span)`
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\effects\ComicGrid.jsx
+### src\components\effects\ComicGrid.jsx
 
 ```
 // src/components/effects/ComicGrid.jsx
@@ -1113,7 +754,7 @@ const Grid = styled.div`
   -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
 `;
 
-/* Larger panel divider lines â€” like actual comic panel borders */
+/* Larger panel divider lines — like actual comic panel borders */
 const PanelLines = styled.div`
   position: fixed;
   inset: 0;
@@ -1136,207 +777,258 @@ export default ComicGrid;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\effects\FloatingShapes.jsx
+### src\components\effects\FloatingShapes.jsx
 
 ```
 // src/components/effects/FloatingShapes.jsx
 //
-// Props:
-//   hideOnMobile={true}  â€” default, hides on touch devices
-//   hideOnMobile={false} â€” shows on mobile with:
-//                          â€¢ slow auto-spin CSS animation when idle
-//                          â€¢ gyroscope tilt moves shapes (Android auto, iOS needs first tap)
-//                          â€¢ touchmove fallback if no gyro
+// ROOT CAUSE FIX (desktop parallax + spin conflict):
+// The RAF loop wrote `el.style.transform = translate(x,y)` which overwrote the
+// CSS `animation: rotate()` on the same element every frame — killing the spin,
+// and the spin's rotate() overwrote the translate — killing the parallax.
+//
+// Fix: two-layer DOM structure.
+//   • ShapeEl (outer div) → RAF writes translate(x,y)   — parallax only
+//   • SpinEl  (inner div) → CSS animation rotate()      — spin only
+// The two transforms live on separate elements and can NEVER conflict.
+//
+// PROPS (all optional):
+//   mobileMode       'hide' | 'spin' | 'gyro'    default 'gyro'
+//   desktopSpin      boolean                       default true
+//   desktopParallax  boolean                       default true
+//   gyroSensitivity  number (degrees)              default 18
 
 import { useEffect, useRef } from 'react';
 import styled, { keyframes, css } from 'styled-components';
-const IS_TOUCH = typeof window !== 'undefined' &&
+
+/* ─── Touch detection ────────────────────────────────────────────────────── */
+const IS_TOUCH =
+  typeof window !== 'undefined' &&
   window.matchMedia('(pointer: coarse)').matches;
 
-// Slow idle spin â€” only plays on mobile, stops when gyro/touch takes over
+/* ─── Keyframe ───────────────────────────────────────────────────────────── */
 const spinSlow = keyframes`
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 `;
 
-const ShapeWrap = styled.div`
-  position: fixed;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-  overflow: hidden;
-`;
+/* ─── Styled components ──────────────────────────────────────────────────── */
+
+/**
+ * OUTER wrapper — RAF writes translate(x, y) here for parallax.
+ * position:fixed so scroll never repositions it.
+ * will-change:transform reserves a GPU compositing layer permanently.
+ */
 const ShapeEl = styled.div`
-  position: absolute;
-  will-change: transform;
+  position: fixed;
+  pointer-events: none;
+  z-index: 3;
   opacity: ${({ $opacity }) => $opacity};
-  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5))
-          drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-
-  svg {
-    ${IS_TOUCH &&
-    css`
-      animation: ${spinSlow} ${({ $spinDuration }) => $spinDuration || "12s"} linear infinite;
-      transform-origin: center;
-    `}
-  }
+  will-change: transform;   /* GPU layer always ready — safe because it's already composited */
 `;
 
+/**
+ * INNER wrapper — CSS animation rotate() lives here exclusively.
+ * RAF never touches this element, so rotate is never clobbered.
+ */
+const SpinEl = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center;
+
+  ${({ $spin, $dur }) =>
+    $spin &&
+    css`
+      animation: ${spinSlow} ${$dur} linear infinite;
+      will-change: transform;
+    `}
+`;
+
+/* ─── Shape data ─────────────────────────────────────────────────────────── */
 const shapes = [
   {
     svg: (
-      <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
-        <polygon points="45,5 85,30 85,60 45,85 5,60 5,30"
-          stroke="rgba(255,45,107,0.5)" strokeWidth="1.5" fill="rgba(255,45,107,0.06)" />
-        <polygon points="45,15 75,32 75,58 45,75 15,58 15,32"
-          stroke="rgba(255,45,107,0.2)" strokeWidth="1" fill="none" />
+      <svg width="90" height="90" viewBox="0 0 90 90" fill="none" overflow="visible">
+        <defs>
+          <filter id="ds0" x="-50%" y="-50%" width="200%" height="200%">
+            <feDropShadow dx="0" dy="8" stdDeviation="12" floodColor="#000" floodOpacity="0.5" />
+          </filter>
+        </defs>
+        <g filter="url(#ds0)">
+          <polygon points="45,5 85,30 85,60 45,85 5,60 5,30"
+            stroke="rgba(255,45,107,0.5)" strokeWidth="1.5" fill="rgba(255,45,107,0.06)" />
+          <polygon points="45,15 75,32 75,58 45,75 15,58 15,32"
+            stroke="rgba(255,45,107,0.2)" strokeWidth="1" fill="none" />
+        </g>
       </svg>
     ),
-    x: '4%', y: '18%', depth: 0.018, opacity: 0.85, spinDuration: '14s',
+    x: '4%', y: '18%', depth: 0.018, opacity: 0.85, spinDur: '14s',
   },
   {
     svg: (
-      <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-        <circle cx="30" cy="30" r="28" stroke="rgba(0,232,157,0.4)" strokeWidth="1.5" fill="rgba(0,232,157,0.05)" />
-        <circle cx="30" cy="30" r="20" stroke="rgba(0,232,157,0.2)" strokeWidth="1" fill="none" />
-        <line x1="30" y1="2" x2="30" y2="58" stroke="rgba(0,232,157,0.15)" strokeWidth="0.8" />
-        <line x1="2" y1="30" x2="58" y2="30" stroke="rgba(0,232,157,0.15)" strokeWidth="0.8" />
+      <svg width="60" height="60" viewBox="0 0 60 60" fill="none" overflow="visible">
+        <defs>
+          <filter id="ds1" x="-50%" y="-50%" width="200%" height="200%">
+            <feDropShadow dx="0" dy="6" stdDeviation="10" floodColor="#000" floodOpacity="0.45" />
+          </filter>
+        </defs>
+        <g filter="url(#ds1)">
+          <circle cx="30" cy="30" r="28" stroke="rgba(0,232,157,0.4)" strokeWidth="1.5" fill="rgba(0,232,157,0.05)" />
+          <circle cx="30" cy="30" r="20" stroke="rgba(0,232,157,0.2)" strokeWidth="1" fill="none" />
+          <line x1="30" y1="2" x2="30" y2="58" stroke="rgba(0,232,157,0.15)" strokeWidth="0.8" />
+          <line x1="2" y1="30" x2="58" y2="30" stroke="rgba(0,232,157,0.15)" strokeWidth="0.8" />
+        </g>
       </svg>
     ),
-    x: '88%', y: '20%', depth: 0.025, opacity: 0.9, spinDuration: '10s',
+    x: '88%', y: '20%', depth: 0.025, opacity: 0.9, spinDur: '10s',
   },
   {
     svg: (
-      <svg width="80" height="70" viewBox="0 0 80 70" fill="none">
-        <polygon points="40,5 75,65 5,65"
-          stroke="rgba(59,130,246,0.45)" strokeWidth="1.5" fill="rgba(59,130,246,0.06)" />
-        <polygon points="40,18 64,60 16,60"
-          stroke="rgba(59,130,246,0.2)" strokeWidth="0.8" fill="none" />
+      <svg width="80" height="70" viewBox="0 0 80 70" fill="none" overflow="visible">
+        <defs>
+          <filter id="ds2" x="-50%" y="-50%" width="200%" height="200%">
+            <feDropShadow dx="0" dy="8" stdDeviation="12" floodColor="#000" floodOpacity="0.5" />
+          </filter>
+        </defs>
+        <g filter="url(#ds2)">
+          <polygon points="40,5 75,65 5,65"
+            stroke="rgba(59,130,246,0.45)" strokeWidth="1.5" fill="rgba(59,130,246,0.06)" />
+          <polygon points="40,18 64,60 16,60"
+            stroke="rgba(59,130,246,0.2)" strokeWidth="0.8" fill="none" />
+        </g>
       </svg>
     ),
-    x: '82%', y: '62%', depth: 0.012, opacity: 0.8, spinDuration: '18s',
+    x: '82%', y: '62%', depth: 0.012, opacity: 0.8, spinDur: '18s',
   },
   {
     svg: (
-      <svg width="50" height="50" viewBox="0 0 50 50" fill="none">
-        <rect x="5" y="5" width="40" height="40" rx="4"
-          stroke="rgba(255,107,74,0.4)" strokeWidth="1.5" fill="rgba(255,107,74,0.05)"
-          transform="rotate(20 25 25)" />
-        <rect x="12" y="12" width="26" height="26" rx="3"
-          stroke="rgba(255,107,74,0.2)" strokeWidth="0.8" fill="none"
-          transform="rotate(20 25 25)" />
+      <svg width="50" height="50" viewBox="0 0 50 50" fill="none" overflow="visible">
+        <defs>
+          <filter id="ds3" x="-50%" y="-50%" width="200%" height="200%">
+            <feDropShadow dx="0" dy="4" stdDeviation="8" floodColor="#000" floodOpacity="0.45" />
+          </filter>
+        </defs>
+        <g filter="url(#ds3)">
+          <rect x="5" y="5" width="40" height="40" rx="4"
+            stroke="rgba(255,107,74,0.4)" strokeWidth="1.5" fill="rgba(255,107,74,0.05)"
+            transform="rotate(20 25 25)" />
+          <rect x="12" y="12" width="26" height="26" rx="3"
+            stroke="rgba(255,107,74,0.2)" strokeWidth="0.8" fill="none"
+            transform="rotate(20 25 25)" />
+        </g>
       </svg>
     ),
-    x: '6%', y: '75%', depth: 0.02, opacity: 0.85, spinDuration: '8s',
+    x: '6%', y: '75%', depth: 0.02, opacity: 0.85, spinDur: '8s',
   },
   {
     svg: (
-      <svg width="100" height="60" viewBox="0 0 100 60" fill="none">
-        {[0,30,60,90,120,150,180,210,240,270,300,330].map((deg, i) => (
-          <line key={i}
-            x1="50" y1="30"
-            x2={50 + 44 * Math.cos(deg * Math.PI / 180)}
-            y2={30 + 28 * Math.sin(deg * Math.PI / 180)}
-            stroke="rgba(255,45,107,0.15)"
-            strokeWidth="0.8"
-          />
-        ))}
-        <circle cx="50" cy="30" r="8" stroke="rgba(255,45,107,0.4)" strokeWidth="1.5" fill="rgba(255,45,107,0.08)" />
+      <svg width="100" height="60" viewBox="0 0 100 60" fill="none" overflow="visible">
+        <defs>
+          <filter id="ds4" x="-50%" y="-50%" width="200%" height="200%">
+            <feDropShadow dx="0" dy="6" stdDeviation="10" floodColor="#000" floodOpacity="0.4" />
+          </filter>
+        </defs>
+        <g filter="url(#ds4)">
+          {[0,30,60,90,120,150,180,210,240,270,300,330].map((deg, i) => (
+            <line key={i}
+              x1="50" y1="30"
+              x2={50 + 44 * Math.cos(deg * Math.PI / 180)}
+              y2={30 + 28 * Math.sin(deg * Math.PI / 180)}
+              stroke="rgba(255,45,107,0.15)"
+              strokeWidth="0.8"
+            />
+          ))}
+          <circle cx="50" cy="30" r="8"
+            stroke="rgba(255,45,107,0.4)" strokeWidth="1.5" fill="rgba(255,45,107,0.08)" />
+        </g>
       </svg>
     ),
-    x: '48%', y: '85%', depth: 0.008, opacity: 0.6, spinDuration: '20s',
+    x: '48%', y: '85%', depth: 0.008, opacity: 0.6, spinDur: '20s',
   },
 ];
 
-const FloatingShapes = ({ hideOnMobile = true }) => {
+/* ─── Component ──────────────────────────────────────────────────────────── */
+
+const FloatingShapes = ({
+  mobileMode       = 'gyro',  // 'hide' | 'spin' | 'gyro'
+  desktopSpin      = true,    // spin shapes on desktop
+  desktopParallax  = true,    // mouse parallax on desktop
+  gyroSensitivity  = 18,      // tilt degrees for full travel (lower = more sensitive)
+}) => {
   const elRefs     = useRef([]);
   const targetRef  = useRef({ x: 0, y: 0 });
   const currentRef = useRef(shapes.map(() => ({ x: 0, y: 0 })));
   const frameRef   = useRef(null);
-  // Track if user has interacted â€” used to pause CSS spin once JS takes over
-  const interactedRef = useRef(false);
 
-  // â”€â”€ Input listeners â”€â”€
+  const hidden      = IS_TOUCH && mobileMode === 'hide';
+  const spinOnly    = IS_TOUCH && mobileMode === 'spin';
+  const gyroEnabled = IS_TOUCH && mobileMode === 'gyro';
+
+  // Should SpinEl rotate?
+  const shouldSpin = IS_TOUCH
+    ? mobileMode === 'spin' || mobileMode === 'gyro'
+    : desktopSpin;
+
+  // Should RAF parallax loop run?
+  const needsRAF = !hidden && !spinOnly && (gyroEnabled || (!IS_TOUCH && desktopParallax));
+
+  /* ── Desktop mouse parallax ─────────────────────────────────────────── */
   useEffect(() => {
-    if (hideOnMobile && IS_TOUCH) return;
+    if (IS_TOUCH || !desktopParallax) return;
 
-    if (!IS_TOUCH) {
-      const onMouseMove = (e) => {
-        targetRef.current = {
-          x: e.clientX / window.innerWidth  - 0.5,
-          y: e.clientY / window.innerHeight - 0.5,
-        };
-      };
-      window.addEventListener('mousemove', onMouseMove, { passive: true });
-      return () => window.removeEventListener('mousemove', onMouseMove);
-    }
-
-    // Mobile touchmove â€” stops CSS spin, JS takes over position
-    const touchMoveHandler = (e) => {
-      if (!e.touches.length) return;
-      if (!interactedRef.current) {
-        interactedRef.current = true;
-        // Pause CSS spin animation on all SVGs so JS transform is clean
-        elRefs.current.forEach((el) => {
-          if (el) {
-            const svg = el.querySelector('svg');
-            if (svg) svg.style.animationPlayState = 'paused';
-          }
-        });
-      }
+    const onMouseMove = (e) => {
       targetRef.current = {
-        x: e.touches[0].clientX / window.innerWidth  - 0.5,
-        y: e.touches[0].clientY / window.innerHeight - 0.5,
+        x: e.clientX / window.innerWidth  - 0.5,
+        y: e.clientY / window.innerHeight - 0.5,
       };
     };
+
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    return () => window.removeEventListener('mousemove', onMouseMove);
+  }, [desktopParallax]);
+
+  /* ── Gyroscope (mobile gyro mode only) ──────────────────────────────── */
+  useEffect(() => {
+    if (!gyroEnabled) return;
 
     const gyroHandler = (e) => {
-      if (!interactedRef.current) {
-        interactedRef.current = true;
-        elRefs.current.forEach((el) => {
-          if (el) {
-            const svg = el.querySelector('svg');
-            if (svg) svg.style.animationPlayState = 'paused';
-          }
-        });
-      }
-      targetRef.current = {
-        x: Math.max(-1, Math.min(1, (e.gamma || 0) / 30)),
-        y: Math.max(-1, Math.min(1, ((e.beta  || 0) - 45) / 30)),
-      };
+      const gx = Math.max(-1, Math.min(1, (e.gamma || 0) / gyroSensitivity));
+      const gy = Math.max(-1, Math.min(1, ((e.beta  || 0) - 45) / gyroSensitivity));
+      targetRef.current = { x: gx, y: gy };
     };
 
-    window.addEventListener('touchmove', touchMoveHandler, { passive: true });
+    const attachGyro = () =>
+      window.addEventListener('deviceorientation', gyroHandler, { passive: true });
 
-    const tryGyro = async () => {
+    // iOS 13+: must call requestPermission synchronously inside a user gesture.
+    // .then() keeps execution in the synchronous gesture flush; async/await does not.
+    const onTouchStart = () => {
       if (typeof DeviceOrientationEvent?.requestPermission === 'function') {
-        try {
-          const result = await DeviceOrientationEvent.requestPermission();
-          if (result === 'granted') {
-            window.addEventListener('deviceorientation', gyroHandler, { passive: true });
-          }
-        } catch (_) {}
+        DeviceOrientationEvent.requestPermission()
+          .then((result) => { if (result === 'granted') attachGyro(); })
+          .catch(() => { /* denied — silently stays as spin */ });
       } else {
-        window.addEventListener('deviceorientation', gyroHandler, { passive: true });
+        attachGyro(); // Android + non-iOS
       }
     };
 
-    window.addEventListener('touchstart', tryGyro, { once: true });
-
+    window.addEventListener('touchstart', onTouchStart, { once: true, passive: true });
     return () => {
-      window.removeEventListener('touchmove', touchMoveHandler);
+      window.removeEventListener('touchstart', onTouchStart);
       window.removeEventListener('deviceorientation', gyroHandler);
-      window.removeEventListener('touchstart', tryGyro);
     };
-  }, [hideOnMobile]);
+  }, [gyroEnabled, gyroSensitivity]);
 
-  // â”€â”€ RAF loop â”€â”€
+  /* ── RAF spring loop ────────────────────────────────────────────────── */
   useEffect(() => {
-    if (hideOnMobile && IS_TOUCH) return;
+    if (!needsRAF) return;
 
-    const STIFFNESS = IS_TOUCH ? 0.04 : 0.08;
-    const DAMPING   = IS_TOUCH ? 0.85 : 0.82;
-    const velocity  = shapes.map(() => ({ x: 0, y: 0 }));
+    const STIFFNESS   = IS_TOUCH ? 0.10 : 0.08;
+    const DAMPING     = IS_TOUCH ? 0.80 : 0.82;
+    const DEPTH_SCALE = IS_TOUCH ? 500  : 350;
+
+    const velocity = shapes.map(() => ({ x: 0, y: 0 }));
 
     const tick = () => {
       const tx = targetRef.current.x;
@@ -1346,8 +1038,8 @@ const FloatingShapes = ({ hideOnMobile = true }) => {
         const el = elRefs.current[i];
         if (!el) return;
 
-        const targetX = tx * shape.depth * 800;
-        const targetY = ty * shape.depth * 800;
+        const targetX = tx * shape.depth * DEPTH_SCALE;
+        const targetY = ty * shape.depth * DEPTH_SCALE;
 
         velocity[i].x += (targetX - currentRef.current[i].x) * STIFFNESS;
         velocity[i].y += (targetY - currentRef.current[i].y) * STIFFNESS;
@@ -1356,7 +1048,11 @@ const FloatingShapes = ({ hideOnMobile = true }) => {
         currentRef.current[i].x += velocity[i].x;
         currentRef.current[i].y += velocity[i].y;
 
-        el.style.transform = `translate(${currentRef.current[i].x.toFixed(2)}px, ${currentRef.current[i].y.toFixed(2)}px)`;
+        // Write guard: skip style mutation when shapes are at rest
+        if (Math.abs(velocity[i].x) > 0.001 || Math.abs(velocity[i].y) > 0.001) {
+          // Writes ONLY to ShapeEl (outer). SpinEl (inner) is untouched → spin preserved.
+          el.style.transform = `translate(${currentRef.current[i].x.toFixed(2)}px, ${currentRef.current[i].y.toFixed(2)}px)`;
+        }
       });
 
       frameRef.current = requestAnimationFrame(tick);
@@ -1364,24 +1060,26 @@ const FloatingShapes = ({ hideOnMobile = true }) => {
 
     frameRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frameRef.current);
-  }, [hideOnMobile]);
+  }, [needsRAF]);
 
-  const hidden = hideOnMobile && IS_TOUCH;
+  /* ── Render ─────────────────────────────────────────────────────────── */
+  if (hidden) return null;
 
   return (
-    <ShapeWrap style={{ display: hidden ? 'none' : 'block' }}>
+    <>
       {shapes.map((s, i) => (
         <ShapeEl
           key={i}
           ref={(el) => (elRefs.current[i] = el)}
           $opacity={s.opacity}
-          $spinDuration={s.spinDuration}
           style={{ left: s.x, top: s.y }}
         >
-          {s.svg}
+          <SpinEl $spin={shouldSpin} $dur={s.spinDur}>
+            {s.svg}
+          </SpinEl>
         </ShapeEl>
       ))}
-    </ShapeWrap>
+    </>
   );
 };
 
@@ -1389,7 +1087,7 @@ export default FloatingShapes;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\effects\ParallaxWrapper.jsx
+### src\components\effects\ParallaxWrapper.jsx
 
 ```
 // // components/effects/FloatingShapes.jsx
@@ -1425,10 +1123,10 @@ export default FloatingShapes;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\effects\SectionWave.jsx
+### src\components\effects\SectionWave.jsx
 
 ```
-// src/components/effects/SectionWave.jsx â€” NEW FILE
+// src/components/effects/SectionWave.jsx — NEW FILE
 import styled, { keyframes } from 'styled-components';
 
 const drift = keyframes`
@@ -1465,20 +1163,25 @@ export default SectionWave;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\effects\WaterWaves.jsx
+### src\components\effects\WaterWaves.jsx
 
 ```
 // src/components/effects/WaterWaves.jsx
-// PERFORMANCE FIXES:
-// 1. Reduced from 5 layers to 3 â€” each SVG path is a full GPU layer
-// 2. CSS animations removed from Wave styled component â€” only JS RAF drives motion
-//    (mixing CSS animation + JS setAttribute on same element causes double work)
-// 3. overflow: hidden on wrapper â€” prevents SVG width:200% from causing
-//    horizontal scroll / layout recalculation
-// 4. Touch support added (touchmove)
+//
+// PERFORMANCE FIXES vs previous version:
+// 1. Removed will-change:transform from Wave SVG elements — will-change only accelerates
+//    CSS transform/opacity. These elements change via setAttribute('d') on the inner path,
+//    so will-change:transform was promoting 3 GPU layers for zero benefit and wasting VRAM.
+// 2. Added mobile RAF throttle — runs at 30fps on touch devices instead of 60fps.
+//    Waves are subtle background elements; 30fps is imperceptible but halves GPU work.
+// 3. Path point reduction kept from previous version (80 points, was 120).
+// 4. 3 layers kept from previous version (was 5).
 
 import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
+
+const IS_TOUCH = typeof window !== 'undefined' &&
+  window.matchMedia('(pointer: coarse)').matches;
 
 const WaveWrap = styled.div`
   position: fixed;
@@ -1488,24 +1191,22 @@ const WaveWrap = styled.div`
   height: 120px;
   pointer-events: none;
   z-index: 10;
-  overflow: hidden; /* FIXED: prevents 200%-width SVG from causing h-scroll */
+  overflow: hidden;
 `;
 
-// No CSS animation here â€” JS RAF drives everything
-// Mixing CSS keyframe + JS setAttribute on same element = double paint
+// will-change removed — SVG path 'd' changes are NOT accelerated by will-change:transform
 const Wave = styled.svg`
   position: absolute;
   bottom: 0;
   width: 200%;
   height: 100%;
-  will-change: transform;
   opacity: ${({ $opacity }) => $opacity};
 `;
 
 function buildWavePath(amp, phase, freq, baseline = 40, height = 80) {
-  const W = 1440;
-  const pts = 80; // FIXED: reduced from 120 â€” 80 points is visually identical but faster
-  let d = `M0,${baseline + amp * Math.sin(phase * Math.PI * 2)} `;
+  const W   = 1440;
+  const pts = IS_TOUCH ? 50 : 80; // fewer points on mobile — visually identical
+  let d = `M0,${(baseline + amp * Math.sin(phase * Math.PI * 2)).toFixed(1)} `;
   for (let i = 1; i <= pts; i++) {
     const x = (i / pts) * W;
     const y = baseline + amp * Math.sin((i / pts) * freq * Math.PI * 2 + phase * Math.PI * 2);
@@ -1515,7 +1216,6 @@ function buildWavePath(amp, phase, freq, baseline = 40, height = 80) {
   return d;
 }
 
-// FIXED: 3 layers instead of 5 â€” halves SVG paint cost
 const LAYERS = [
   { speed: 0.055, opacity: 0.13, fill: 'url(#wg1)', amp: 16, freq: 1.8, baseline: 32, influence: 0.6 },
   { speed: 0.045, opacity: 0.18, fill: 'url(#wg2)', amp: 12, freq: 2.4, baseline: 38, influence: 1.0 },
@@ -1528,44 +1228,44 @@ const GRADIENTS = [
   ['#FF2D6B', '#0D0F14'],
 ];
 
+// Mobile: throttle to ~30fps to halve GPU work on subtle background element
+const FRAME_INTERVAL = IS_TOUCH ? 1000 / 30 : 0;
+
 const WaterWaves = () => {
   const pathRefs  = useRef([]);
   const phaseRefs = useRef(LAYERS.map(() => 0));
   const cursorRef = useRef({ x: 0.5, vy: 0 });
   const frameRef  = useRef(null);
   const lastY     = useRef(null);
+  const lastFrameTimeRef = useRef(0);
 
   useEffect(() => {
-    const onMouseMove = (e) => {
-      const nx = e.clientX / window.innerWidth;
-      const ny = e.clientY / window.innerHeight;
-      const prevY = lastY.current ?? ny;
-      cursorRef.current = { x: nx, vy: (ny - prevY) * 60 };
-      lastY.current = ny;
-    };
-
-    const onTouchMove = (e) => {
-      if (!e.touches.length) return;
-      const t = e.touches[0];
-      const nx = t.clientX / window.innerWidth;
-      const ny = t.clientY / window.innerHeight;
-      const prevY = lastY.current ?? ny;
-      cursorRef.current = { x: nx, vy: (ny - prevY) * 40 };
-      lastY.current = ny;
-    };
-
-    window.addEventListener('mousemove', onMouseMove, { passive: true });
-    window.addEventListener('touchmove', onTouchMove,  { passive: true });
-    return () => {
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('touchmove', onTouchMove);
-    };
+    // Desktop: mouse moves influence waves
+    if (!IS_TOUCH) {
+      const onMouseMove = (e) => {
+        const nx = e.clientX / window.innerWidth;
+        const ny = e.clientY / window.innerHeight;
+        const prevY = lastY.current ?? ny;
+        cursorRef.current = { x: nx, vy: (ny - prevY) * 60 };
+        lastY.current = ny;
+      };
+      window.addEventListener('mousemove', onMouseMove, { passive: true });
+      return () => window.removeEventListener('mousemove', onMouseMove);
+    }
+    // Mobile: no touch input for waves — they just animate autonomously
   }, []);
 
   useEffect(() => {
     let lastTime = performance.now();
 
     const tick = (now) => {
+      // Throttle on mobile
+      if (IS_TOUCH && now - lastFrameTimeRef.current < FRAME_INTERVAL) {
+        frameRef.current = requestAnimationFrame(tick);
+        return;
+      }
+      lastFrameTimeRef.current = now;
+
       const dt = Math.min((now - lastTime) / 1000, 0.05);
       lastTime = now;
       const { x: cx, vy } = cursorRef.current;
@@ -1618,7 +1318,7 @@ export default WaterWaves;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\home\About.jsx
+### src\components\home\About.jsx
 
 ```
 import styled from 'styled-components';
@@ -1733,9 +1433,9 @@ const CardBack = styled(CardFace)`
 
 // Extra facts to show on card back:
 const traitBackContent = {
-  Creative: "Building things that feel alive, not just functional.",
-  Strategic: "I map systems before I write the first line.",
-  Builder: "Shipped in 3 companies. Always learning.",
+  Creative: "Designing experiences that feel intuitive and alive.",
+  Strategic: "Thinking in systems before writing code.",
+  Builder: "Learning fastest by building real products.",
 };
 
 const About = ({personalInfo}) => {
@@ -1775,7 +1475,7 @@ export default About;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\home\Counters.jsx
+### src\components\home\Counters.jsx
 
 ```
 import styled from 'styled-components';
@@ -1854,7 +1554,7 @@ export default Counters;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\home\FeaturedProjects.jsx
+### src\components\home\FeaturedProjects.jsx
 
 ```
 import { useState, useEffect } from 'react';
@@ -1965,7 +1665,7 @@ const FeaturedProjects = () => {
       </motion.div>
 
       <Footer>
-        <ViewAllLink to="/case-studies">View All Work â†’</ViewAllLink>
+        <ViewAllLink to="/case-studies">View All Work →</ViewAllLink>
       </Footer>
     </Section>
   );
@@ -1975,7 +1675,7 @@ export default FeaturedProjects;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\home\Hero.jsx
+### src\components\home\Hero.jsx
 
 ```
 import styled from 'styled-components';
@@ -2034,7 +1734,7 @@ const RoleText = styled.span`
   min-height: 2rem;
 
   &::after {
-    content: 'â–Œ';
+    content: '▌';
     animation: blink 1s step-end infinite;
   }
 
@@ -2260,7 +1960,7 @@ const Hero = ({personalInfo}) => {
           <motion.div variants={fadeUp}>
          <Buttons>
             <MagneticButton as="a" href="/case-studies" style={{ whiteSpace: 'nowrap' }}>
-              View Work â†’
+              View Work →
             </MagneticButton>
             <ResumeBtn
               href="/resume.pdf"
@@ -2268,7 +1968,7 @@ const Hero = ({personalInfo}) => {
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.97 }}
             >
-              <span>â†“ Resume</span>
+              <span>↓ Resume</span>
             </ResumeBtn>
             <MagneticButton variant="outline" as="a" href="/contact" style={{ whiteSpace: 'nowrap' }}>
               Contact
@@ -2304,14 +2004,14 @@ export default Hero;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\home\SkillsMarquee.jsx
+### src\components\home\SkillsMarquee.jsx
 
 ```
 import styled, { keyframes } from 'styled-components';
 // import { skills } from '../../data/siteData';
 
 import Tilt from 'react-parallax-tilt';
-
+import * as SiIcons from "react-icons/si";
 const scroll = keyframes`
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
@@ -2329,7 +2029,6 @@ const Track = styled.div`
   animation: ${scroll} 30s linear infinite;
   &:hover { animation-play-state: paused; }
 `;
-
 const Pill = styled.div`
   display: flex;
   align-items: center;
@@ -2345,6 +2044,13 @@ const Pill = styled.div`
   transition: ${({ theme }) => theme.transitions.fast};
   cursor: default;
 
+  svg {
+    font-size: 1rem;
+    opacity: 0.9;
+  }
+&:hover svg {
+  transform: scale(1.1);
+}
   &:hover {
     border-color: ${({ theme }) => theme.colors.borderAccent};
     color: ${({ theme }) => theme.colors.textPrimary};
@@ -2365,23 +2071,28 @@ const SkillsMarquee = ({skills}) => {
   return (
     <Wrapper>
       <Track>
-        {doubled.map((skill, i) => (
-          <Tilt
-          key={`${skill.name}-${i}`}
-  tiltMaxAngleX={15}
-  tiltMaxAngleY={15}
-  glareEnable={true}
-  glareMaxOpacity={0.08}
-  glareColor="#FF2D6B"
-  scale={1.05}
-  transitionSpeed={400}
->
-  <Pill key={`${skill.name}-${i}`}>
-    <SkillDot />
-    {skill.name}
-  </Pill>
-</Tilt>
-        ))}
+        {doubled.map((skill, i) => {
+  const Icon = SiIcons[skill.icon];
+
+  return (
+    <Tilt
+      key={`${skill.name}-${i}`}
+      tiltMaxAngleX={15}
+      tiltMaxAngleY={15}
+      glareEnable={true}
+      glareMaxOpacity={0.08}
+      glareColor="#FF2D6B"
+      scale={1.05}
+      transitionSpeed={400}
+    >
+      <Pill>
+        <SkillDot/>
+        {Icon && <Icon size={16} />}
+        {skill.name}
+      </Pill>
+    </Tilt>
+  );
+})}
       </Track>
     </Wrapper>
   );
@@ -2391,7 +2102,7 @@ export default SkillsMarquee;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\home\Timeline.jsx
+### src\components\home\Timeline.jsx
 
 ```
 // src/components/sections/Timeline.jsx
@@ -2404,7 +2115,7 @@ import Tag from '../ui/Tag';
 import { media } from '../../../media';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 
-/* â”€â”€ Animated line draw â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Animated line draw ─────────────────────────────── */
 const linePulse = keyframes`
   0%, 100% { box-shadow: 0 0 6px rgba(74,222,128,0.6),  0 0 20px rgba(74,222,128,0.2); }
   50%       { box-shadow: 0 0 12px rgba(74,222,128,0.9), 0 0 36px rgba(74,222,128,0.4); }
@@ -2416,7 +2127,7 @@ const dotPop = keyframes`
   100% { transform: translateX(-50%) scale(1); opacity: 1; }
 `;
 
-/* â”€â”€ Layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Layout ─────────────────────────────────────────── */
 const Section = styled.section`
   padding: ${({ theme }) => theme.spacing.section} clamp(1.25rem, 5vw, 4rem);
   max-width: 1100px;
@@ -2450,7 +2161,7 @@ const TrackLine = styled.div`
   }
 `;
 
-/* Animated green progress line â€” height driven by scroll */
+/* Animated green progress line — height driven by scroll */
 const ProgressLine = styled(motion.div)`
   position: absolute;
   top: 0;
@@ -2491,7 +2202,7 @@ const LineTip = styled(motion.div)`
   box-shadow: 0 0 12px rgba(74,222,128,0.9), 0 0 28px rgba(74,222,128,0.5);
 `;
 
-/* â”€â”€ Timeline items â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Timeline items ─────────────────────────────────── */
 const List = styled.div`
   position: relative;
 `;
@@ -2607,7 +2318,7 @@ const Tags = styled.div`
   gap: 0.5rem;
 `;
 
-/* â”€â”€ Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Component ──────────────────────────────────────── */
 const Timeline = ({experience}) => {
   const sectionRef = useRef(null);
   const { ref: revealRef, inView } = useScrollReveal({ once: false, threshold: 0.05 });
@@ -2625,7 +2336,7 @@ const Timeline = ({experience}) => {
     restDelta: 0.001,
   });
 
-  // Height of the green line: 0% â†’ 100% of the container
+  // Height of the green line: 0% → 100% of the container
   const lineHeight = useTransform(smoothProgress, [0, 1], ['0%', '100%']);
 
   return (
@@ -2643,7 +2354,7 @@ const Timeline = ({experience}) => {
 
         <List ref={revealRef}>
           {experience.map((exp, i) => {
-            // Desktop: even â†’ card left, odd â†’ card right
+            // Desktop: even → card left, odd → card right
             // Mobile: always left (CSS handles it)
             const side = i % 2 === 0 ? 'left' : 'right';
 
@@ -2681,7 +2392,7 @@ const Timeline = ({experience}) => {
                     <PanelCorner $pos="tl" />
                     <PanelCorner $pos="br" />
                     <Role>{exp.role}</Role>
-                    <Company>{exp.company}</Company> Â· {exp.location}
+                    <Company>{exp.company}</Company> · {exp.location}
                     <Period>{exp.period}</Period>
                     <Desc>{exp.description}</Desc>
                     <Tags>
@@ -2704,7 +2415,7 @@ export default Timeline;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\layout\Footer.jsx
+### src\components\layout\Footer.jsx
 
 ```
 import styled, { keyframes } from "styled-components";
@@ -2735,7 +2446,7 @@ const Footer = () => (
       {/* Brand */}
       <Brand>
         <BrandName>{personalInfo.name} {personalInfo.lastName}</BrandName>
-        <BrandSub>Full Stack Engineer Â¦ 4 Years Building the Future</BrandSub>
+        <BrandSub>Full Stack Engineer ¦ 4 Years Building the Future</BrandSub>
         <AvailBadge>
           <PulseDot />
           Open to opportunities
@@ -2778,9 +2489,9 @@ const Footer = () => (
 
     {/* Bottom strip */}
     <BottomStrip>
-      <Copyright>Â© {new Date().getFullYear()} {personalInfo.name} {personalInfo.lastName}. Built with React + Flask.</Copyright>
+      <Copyright>© {new Date().getFullYear()} {personalInfo.name} {personalInfo.lastName}. Built with React + Flask.</Copyright>
       <MadeWith>
-        Made with <Heart>â™¥</Heart> and too much coffee
+        Made with <Heart>♥</Heart> and too much coffee
       </MadeWith>
     </BottomStrip>
   </FooterWrap>
@@ -2788,9 +2499,9 @@ const Footer = () => (
 
 export default Footer;
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────────────────────
    STYLES
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────────────────────── */
 
 const FooterWrap = styled.footer`
   margin-top: auto;
@@ -2965,7 +2676,7 @@ const Heart = styled.span`
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\layout\Navbar.jsx
+### src\components\layout\Navbar.jsx
 
 ```
 import { useState, useEffect } from "react";
@@ -3266,7 +2977,7 @@ export default Navbar;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\layout\NoiseOverlay.jsx
+### src\components\layout\NoiseOverlay.jsx
 
 ```
 import styled from 'styled-components';
@@ -3290,43 +3001,28 @@ export default NoiseOverlay;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\layout\PageTransition.jsx
+### src\components\layout\PageTransition.jsx
 
 ```
 // src/components/layout/PageTransition.jsx
-// ROOT CAUSE OF GLITCH:
-// 1. filter:blur() triggers full-layer repaint on EVERY animation frame â€” extremely expensive
-// 2. clip-path animation while blur is active = double repaint cost
-// 3. AnimatePresence "wait" mode means old page stays mounted during exit,
-//    new page mounts after â€” both pages fighting for same RAF budget
 //
-// FIX: Remove all blur(), use a fast opacity+translateY fade,
-// keep clip-path only on desktop where GPU is strong enough.
+// PERF FIX: Exit cut to 150ms and App.jsx should use mode="wait" not mode="sync".
+// mode="sync" renders both old + new page simultaneously = double render cost on low-end devices.
+// mode="wait" exits old page fully before mounting new one — one page in DOM at a time.
 
 import { motion } from 'framer-motion';
 
-// Smooth fade-up â€” works perfectly on both desktop and mobile
-// No blur = no repaint = buttery smooth
 const fadeUpVariants = {
-  initial: {
-    opacity: 0,
-    y: 16,
-  },
+  initial: { opacity: 0, y: 14 },
   animate: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.35,
-      ease: [0.25, 0.46, 0.45, 0.94],
-    },
+    transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] },
   },
   exit: {
     opacity: 0,
-    y: -12,
-    transition: {
-      duration: 0.2,
-      ease: [0.25, 0.46, 0.45, 0.94],
-    },
+    y: -8,
+    transition: { duration: 0.15, ease: [0.25, 0.46, 0.45, 0.94] },
   },
 };
 
@@ -3336,10 +3032,7 @@ const PageTransition = ({ children }) => (
     initial="initial"
     animate="animate"
     exit="exit"
-    style={{
-      // Only tell GPU about opacity + transform â€” NOT filter or clip-path
-      willChange: 'opacity, transform',
-    }}
+    style={{ willChange: 'opacity, transform' }}
   >
     {children}
   </motion.div>
@@ -3349,7 +3042,7 @@ export default PageTransition;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\layout\ScrollProgress.jsx
+### src\components\layout\ScrollProgress.jsx
 
 ```
 import styled from 'styled-components';
@@ -3376,7 +3069,7 @@ export default ScrollProgress;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\layout\ScrollToTop.jsx
+### src\components\layout\ScrollToTop.jsx
 
 ```
 import { useLayoutEffect } from "react";
@@ -3396,7 +3089,104 @@ export default ScrollToTop;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\ui\CustomCursor.jsx
+### src\components\ui\AdminCardSkeleton.jsx
+
+```
+// src/components/ui/AdminCardSkeleton.jsx
+import styled, { keyframes,css  } from "styled-components";
+
+/**
+ * Props
+ * ─────
+ * count   number   how many skeleton cards to render   default 6
+ */
+const AdminCardSkeleton = ({ count = 6 }) => (
+  <>
+    {Array.from({ length: count }).map((_, i) => (
+      <SkeletonCard key={i}>
+        {/* shimmer top bar */}
+        <SkeletonBar style={{ width: "35%", height: "10px", marginBottom: "1rem" }} />
+        {/* title */}
+        <SkeletonBar style={{ width: "85%", height: "14px", marginBottom: "6px" }} />
+        <SkeletonBar style={{ width: "60%", height: "14px", marginBottom: "1.1rem" }} />
+        {/* chip */}
+        <SkeletonChip />
+        {/* body lines */}
+        <SkeletonBar style={{ width: "100%", height: "10px", marginBottom: "5px" }} />
+        <SkeletonBar style={{ width: "90%",  height: "10px", marginBottom: "5px" }} />
+        <SkeletonBar style={{ width: "70%",  height: "10px", marginBottom: "1.25rem" }} />
+        {/* status row */}
+        <SkeletonStatusRow>
+          <SkeletonDot />
+          <SkeletonBar style={{ width: "50px", height: "9px" }} />
+        </SkeletonStatusRow>
+      </SkeletonCard>
+    ))}
+  </>
+);
+
+export default AdminCardSkeleton;
+
+/* ── styles ── */
+
+const shimmer = keyframes`
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+`;
+
+const shimmerBg = ({ theme }) => css`
+  background: linear-gradient(
+    90deg,
+    ${theme.colors.bgTertiary}        0%,
+    ${theme.colors.borderHover}       40%,
+    ${theme.colors.bgTertiary}        80%
+  );
+  background-size: 600px 100%;
+  animation: ${shimmer} 1.6s linear infinite;
+`;
+
+const SkeletonCard = styled.div`
+  background: ${({ theme }) => theme.colors.bgSecondary};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+`;
+
+const SkeletonBar = styled.div`
+  border-radius: 6px;
+  ${shimmerBg}
+`;
+
+const SkeletonChip = styled.div`
+  width: 68px;
+  height: 18px;
+  border-radius: 999px;
+  margin-bottom: 0.65rem;
+  ${shimmerBg}
+`;
+
+const SkeletonStatusRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 0.85rem;
+  border-top: 1px solid ${({ theme }) => theme.colors.borderDefault};
+`;
+
+const SkeletonDot = styled.div`
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  ${shimmerBg}
+`;
+```
+
+
+### src\components\ui\CustomCursor.jsx
 
 ```
 // src/components/ui/CustomCursor.jsx
@@ -3530,7 +3320,117 @@ export default CustomCursor;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\ui\FilterTab.jsx
+### src\components\ui\EmptyState.jsx
+
+```
+// src/components/ui/EmptyState.jsx
+import styled, { keyframes } from "styled-components";
+import { motion } from "framer-motion";
+
+/**
+ * Props
+ * ─────
+ * icon     string   emoji or character shown large   default "📭"
+ * title    string   bold heading                     default "Nothing here yet"
+ * message  string   subtext                          default ""
+ * action   node     optional CTA button/element      default null
+ */
+const EmptyState = ({
+  icon    = "📭",
+  title   = "Nothing here yet",
+  message = "",
+  action  = null,
+}) => (
+  <Wrap
+    as={motion.div}
+    initial={{ opacity: 0, y: 12 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.35, ease: "easeOut" }}
+  >
+    <IconRing>
+      <IconPulse />
+      <IconEl>{icon}</IconEl>
+    </IconRing>
+    <Title>{title}</Title>
+    {message && <Message>{message}</Message>}
+    {action && <ActionWrap>{action}</ActionWrap>}
+  </Wrap>
+);
+
+export default EmptyState;
+
+/* ── styles ── */
+
+const floatAnim = keyframes`
+  0%,100% { transform: translateY(0px); }
+  50%      { transform: translateY(-6px); }
+`;
+
+const pulseRing = keyframes`
+  0%   { transform: scale(0.92); opacity: 0.5; }
+  70%  { transform: scale(1.12); opacity: 0; }
+  100% { transform: scale(0.92); opacity: 0; }
+`;
+
+const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  gap: 0.75rem;
+`;
+
+const IconRing = styled.div`
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+`;
+
+const IconPulse = styled.div`
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid ${({ theme }) => theme.colors.accentPink};
+  opacity: 0;
+  animation: ${pulseRing} 2.4s ease-out infinite;
+`;
+
+const IconEl = styled.div`
+  font-size: 2.5rem;
+  line-height: 1;
+  animation: ${floatAnim} 3s ease-in-out infinite;
+  filter: drop-shadow(0 4px 12px ${({ theme }) => theme.colors.accentPinkGlow});
+`;
+
+const Title = styled.h3`
+  font-family: ${({ theme }) => theme.fonts.heading};
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.textPrimary};
+  margin: 0;
+`;
+
+const Message = styled.p`
+  font-size: 0.875rem;
+  color: ${({ theme }) => theme.colors.textTertiary};
+  max-width: 28ch;
+  line-height: 1.6;
+  margin: 0;
+`;
+
+const ActionWrap = styled.div`
+  margin-top: 0.75rem;
+`;
+```
+
+
+### src\components\ui\FilterTab.jsx
 
 ```
 import styled from 'styled-components';
@@ -3561,7 +3461,7 @@ export default FilterTab;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\ui\FloatingInput.jsx
+### src\components\ui\FloatingInput.jsx
 
 ```
 import styled from 'styled-components';
@@ -3642,7 +3542,7 @@ export const FloatingTextArea = ({ label, ...props }) => (
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\ui\LoadingScreen.jsx
+### src\components\ui\LoadingScreen.jsx
 
 ```
 import { useEffect, useState } from "react";
@@ -3659,7 +3559,7 @@ const LoadingScreen = ({ done = false, minMs = 1800 }) => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    /* Animate progress bar from 0 â†’ 100 over minMs */
+    /* Animate progress bar from 0 → 100 over minMs */
     const start = performance.now();
     let raf;
 
@@ -3700,7 +3600,7 @@ const LoadingScreen = ({ done = false, minMs = 1800 }) => {
               <LogoGlitch2 aria-hidden>DA</LogoGlitch2>
             </LogoWrap>
 
-            <TagLine>Initialising Panel Oneâ€¦</TagLine>
+            <TagLine>Initialising Panel One…</TagLine>
 
             {/* Progress bar */}
             <BarTrack>
@@ -3718,7 +3618,7 @@ const LoadingScreen = ({ done = false, minMs = 1800 }) => {
             </Dots>
           </Inner>
 
-          {/* Corner panel marks â€” comic aesthetic */}
+          {/* Corner panel marks — comic aesthetic */}
           <Corner $pos="tl" />
           <Corner $pos="tr" />
           <Corner $pos="bl" />
@@ -3731,7 +3631,7 @@ const LoadingScreen = ({ done = false, minMs = 1800 }) => {
 
 export default LoadingScreen;
 
-/* â”€â”€â”€ Keyframes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─── Keyframes ──────────────────────────────────────── */
 
 const scanLine = keyframes`
   0%   { top: -2px; opacity: 0; }
@@ -3763,7 +3663,7 @@ const barShimmer = keyframes`
   100% { background-position: 200%  0; }
 `;
 
-/* â”€â”€â”€ Styles â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─── Styles ─────────────────────────────────────────── */
 
 const Overlay = styled(motion.div)`
   position: fixed;
@@ -3932,7 +3832,7 @@ const Corner = styled.div`
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\ui\MagneticButton.jsx
+### src\components\ui\MagneticButton.jsx
 
 ```
 import { useState, useRef } from 'react';
@@ -4081,7 +3981,7 @@ export default MagneticButton;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\ui\NotFound.jsx
+### src\components\ui\NotFound.jsx
 
 ```
 import styled from "styled-components";
@@ -4115,7 +4015,7 @@ export default NotFound;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\ui\PageHero.jsx
+### src\components\ui\PageHero.jsx
 
 ```
 import styled from "styled-components";
@@ -4186,7 +4086,7 @@ const BottomRule = styled.div`
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\ui\PageLoader.jsx
+### src\components\ui\PageLoader.jsx
 
 ```
 // src/components/ui/PageLoader.jsx
@@ -4252,7 +4152,7 @@ const Label = styled.p`
   animation: ${pulse} 1.6s ease-in-out infinite;
 `;
 
-const PageLoader = ({ label = "Loadingâ€¦" }) => (
+const PageLoader = ({ label = "Loading…" }) => (
   <Wrap>
     <Ring />
     <Label>{label}</Label>
@@ -4263,7 +4163,13 @@ export default PageLoader;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\ui\RichEditor.jsx
+### src\components\ui\ProseContent.jsx
+
+```
+```
+
+
+### src\components\ui\RichEditor.jsx
 
 ```
 import { useEffect } from "react";
@@ -4452,13 +4358,17 @@ const EditorArea = styled.div`
       margin: 1rem 0;
     }
     code {
-      background: #111;
+      background: ${({theme})=> theme.colors.codeGhostBg};
+      border: 1px solid ${({ theme }) => theme.colors.codeGhostBorder};
+      color:${({ theme }) => theme.colors.codeText};
       padding: 2px 6px;
       border-radius: 4px;
       font-size: 0.9em;
     }
     pre {
-      background: #111;
+      background: ${({theme})=> theme.colors.codeGhostBg};
+      border: 1px solid ${({ theme }) => theme.colors.codeGhostBorder};
+      color:${({ theme }) => theme.colors.codeText};
       padding: 1rem;
       border-radius: 8px;
       overflow-x: auto;
@@ -4488,7 +4398,7 @@ const EditorArea = styled.div`
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\ui\SectionHeader.jsx
+### src\components\ui\SectionHeader.jsx
 
 ```
 import styled from 'styled-components';
@@ -4549,28 +4459,54 @@ export default SectionHeader;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\ui\Tag.jsx
+### src\components\ui\Tag.jsx
 
 ```
 import styled from 'styled-components';
 
 const TagPill = styled.span`
   display: inline-block;
-  padding: 0.2rem 0.6rem;
+  padding: 3px 10px;
+  border-radius: 6px;
   font-size: ${({ theme }) => theme.fontSizes.xs};
   font-family: ${({ theme }) => theme.fonts.mono};
-  color: ${({ theme }) => theme.colors.accentGreen};
-  background: rgba(0, 232, 157, 0.08);
-  border: 1px solid rgba(0, 232, 157, 0.15);
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  font-weight: 500;
+  background: ${({ theme }) => theme.colors.gradientPinkBlue};
+  border: 0.5px solid ${({ theme }) => theme.colors.borderHover};
+  color: #fff;
+  background-image: ${({ theme }) => theme.colors.gradientPinkBlue};
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 `;
 
+// const TagPill = styled.span`
+//   display: inline-block;
+//   padding: 3px 10px;
+//   border-radius: 6px;
+//   font-size: ${({ theme }) => theme.fontSizes.xs};
+//   font-family: ${({ theme }) => theme.fonts.mono};
+//   font-weight: 500;
+//   background: linear-gradient(
+//     90deg,
+//     ${({ theme }) => theme.mode === 'dark'
+//       ? 'rgba(255,45,107,0.22) 0%, rgba(59,130,246,0.22) 100%'
+//       : 'rgba(232,23,74,0.13) 0%, rgba(29,78,216,0.13) 100%'
+//     }
+//   );
+//   border: 0.5px solid ${({ theme }) =>
+//     theme.mode === 'dark'
+//       ? 'rgba(255,45,107,0.28)'
+//       : 'rgba(232,23,74,0.22)'
+//   };
+//   color: ${({ theme }) => theme.mode === 'dark' ? '#ffffff' : '#1A1A2E'};
+// `;
 const Tag = ({ children }) => <TagPill>{children}</TagPill>;
 export default Tag;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\components\ui\ThemeToggle.jsx
+### src\components\ui\ThemeToggle.jsx
 
 ```
 // src/components/ui/ThemeToggle.jsx
@@ -4621,7 +4557,7 @@ const ThemeToggle = () => {
         animate={{ left: isDark ? '4px' : '28px' }}
         transition={{ type: 'spring', stiffness: 400, damping: 30 }}
       >
-        {isDark ? 'ðŸŒ™' : 'â˜€ï¸'}
+        {isDark ? '🌙' : '☀️'}
       </Knob>
     </Track>
   );
@@ -4631,7 +4567,7 @@ export default ThemeToggle;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\contexts\AuthContext.jsx
+### src\contexts\AuthContext.jsx
 
 ```
 import { createContext, useContext, useState, useEffect } from "react";
@@ -4707,7 +4643,7 @@ export const AuthProvider = ({ children }) => {
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\contexts\ThemeContext.jsx
+### src\contexts\ThemeContext.jsx
 
 ```
 // src/contexts/ThemeContext.jsx
@@ -4741,12 +4677,14 @@ export const ThemeProvider = ({ children }) => {
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\data\siteData.jsx
+### src\data\siteData.jsx
 
 ```
-// ============================
-// ALL DUMMY DATA IN ONE FILE
-// ============================
+// ============================================================
+// siteData.js — Single source of truth for all portfolio data
+// Darshan Agrawal | Full Stack Engineer
+// Icons: react-icons/si — import { SiReact } from 'react-icons/si'
+// ============================================================
 
 export const personalInfo = {
   name: 'Darshan',
@@ -4756,152 +4694,128 @@ export const personalInfo = {
     'React + Python Developer',
     'Remote-First Builder',
   ],
-  bio: "I'm a full-stack engineer with 4+ years of experience building performant, scalable web applications. I thrive at the intersection of clean code and intuitive design, specializing in React ecosystems and Python backends.",
+  bio: "Full Stack Engineer with 4+ years building performant, data-driven web apps. I specialize in React ecosystems and Python backends — from real-time KPI dashboards to automated data pipelines — with a sharp eye for clean code and intuitive design.",
   email: 'darshanagrawal007@gmail.com',
-  location: 'Seattle, WA (Remote)',
+  location: 'India (Remote Worldwide)',
   resumeUrl: '/resume.pdf',
   socials: {
-    github: 'https://github.com/darshan12-code/',
+    github:   'https://github.com/darshan12-code/',
     linkedin: 'https://www.linkedin.com/in/darshan-agrawal-012/',
-    twitter: 'https://twitter.com',
+    twitter:  'https://twitter.com',
   },
 };
 
 export const navLinks = [
-  { label: 'Home', path: '/' },
+  { label: 'Home',         path: '/'            },
   { label: 'Case Studies', path: '/case-studies' },
-  { label: 'Blog', path: '/blog' },
-  { label: 'Contact', path: '/contact' },
+  { label: 'Blog',         path: '/blog'         },
+  { label: 'Contact',      path: '/contact'      },
 ];
 
+// ── Skills ──────────────────────────────────────────────────
+// icon: string name of the Si* export from 'react-icons/si'
+// Usage in component:
+//   import * as SiIcons from 'react-icons/si';
+//   const Icon = SiIcons[skill.icon];
+//   <Icon />
 export const skills = [
-  { name: 'React', icon: 'SiReact' },
-  { name: 'Python', icon: 'SiPython' },
-  { name: 'TypeScript', icon: 'SiTypescript' },
-  { name: 'Node.js', icon: 'SiNodedotjs' },
-  { name: 'PostgreSQL', icon: 'SiPostgresql' },
-  { name: 'Docker', icon: 'SiDocker' },
-  { name: 'AWS', icon: 'SiAmazonaws' },
-  { name: 'Azure', icon: 'SiMicrosoftazure' },
-  { name: 'GraphQL', icon: 'SiGraphql' },
-  { name: 'Redis', icon: 'SiRedis' },
-  { name: 'Tailwind CSS', icon: 'SiTailwindcss' },
-  { name: 'MongoDB', icon: 'SiMongodb' },
-  { name: 'Flask', icon: 'SiFlask' },
-  { name: 'D3.js', icon: 'SiD3Dotjs' },
-  { name: 'Git', icon: 'SiGit' },
+  { name: 'React.js',           icon: 'SiReact'             },
+  { name: 'TypeScript',         icon: 'SiTypescript'        },
+  { name: 'JavaScript',         icon: 'SiJavascript'        },
+  { name: 'Python',             icon: 'SiPython'            },
+  { name: 'Flask',              icon: 'SiFlask'             },
+  { name: 'Node.js',            icon: 'SiNodedotjs'         },
+  { name: 'Express.js',         icon: 'SiExpress'           },
+  { name: 'Angular',            icon: 'SiAngular'           },
+  { name: 'GraphQL',            icon: 'SiGraphql'           },
+  { name: 'D3.js',              icon: 'SiD3Dotjs'           },
+  { name: 'SCSS',               icon: 'SiSass'              },
+  { name: 'PostgreSQL',         icon: 'SiPostgresql'        },
+  { name: 'MySQL',              icon: 'SiMysql'             },
+  { name: 'MongoDB',            icon: 'SiMongodb'           },
+  { name: 'Azure Databricks',   icon: 'SiDatabricks'        },
+  { name: 'Azure Data Factory', icon: 'SiMicrosoftazure'    },
+  { name: 'Docker',             icon: 'SiDocker'            },
+  { name: 'Git',                icon: 'SiGit'               },
+  { name: 'Jira',               icon: 'SiJira'              },
+  { name: 'Pandas',             icon: 'SiPandas'            },
 ];
 
+// ── Experience ───────────────────────────────────────────────
 export const experience = [
   {
     id: 1,
     role: 'Full Stack Engineer',
     company: 'Rhombuz',
-    location: 'Seattle, Remote',
-    period: 'Feb 2023 â€“ Present',
-    description: 'Led development of real-time KPI dashboards, reducing manual reporting by 75%. Built scalable React + Flask microservices on Azure.',
-    tech: ['React', 'Python', 'Azure', 'D3.js'],
+    location: 'Remote — Seattle, USA',
+    period: 'Feb 2023 – Present',
+    description:
+      'Led full-stack delivery of a real-time KPI dashboard visualizing 26 metrics with D3.js graphs. Automated telecom data workflows processing 16+ public records, cutting PDF processing time by 70%. Optimized API performance, reduced query latency, and mentored junior developers.',
+    tech: ['React', 'Python', 'Flask', 'Azure Databricks', 'Azure Data Factory', 'D3.js', 'PostgreSQL', 'MySQL'],
   },
   {
     id: 2,
     role: 'Frontend Engineer',
     company: 'Rhombuz',
-    location: 'Seattle, Remote',
-    period: 'Dec 2021 â€“ Jan 2023',
-    description: 'Built interactive data visualization components and optimized page load times by 45% through code splitting and lazy loading.',
-    tech: ['React', 'TypeScript', 'Redux', 'Chart.js'],
+    location: 'Remote — Seattle, USA',
+    period: 'Dec 2021 – Jan 2023',
+    description:
+      'Reduced dashboard load times by 45% through architecture optimization and code splitting. Redesigned UI components for cross-platform compatibility. Delivered 3+ key frontend projects and improved feature rollout speed by 30%.',
+    tech: ['React', 'TypeScript', 'Angular', 'SCSS', 'D3.js', 'GraphQL'],
   },
   {
     id: 3,
-    role: 'Software Intern',
-    company: 'Western Coalfields Ltd',
-    location: 'India',
-    period: 'Jun 2020 â€“ Aug 2020',
-    description: 'Developed an internal inventory management tool, digitizing manual paper-based workflows for 200+ employees.',
-    tech: ['Python', 'Django', 'PostgreSQL'],
+    role: 'System Engineer Intern',
+    company: 'Western Coalfields Ltd.',
+    location: 'Chandrapur, India',
+    period: 'Jun 2021 – Sep 2021',
+    description:
+      'Built a full-stack PHP tool to monitor equipment breakdown and system status for the GM Office, digitizing manual paper-based workflows.',
+    tech: ['PHP', 'MySQL'],
   },
 ];
 
+// ── Counters ─────────────────────────────────────────────────
+// All values directly sourced from resume bullet points.
+// "26 KPIs" = metrics built for the telecom dashboard project at Rhombuz.
+// Full project context lives in Case Studies.
 export const counters = [
-  { value: 4, suffix: '+', label: 'Years Experience' },
-  { value: 26, suffix: '', label: 'KPIs Built' },
-  { value: 45, suffix: '%', label: 'Load Time Reduced' },
-  { value: 75, suffix: '%', label: 'Manual Work Automated' },
+  { value: 4,  suffix: '+', label: 'Years Experience'       },
+  // { value: 26, suffix: '',  label: 'KPIs Shipped'           },
+  { value: 45, suffix: '%', label: 'Load Time Reduced'      },
+  { value: 70, suffix: '%', label: 'Faster PDF Processing'  },
 ];
 
-export const projects = [
-  {
-    id: 'kpi-dashboard',
-    title: 'KPI Analytics Dashboard',
-    description: 'Real-time executive dashboard tracking 26 business KPIs with interactive D3.js visualizations and Azure-hosted Flask backend.',
-    tags: ['React', 'D3.js', 'Flask', 'Azure'],
-    category: 'fullstack',
-    image: '/placeholder-project.png',
-    link: '/case-studies/kpi-dashboard',
-  },
-  {
-    id: 'ecommerce-platform',
-    title: 'E-Commerce Platform',
-    description: 'Full-stack marketplace with real-time inventory, Stripe payments, and admin analytics dashboard.',
-    tags: ['React', 'Node.js', 'PostgreSQL', 'Stripe'],
-    category: 'fullstack',
-    image: '/placeholder-project.png',
-    link: '/case-studies/ecommerce-platform',
-  },
-  {
-    id: 'ml-pipeline',
-    title: 'ML Data Pipeline',
-    description: 'Automated data ingestion and model training pipeline processing 2M+ records daily with real-time monitoring.',
-    tags: ['Python', 'AWS', 'Docker', 'Redis'],
-    category: 'backend',
-    image: '/placeholder-project.png',
-    link: '/case-studies/ml-pipeline',
-  },
-  {
-    id: 'design-system',
-    title: 'Component Design System',
-    description: 'Reusable UI component library with 40+ components, Storybook docs, and automated visual regression testing.',
-    tags: ['React', 'Storybook', 'CSS-in-JS'],
-    category: 'frontend',
-    image: '/placeholder-project.png',
-    link: '/case-studies/design-system',
-  },
-  {
-    id: 'chat-app',
-    title: 'Real-Time Chat App',
-    description: 'WebSocket-powered messaging app with typing indicators, read receipts, and file sharing.',
-    tags: ['React', 'Node.js', 'Socket.io', 'MongoDB'],
-    category: 'fullstack',
-    image: '/placeholder-project.png',
-    link: '/case-studies/chat-app',
-  },
-  {
-    id: 'portfolio-v2',
-    title: 'Portfolio Website v2',
-    description: 'This portfolio â€” dark luxury theme with animated floating shapes, page transitions, and glassmorphism effects.',
-    tags: ['React', 'Styled Components', 'Framer Motion'],
-    category: 'frontend',
-    image: '/placeholder-project.png',
-    link: '/case-studies/portfolio-v2',
-  },
-];
-
+// ── About Traits (flip cards) ────────────────────────────────
 export const aboutTraits = [
-  { emoji: 'ðŸŽ¨', label: 'Creative', description: 'Design-driven development' },
-  { emoji: 'ðŸ§ ', label: 'Strategic', description: 'Scalable architecture thinking' },
-  { emoji: 'ðŸ› ', label: 'Builder', description: 'Ship fast, iterate faster' },
+  {
+    emoji: '🎨',
+    label: 'Creative',
+    description: 'Clay, paint & digital art — design thinking runs deep.',
+  },
+  {
+    emoji: '🧠',
+    label: 'Strategic',
+    description: 'Architecture first, syntax second. Systems that scale.',
+  },
+  {
+    emoji: '🛠',
+    label: 'Builder',
+    description: 'Ship fast, iterate faster.',
+  },
 ];
 
+// ── Filter Categories (Case Studies page) ───────────────────
 export const filterCategories = [
-  { key: 'all', label: 'All' },
+  { key: 'all',       label: 'All'        },
   { key: 'fullstack', label: 'Full Stack' },
-  { key: 'frontend', label: 'Frontend' },
-  { key: 'backend', label: 'Backend' },
+  { key: 'frontend',  label: 'Frontend'   },
+  { key: 'backend',   label: 'Backend'    },
 ];
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\hooks\useApiData.jsx
+### src\hooks\useApiData.jsx
 
 ```
 // src/hooks/useApiData.js
@@ -4915,10 +4829,10 @@ export const filterCategories = [
 import { useQuery } from "@tanstack/react-query";
 import { blogAPI, caseStudyAPI,portfolioAPI } from "../services/apis";
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-   QUERY KEYS â€” centralised so all components
+/* ─────────────────────────────────────────────
+   QUERY KEYS — centralised so all components
    share the same cache entries
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────────── */
 export const QUERY_KEYS = {
   blogs:          ["blogs"],
   blogDetail:     (slug) => ["blog", slug],
@@ -4928,10 +4842,10 @@ export const QUERY_KEYS = {
   portfolio: ["portfolio-data"]
 };
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────────
    BLOGS LIST
    Used by: Blog page
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────────── */
 export function useBlogs() {
   return useQuery({
     queryKey: QUERY_KEYS.blogs,
@@ -4947,15 +4861,15 @@ export function useBlogs() {
         link:     `/blog/${blog.slug}`,
       }));
     },
-    // Keep fresh for 5 minutes â€” blog posts don't change often
+    // Keep fresh for 5 minutes — blog posts don't change often
     staleTime: 5 * 60 * 1000,
   });
 }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────────
    BLOG DETAIL
    Used by: BlogDetails page
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────────── */
 export function useBlogDetail(slug) {
   return useQuery({
     queryKey: QUERY_KEYS.blogDetail(slug),
@@ -4964,15 +4878,15 @@ export function useBlogDetail(slug) {
       return res.data;
     },
     enabled: !!slug,
-    // Detail pages stay fresh longer â€” content rarely changes mid-session
+    // Detail pages stay fresh longer — content rarely changes mid-session
     staleTime: 10 * 60 * 1000,
   });
 }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────────
    CASE STUDIES LIST
    Used by: CaseStudies page
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────────── */
 export function useCaseStudies() {
   return useQuery({
     queryKey: QUERY_KEYS.caseStudies,
@@ -4991,10 +4905,10 @@ export function useCaseStudies() {
   });
 }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────────
    CASE STUDY DETAIL
    Used by: CaseStudyDetails page
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────────── */
 export function useCaseStudyDetail(slug) {
   return useQuery({
     queryKey: QUERY_KEYS.caseStudyDetail(slug),
@@ -5007,10 +4921,10 @@ export function useCaseStudyDetail(slug) {
   });
 }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────────
    FEATURED WORK
    Used by: FeaturedProjects (Home page)
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────────── */
 export function useFeaturedWork() {
   return useQuery({
     queryKey: QUERY_KEYS.featuredWork,
@@ -5045,7 +4959,7 @@ export function usePortfolioData() {
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\hooks\useCountUp.jsx
+### src\hooks\useCountUp.jsx
 
 ```
 import { useState, useEffect, useRef } from 'react';
@@ -5092,13 +5006,13 @@ export function useCountUp(target, duration = 2000) {
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\hooks\useFetch.jsx
+### src\hooks\useFetch.jsx
 
 ```
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\hooks\useMousePosition.jsx
+### src\hooks\useMousePosition.jsx
 
 ```
 import { useState, useEffect } from 'react';
@@ -5123,13 +5037,13 @@ export function useMousePosition() {
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\hooks\usePost.jsx
+### src\hooks\usePost.jsx
 
 ```
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\hooks\useScrollProgress.jsx
+### src\hooks\useScrollProgress.jsx
 
 ```
 import { useState, useEffect } from 'react';
@@ -5153,7 +5067,7 @@ export function useScrollProgress() {
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\hooks\useScrollReveal.jsx
+### src\hooks\useScrollReveal.jsx
 
 ```
 // src/hooks/useScrollReveal.jsx
@@ -5171,7 +5085,7 @@ export function useScrollReveal(options = {}) {
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\hooks\useTypewriter.jsx
+### src\hooks\useTypewriter.jsx
 
 ```
 import { useState, useEffect } from 'react';
@@ -5208,12 +5122,12 @@ export function useTypewriter(words, typeSpeed = 100, deleteSpeed = 50, pauseTim
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\pages\Admin.jsx
+### src\pages\Admin.jsx
 
 ```
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, useTheme } from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Pencil, Trash2, ArrowBigLeft, ArrowBigRight,
@@ -5224,24 +5138,15 @@ import { blogAPI, caseStudyAPI, contactAPI, uploadAPI } from "../services/apis";
 import SectionHeader from "../components/ui/SectionHeader";
 import MagneticButton from "../components/ui/MagneticButton";
 import RichEditor from "../components/ui/RichEditor";
+import AdminCardSkeleton from "../components/ui/AdminCardSkeleton";
+import EmptyState from "../components/ui/EmptyState";
+import { getCategoryColor } from "../utils/categoryColors";
+import Tilt from "react-parallax-tilt";
 
-/*
-  WHY createPortal?
-  position:fixed is supposed to be viewport-relative, BUT the browser
-  re-parents it into the nearest ancestor that has a CSS transform,
-  filter, will-change:transform, or perspective applied â€” Framer Motion
-  applies transforms to every animated parent, so any fixed child gets
-  "trapped" inside that stacking context and scrolls with the page.
-
-  createPortal(node, document.body) escapes ALL ancestor stacking
-  contexts by rendering the overlay as a DIRECT child of <body>.
-  Combined with body position:fixed on open, the modal is always
-  perfectly centred in the viewport, regardless of scroll position.
-*/
 
 const ITEMS_PER_PAGE = 9;
 
-/* â”€â”€ Portal: renders children directly into document.body â”€â”€ */
+/* ── Portal: renders children directly into document.body ── */
 const Portal = ({ children }) => {
   const el = useRef(document.createElement("div"));
   useEffect(() => {
@@ -5253,7 +5158,7 @@ const Portal = ({ children }) => {
   return createPortal(children, el.current);
 };
 
-/* â”€â”€ Main component â”€â”€ */
+/* ── Main component ── */
 const Admin = () => {
   const { user } = useAuth();
   const [tab, setTab] = useState("blogs");
@@ -5266,8 +5171,9 @@ const Admin = () => {
   const [editItem, setEditItem] = useState(null);
   const [formData, setFormData] = useState({});
   const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(true);
   const savedScrollY = useRef(0);
-
+  const theme = useTheme();
   const schemas = {
     blogs: [
       { name: "title",        label: "Blog Title",   type: "text"     },
@@ -5296,13 +5202,7 @@ const Admin = () => {
     ],
   };
 
-  /*
-    SCROLL LOCK
-    Step 1 â€” record current scrollY before locking
-    Step 2 â€” pin body with position:fixed + top:-scrollY
-              (prevents the visible jump to top that plain overflow:hidden causes)
-    Step 3 â€” on close: remove styles, then silently restore scroll position
-  */
+ 
   useEffect(() => {
     const open = showForm || showPreview;
     if (open) {
@@ -5331,14 +5231,19 @@ const Admin = () => {
   }, [showForm, showPreview]);
 
   const fetchData = async () => {
-    const [b, c, m] = await Promise.all([
-      blogAPI.getAll(1, 100),
-      caseStudyAPI.getAll(1, 100),
-      contactAPI.getAll(1, 100),
-    ]);
-    setBlogs(b.data.data    || []);
-    setCases(c.data.data    || []);
-    setMessages(m.data.data || []);
+    setLoading(true);
+    try {
+      const [b, c, m] = await Promise.all([
+        blogAPI.getAll(1, 100),
+        caseStudyAPI.getAll(1, 100),
+        contactAPI.getAll(1, 100),
+      ]);
+      setBlogs(b.data.data    || []);
+      setCases(c.data.data    || []);
+      setMessages(m.data.data || []);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { fetchData(); }, []);
@@ -5351,11 +5256,14 @@ const Admin = () => {
 
   const closeForm = () => { setShowForm(false); setEditItem(null); setFormData({}); };
 
+  // Fields that must always be boolean regardless of what the API returns
+  const BOOLEAN_FIELDS = new Set(["is_published", "company_project"]);
+
   const openCreate = () => {
     setEditItem(null);
     const empty = {};
     schemas[tab].forEach(({ name }) => {
-      if (name === "is_published") empty[name] = true;
+      if (BOOLEAN_FIELDS.has(name)) empty[name] = name === "is_published" ? true : false;
       else if (name === "content_type") empty[name] = "rich";
       else empty[name] = "";
     });
@@ -5366,7 +5274,14 @@ const Admin = () => {
   const openEdit = (item) => {
     setEditItem(item);
     const filtered = {};
-    schemas[tab].forEach(({ name }) => { filtered[name] = item[name] ?? ""; });
+    schemas[tab].forEach(({ name }) => {
+      if (BOOLEAN_FIELDS.has(name)) {
+        // Coerce to boolean — handles 0/1, "true"/"false", null, undefined from API
+        filtered[name] = Boolean(item[name]);
+      } else {
+        filtered[name] = item[name] ?? "";
+      }
+    });
     if (tab === "blogs") filtered.content_type = item.content_type || "rich";
     setFormData(filtered);
     setShowForm(true);
@@ -5403,7 +5318,7 @@ const Admin = () => {
   };
 
   const previewText = (text = "") =>
-    text.replace(/<[^>]+>/g, "").slice(0, 130) + (text.length > 130 ? "â€¦" : "");
+    text.replace(/<[^>]+>/g, "").slice(0, 130) + (text.length > 130 ? "…" : "");
 
   const uploadMediaToCloudinary = async (file, type) => {
     try {
@@ -5501,20 +5416,17 @@ const Admin = () => {
   };
 
 const TAB_CONFIG = [
-  { key: "blogs",    label: "Blogs",    color: "#FF2D6B", icon: "ðŸ“", count: blogs.length    },
-  { key: "cases",    label: "Cases",    color: "#3B82F6", icon: "ðŸ“", count: cases.length    },
-  { key: "messages", label: "Messages", color: "#00E89D", icon: "ðŸ’¬", count: messages.length },
+  { key: "blogs",    label: "Blogs",    color: "#FF2D6B", icon: "📝", count: blogs.length    },
+  { key: "cases",    label: "Cases",    color: "#3B82F6", icon: "📁", count: cases.length    },
+  { key: "messages", label: "Messages", color: "#00E89D", icon: "💬", count: messages.length },
 ];
+
   return (
     <>
       <Page>
-        {/* â”€â”€ Sidebar â”€â”€ */}
-         {/* // â”€â”€ Desktop Sidebar (hidden on mobile via CSS) â”€â”€ */}
+        
       <Sidebar>
-        {/* <SidebarTop>
-          <Terminal size={16} />
-          <SidebarBrand>Command Centre</SidebarBrand>
-        </SidebarTop> */}
+    
         <NavSection>
           {TAB_CONFIG.map(({ key, label, count, color }) => (
             <SideLink key={key} $active={tab === key} onClick={() => setTab(key)}>
@@ -5528,17 +5440,13 @@ const TAB_CONFIG = [
         </NavSection>
       </Sidebar>
 
-        {/* â”€â”€ Main â”€â”€ */}
+        {/* ── Main ── */}
              
       <MainContent>
       
-        {/* <MobileHeader>
-          <Terminal size={16} />
-          <MobileHeaderBrand>Command Centre</MobileHeaderBrand>
-        </MobileHeader> */}
 
           <PageTitleBlock>
-            {/* <TitleEyebrow>âš¡ Admin Dashboard</TitleEyebrow> */}
+          
             <PageTitle>Command<TitleAccent> Centre</TitleAccent></PageTitle>
             <TitleSub>Welcome back, <strong>{user?.name || "Admin"}</strong>. Manage your content below.</TitleSub>
           </PageTitleBlock>
@@ -5554,45 +5462,128 @@ const TAB_CONFIG = [
 
           <GridWrap>
             <CardGrid>
-              {paginated.map((item, i) => (
-                <motion.div key={item.id}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: i * 0.04 }}>
-                  <Card>
-                    <CardShimmerBar />
-                    <CardHeader>
-                      <CardTitle>{item.title || item.name || "(no title)"}</CardTitle>
+              {loading ? (
+                <AdminCardSkeleton count={6} />
+              ) : paginated.length === 0 ? (
+                <EmptyStateWrap>
+                  <EmptyState
+                    icon={tab === "blogs" ? "📝" : tab === "cases" ? "📁" : "💬"}
+                    title={`No ${tab} yet`}
+                    message={
+                      tab === "messages"
+                        ? "When visitors send you messages they'll appear here."
+                        : `Create your first ${tab === "blogs" ? "blog post" : "case study"} to get started.`
+                    }
+                    action={
+                      tab !== "messages" ? (
+                        <CreateBtn onClick={openCreate}>
+                          <Plus size={15} />
+                          New {tab === "blogs" ? "Blog Post" : "Case Study"}
+                        </CreateBtn>
+                      ) : null
+                    }
+                  />
+                </EmptyStateWrap>
+              ) : (
+                paginated.map((item, i) => (
+                  <motion.div key={item.id}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: i * 0.04 }}>
+                     <Tilt
+      tiltMaxAngleX={8}
+      tiltMaxAngleY={8}
+      glareEnable
+      glareMaxOpacity={0.07}
+      glareColor="#3B82F6"
+      scale={1.02}
+      transitionSpeed={500}
+      style={{ borderRadius: "14px", transformStyle: "preserve-3d", height: "100%" }}
+    >
+                    <Card>
+                      <CardShimmerBar />
+                      <CardHeader>
+                        <CardTitle>{item.title || item.name || "(no title)"}</CardTitle>
+                        {tab !== "messages" && (
+                          <CardActions>
+                            <IconBtn type="button" onClick={() => openEdit(item)} title="Edit">
+                              <Pencil size={13} />
+                            </IconBtn>
+                            <IconBtn type="button" $danger onClick={() => handleDelete(item.id)} title="Delete">
+                              <Trash2 size={13} />
+                            </IconBtn>
+                          </CardActions>
+                        )}
+                      </CardHeader>
+                      <CardBody>
+                          {(tab === "blogs" || tab === "cases") && (
+                            <>
+                              <ChipsRow>
+                                {(() => {
+                                  const categories = (item.category || "—")
+                                    .split(",")
+                                    .map(cat => cat.trim())
+                                    .filter(Boolean);
+
+                                  const displayCategories = categories.slice(0, 2);
+                                  const remainingCount = categories.length - 2;
+
+                                  return (
+                                    <>
+                                      {displayCategories.map((cat, i) => (
+                                        <CategoryChip key={i} $c={getCategoryColor(cat, theme.mode)}>
+                                          {cat}
+                                        </CategoryChip>
+                                      ))}
+                                      
+                                      {remainingCount > 0 && (
+                                        <CategoryChip $c={getCategoryColor('', theme.mode)}>
+                                          +{remainingCount}
+                                        </CategoryChip>
+                                      )}
+                                    </>
+                                  );
+                                })()}
+                              </ChipsRow>
+                              
+                              <CardPreview>
+                                {tab === "blogs" 
+                                  ? previewText(item.excerpt || item.content) 
+                                  : previewText(item.summary)
+                                }
+                              </CardPreview>
+                            </>
+                          )}
+
+                         {tab === "messages" && (
+                            <>
+                              <CategoryChip $variant="email">
+                                {item.email}
+                              </CategoryChip>
+                              <CardPreview>{previewText(item.message)}</CardPreview>
+                            </>
+                          )}
+
+                          {tab === "projects" && (
+                            <CardPreview>{previewText(item.description)}</CardPreview>  
+                          )}
+                        </CardBody>
                       {tab !== "messages" && (
-                        <CardActions>
-                          <IconBtn type="button" onClick={() => openEdit(item)} title="Edit">
-                            <Pencil size={13} />
-                          </IconBtn>
-                          <IconBtn type="button" $danger onClick={() => handleDelete(item.id)} title="Delete">
-                            <Trash2 size={13} />
-                          </IconBtn>
-                        </CardActions>
+                        <CardStatusRow>
+                          <StatusDot $on={item.is_published} />
+                          <span>{item.is_published ? "Published" : "Draft"}</span>
+                        </CardStatusRow>
                       )}
-                    </CardHeader>
-                    <CardBody>
-                      {tab === "blogs" && (<><CategoryChip>{item.category || "â€”"}</CategoryChip><CardPreview>{previewText(item.excerpt || item.content)}</CardPreview></>)}
-                      {tab === "cases" && (<><CategoryChip>{(item.tech_stack || "").split(",")[0] || "â€”"}</CategoryChip><CardPreview>{previewText(item.summary)}</CardPreview></>)}
-                      {tab === "messages" && (<><CategoryChip>{item.email}</CategoryChip><CardPreview>{previewText(item.message)}</CardPreview></>)}
-                    </CardBody>
-                    {tab !== "messages" && (
-                      <CardStatusRow>
-                        <StatusDot $on={item.is_published} />
-                        <span>{item.is_published ? "Published" : "Draft"}</span>
-                      </CardStatusRow>
-                    )}
-                  </Card>
-                </motion.div>
-              ))}
+                    </Card>
+                    </Tilt>
+                  </motion.div>
+                ))
+              )}
             </CardGrid>
-            {paginated.length >= 6 && <GridFog />}
+            {!loading && paginated.length >= 6 && <GridFog />}
           </GridWrap>
 
-          {totalPages > 1 && (
+          {!loading && totalPages > 1 && (
             <Pagination>
               <MagneticButton variant="nav" size="sm" disabled={page === 1} onClick={() => setPage((p) => p - 1)}>
                 <ArrowBigLeft size={18} />
@@ -5605,7 +5596,7 @@ const TAB_CONFIG = [
           )}
         </MainContent>
       </Page>
-   {/* // â”€â”€ Mobile bottom tab bar â”€â”€ */}
+   {/* // ── Mobile bottom tab bar ── */}
     <MobileTabBar>
       {TAB_CONFIG.map(({ key, label, color, icon, count }) => (
         <MobileTab key={key} $active={tab === key} $color={color} onClick={() => setTab(key)}>
@@ -5617,13 +5608,13 @@ const TAB_CONFIG = [
         </MobileTab>
       ))}
     </MobileTabBar>
-      {/* â•â• FORM MODAL via Portal â€” truly viewport-fixed â•â• */}
+      {/* ══ FORM MODAL via Portal — truly viewport-fixed ══ */}
       <Portal>
         <AnimatePresence>
           {showForm && (
             <Overlay as={motion.div}
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              transition={{ duration: 0.18 }} onClick={closeForm}>
+              transition={{ duration: 0.18 }}>
               <ModalCard as={motion.div}
                 initial={{ scale: 0.94, opacity: 0, y: 30 }}
                 animate={{ scale: 1,    opacity: 1, y: 0  }}
@@ -5631,7 +5622,7 @@ const TAB_CONFIG = [
                 transition={{ type: "spring", stiffness: 380, damping: 34 }}
                 onClick={(e) => e.stopPropagation()}>
                 <ModalHeader>
-                  <ModalTitle>{editItem ? `âœï¸ Edit ${tab}` : `âœ¨ New ${tab}`}</ModalTitle>
+                  <ModalTitle>{editItem ? `✏️ Edit ${tab}` : `✨ New ${tab}`}</ModalTitle>
                   <ModalCloseBtn type="button" onClick={closeForm}><X size={15} /></ModalCloseBtn>
                 </ModalHeader>
                 <FormBody>
@@ -5641,7 +5632,7 @@ const TAB_CONFIG = [
                 </FormBody>
                 <ModalFooter>
                   <ModalBtn type="button" $v="preview" onClick={() => setShowPreview(true)}><Eye size={14} /> Preview</ModalBtn>
-                  <ModalBtn type="button" $v="save" onClick={handleSave} disabled={saving}><Save size={14} /> {saving ? "Savingâ€¦" : "Save"}</ModalBtn>
+                  <ModalBtn type="button" $v="save" onClick={handleSave} disabled={saving}><Save size={14} /> {saving ? "Saving…" : "Save"}</ModalBtn>
                   <ModalBtn type="button" $v="cancel" onClick={closeForm}><X size={14} /> Cancel</ModalBtn>
                 </ModalFooter>
               </ModalCard>
@@ -5650,7 +5641,7 @@ const TAB_CONFIG = [
         </AnimatePresence>
       </Portal>
 
-      {/* â•â• PREVIEW MODAL via Portal â•â• */}
+      {/* ══ PREVIEW MODAL via Portal ══ */}
       <Portal>
         <AnimatePresence>
           {showPreview && (
@@ -5669,7 +5660,25 @@ const TAB_CONFIG = [
                 </ModalHeader>
                 <PreviewBody>
                   <PreviewTitle>{formData.title}</PreviewTitle>
-                  {formData.category && <PreviewCategoryBadge>{formData.category}</PreviewCategoryBadge>}
+
+                  {formData.category && (
+                    <PreviewBadgeRow>
+                      {formData.category.split(",").map(cat => cat.trim()).filter(Boolean).map((cat, i) => (
+                        <PreviewCategoryBadge key={i} $c={getCategoryColor(cat, theme.mode)}>
+                          {cat}
+                        </PreviewCategoryBadge>
+                      ))}
+                    </PreviewBadgeRow>
+                  )}
+
+                  {formData.tech_stack && (
+                    <PreviewTagsRow>
+                      {formData.tech_stack.split(",").map(t => t.trim()).filter(Boolean).map((tag, i) => (
+                        <PreviewTag key={i}>{tag}</PreviewTag>
+                      ))}
+                    </PreviewTagsRow>
+                  )}
+
                   <PreviewContent dangerouslySetInnerHTML={{ __html: formData.content }} />
                 </PreviewBody>
               </PreviewCard>
@@ -5683,318 +5692,697 @@ const TAB_CONFIG = [
 
 export default Admin;
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• STYLES â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ═══════════════════════════════════ STYLES ══════════════════════════════════ */
 
 
 const MainContent = styled.main`
- flex: 1;
+  flex: 1;
   min-width: 0;
   padding: 4rem 2.5rem 5rem;
 
   @media (max-width: 1024px) { padding: 2rem 1.5rem 4rem; }
 
   @media (max-width: 768px) {
-    /*
-      Top padding must clear the fixed navbar.
-      Adjust the 64px to match your actual Navbar height.
-      The bottom padding clears the fixed MobileTabBar (64px).
-    */
     padding: calc(64px + 1.5rem) 1rem calc(64px + 1rem);
   }
 `;
 
 const PageTitleBlock = styled.div`
-  margin-bottom: 2.5rem; padding-bottom: 2rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
   border-bottom: 1px solid ${({ theme }) => theme.colors.borderDefault};
-`;
-
-const TitleEyebrow = styled.p`
-  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.15em;
-  text-transform: uppercase; color: ${({ theme }) => theme.colors.gradientPinkBlue}; margin-bottom: 0.55rem;
 `;
 
 const PageTitle = styled.h1`
   font-family: ${({ theme }) => theme.fonts.heading};
-  font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.0;
-  letter-spacing: -0.03em; color: ${({ theme }) => theme.colors.textPrimary}; margin-bottom: 0.6rem;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  color: ${({ theme }) => theme.colors.textPrimary};
+  margin-bottom: 0.6rem;
 `;
 
 const TitleAccent = styled.span`
-  background: linear-gradient(90deg, #FF2D6B 0%, #3B82F6 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  background: ${({ theme }) => theme.colors.gradientPinkBlue};
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 `;
 
 const TitleSub = styled.p`
-  font-size: 0.9rem; color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: 0.9rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
   strong { color: ${({ theme }) => theme.colors.textPrimary}; }
 `;
 
-const ActionRow = styled.div`margin-bottom: 1.75rem;`;
-
-const CreateBtn = styled.button`
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  padding: 0.62rem 1.4rem; border-radius: 999px; border: none;
-  background: linear-gradient(90deg, #FF2D6B 0%, #3B82F6 100%);
-  color: #fff; font-size: 0.875rem; font-weight: 600; cursor: pointer;
-  transition: box-shadow 0.3s, transform 0.2s;
-  &:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,45,107,0.35); }
+const ActionRow = styled.div`
+  margin-bottom: 1.75rem;
 `;
 
-const GridWrap = styled.div`position: relative;`;
+const CreateBtn = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.62rem 1.4rem;
+  border-radius: 999px;
+  border: none;
+  background: ${({ theme }) => theme.colors.gradientPinkBlue};
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: box-shadow 0.3s, transform 0.2s;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: ${({ theme }) => theme.colors.shadowPinkHover};
+  }
+`;
+
+const GridWrap = styled.div`
+  position: relative;
+`;
 
 const CardGrid = styled.div`
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-  gap: 1.2rem; padding-bottom: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 1.2rem;
+  padding-bottom: 0.5rem;
   @media (max-width: 640px) { grid-template-columns: 1fr; }
 `;
 
-const shimmerMove = keyframes`0%{background-position:-200% 0}100%{background-position:200% 0}`;
+const shimmerMove = keyframes`
+  0%   { background-position: -200% 0 }
+  100% { background-position:  200% 0 }
+`;
+
+
+
+
+
+
+
+
+
 
 const Card = styled.div`
   background: ${({ theme }) => theme.colors.bgSecondary};
-  border-radius: 12px; padding: 1.25rem;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  padding: 1.25rem;
   border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  position: relative; overflow: hidden;
+  position: relative;
+  overflow: hidden;
   transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-  &:hover { border-color: ${({ theme }) => theme.colors.borderHover}; box-shadow: 0 8px 32px rgba(0,0,0,0.25); transform: translateY(-2px); }
+
+  /* ── uniform height layout ── */
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.borderHover};
+    box-shadow: ${({ theme }) => theme.colors.shadowCardHover};
+    transform: translateY(-2px);
+  }
 `;
 
+const CardBody = styled.div`
+  font-size: 0.85rem;
+  flex: 1;                /* grows to fill space between header and status row */
+  min-height: 0;          /* prevents flex blowout */
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+`;
+
+const ChipsRow = styled.div`
+  display: flex;
+  flex-wrap: nowrap;      /* no wrap — chips stay on one line */
+  gap: 4px;
+  margin-bottom: 6px;
+  overflow: hidden;       /* hides any overflow if chips are somehow too wide */
+`;
+const CategoryChip = styled.span`
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  /* Email Variant Logic */
+  background: ${({ $variant, theme }) => 
+    $variant === 'email' ? theme.colors.accentBlueBg : (props => props.$c?.bg || 'rgba(255,255,255,0.06)')};
+  
+  border: 1px solid ${({ $variant, theme }) => 
+    $variant === 'email' ? theme.colors.accentBlueBg : (props => props.$c?.border || 'rgba(255,255,255,0.12)')};
+  
+  /* Make sure text is visible against gradient, or use standard color */
+  color: ${({ $variant,theme, $c }) => 
+    $variant === 'email' ?  theme.colors.codeText : ($c?.text || '#9BA1B0')};
+`;
+
+const CardPreview = styled.p`
+  color: ${({ theme }) => theme.colors.textTertiary};
+  font-size: 0.82rem;
+  line-height: 1.5;
+  margin: 0;
+  flex: 1;
+
+  /* clamp to exactly 2 lines always */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+`;
 const CardShimmerBar = styled.div`
   position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, #FF2D6B 0%, #3B82F6 50%, #FF2D6B 100%);
-  background-size: 200% 100%; opacity: 0; transition: opacity 0.3s;
+  background: ${({ theme }) => theme.colors.gradientShimmer};
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity 0.3s;
   animation: ${shimmerMove} 2.5s linear infinite;
   ${Card}:hover & { opacity: 1; }
 `;
 
-const CardHeader = styled.div`display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem;`;
-const CardTitle = styled.h3`font-size: 0.93rem; font-weight: 600; color: ${({ theme }) => theme.colors.textPrimary}; line-height: 1.3; flex: 1; margin: 0;`;
-const CardActions = styled.div`display: flex; gap: 5px; flex-shrink: 0;`;
+const CardHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+`;
+
+const CardTitle = styled.h3`
+  font-size: 0.93rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.textPrimary};
+  line-height: 1.3;
+  flex: 1;
+  margin: 0;
+`;
+
+const CardActions = styled.div`
+  display: flex;
+  gap: 5px;
+  flex-shrink: 0;
+`;
 
 const IconBtn = styled.button`
   border: none;
-  background: ${({ $danger }) => $danger ? "rgba(239,68,68,0.12)" : "rgba(255,255,255,0.06)"};
-  color: ${({ $danger }) => $danger ? "#ef4444" : "#9BA1B0"};
-  padding: 6px; border-radius: 7px; cursor: pointer;
-  transition: all 0.15s; display: flex; align-items: center;
-  &:hover { background: ${({ $danger }) => $danger ? "rgba(239,68,68,0.22)" : "rgba(255,255,255,0.12)"}; color: ${({ $danger }) => $danger ? "#ff6060" : "#fff"}; transform: scale(1.1); }
+  background: ${({ $danger, theme }) =>
+    $danger ? theme.colors.accentDangerBg : theme.colors.bgGlassLight};
+  color: ${({ $danger, theme }) =>
+    $danger ? theme.colors.accentDanger : theme.colors.textSecondary};
+  padding: 6px;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  &:hover {
+    background: ${({ $danger, theme }) =>
+      $danger ? theme.colors.accentDangerBgHover : theme.colors.borderHover};
+    color: ${({ $danger, theme }) =>
+      $danger ? theme.colors.accentDangerLight : "#fff"};
+    transform: scale(1.1);
+  }
 `;
-
-const CardBody = styled.div`font-size: 0.85rem;`;
-
-const CategoryChip = styled.span`
-  display: inline-block; padding: 2px 9px; border-radius: 999px;
-  font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
-  background: rgba(255,45,107,0.09); border: 1px solid rgba(255,45,107,0.18);
-  color: ${({ theme }) => theme.colors.gradientPinkBlue}; margin-bottom: 0.5rem;
-`;
-
-const CardPreview = styled.p`color: ${({ theme }) => theme.colors.textTertiary}; font-size: 0.82rem; line-height: 1.5; margin: 0;`;
 
 const CardStatusRow = styled.div`
-  display: flex; align-items: center; gap: 6px;
-  margin-top: 0.85rem; padding-top: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
   border-top: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  font-size: 0.72rem; color: ${({ theme }) => theme.colors.textTertiary};
+  font-size: 0.72rem;
+  color: ${({ theme }) => theme.colors.textTertiary};
 `;
 
 const blinkAnim = keyframes`0%,100%{opacity:1}50%{opacity:0.3}`;
 const StatusDot = styled.span`
-  width: 6px; height: 6px; border-radius: 50%;
-  background: ${({ $on }) => $on ? "#00E89D" : "#5C6170"};
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: ${({ $on, theme }) => $on ? theme.colors.accentGreen : theme.colors.textTertiary};
   animation: ${({ $on }) => $on ? blinkAnim : "none"} 2.5s ease-in-out infinite;
 `;
 
 const GridFog = styled.div`
-  position: absolute; bottom: 0; left: 0; right: 0; height: 90px;
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 90px;
   background: linear-gradient(to bottom, transparent 0%, ${({ theme }) => theme.colors.bgPrimary} 100%);
-  pointer-events: none; z-index: 2;
+  pointer-events: none;
+  z-index: 2;
 `;
 
-const Pagination = styled.div`margin-top: 2.5rem; display: flex; align-items: center; gap: 1rem;`;
-const PageInfo = styled.span`font-size: 0.875rem; color: ${({ theme }) => theme.colors.textSecondary}; strong { color: ${({ theme }) => theme.colors.textPrimary}; }`;
-const PaginationSep = styled.span`opacity: 0.35; margin: 0 0.3rem;`;
+const EmptyStateWrap = styled.div`
+  grid-column: 1 / -1;
+`;
 
-/* â•â• THE KEY: Overlay is position:fixed top:0 left:0 â€” always viewport-relative.
-      createPortal() ensures no ancestor transform/stacking context can trap it. â•â• */
+const Pagination = styled.div`
+  margin-top: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+const PageInfo = styled.span`
+  font-size: 0.875rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  strong { color: ${({ theme }) => theme.colors.textPrimary}; }
+`;
+
+const PaginationSep = styled.span`
+  opacity: 0.35;
+  margin: 0 0.3rem;
+`;
+
 const Overlay = styled.div`
-  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 9999; padding: 20px;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  height: 100dvh; /* ← real visible height on mobile */
+  background: ${({ theme }) => theme.colors.overlayBg};
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
   @media (max-width: 480px) { padding: 0; align-items: flex-end; }
 `;
 
-const ModalCard = styled.div`
-  display: flex; flex-direction: column;
-  width: 92vw; max-width: 880px; max-height: 88vh;
-  background: ${({ theme }) => theme.colors.bgSecondary};
-  border-radius: 18px; border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  overflow: hidden; box-shadow: 0 32px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,45,107,0.06);
-  @media (max-width: 480px) { width: 100vw; max-height: 96vh; border-radius: 22px 22px 0 0; }
-`;
 
+const ModalCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 92vw;
+  max-width: 880px;
+  max-height: 88vh;
+  max-height: 88dvh; /* ← dvh fallback */
+  background: ${({ theme }) => theme.colors.bgSecondary};
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  overflow: hidden;
+  box-shadow: ${({ theme }) => theme.colors.shadowModal},
+              0 0 0 1px ${({ theme }) => theme.colors.accentPinkRingShadow};
+
+  @media (max-width: 480px) {
+    width: 100vw;
+    height: 92dvh;        /* ← fixed height so footer is always in frame */
+    max-height: 92dvh;
+    border-radius: ${({ theme }) => theme.borderRadius.xl} ${({ theme }) => theme.borderRadius.xl} 0 0;
+  }
+`;
 const ModalHeader = styled.div`
-  flex-shrink: 0; padding: 18px 24px;
+  flex-shrink: 0;
+  padding: 18px 24px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   background: ${({ theme }) => theme.colors.bgTertiary};
 `;
 
-const ModalTitle = styled.h3`margin: 0; font-size: 0.97rem; font-weight: 600; color: ${({ theme }) => theme.colors.textPrimary}; text-transform: capitalize;`;
-
-const ModalCloseBtn = styled.button`
-  display: flex; align-items: center; justify-content: center;
-  width: 28px; height: 28px; border-radius: 7px;
-  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  background: transparent; color: ${({ theme }) => theme.colors.textSecondary}; cursor: pointer; transition: all 0.15s;
-  &:hover { background: rgba(255,45,107,0.1); border-color: ${({ theme }) => theme.colors.gradientPinkBlue}; color: ${({ theme }) => theme.colors.gradientPinkBlue}; }
+const ModalTitle = styled.h3`
+  margin: 0;
+  font-size: 0.97rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.textPrimary};
+  text-transform: capitalize;
 `;
 
+const ModalCloseBtn = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  background: transparent;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  cursor: pointer;
+  transition: all 0.15s;
+  &:hover {
+    background: ${({ theme }) => theme.colors.accentPinkFocus};
+    border-color: ${({ theme }) => theme.colors.accentPink};
+    color: ${({ theme }) => theme.colors.accentPink};
+  }
+`;
 const FormBody = styled.div`
-  flex: 1; overflow-y: auto; padding: 22px 24px; scroll-behavior: smooth;
+  flex: 1;
+  min-height: 0;          /* ← critical: prevents flex child from overflowing */
+  overflow-y: auto;
+  padding: 22px 24px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch; /* ← smooth scroll on iOS/Android */
   &::-webkit-scrollbar { width: 5px; }
   &::-webkit-scrollbar-track { background: transparent; }
-  &::-webkit-scrollbar-thumb { background: ${({ theme }) => theme.colors.borderDefault}; border-radius: 3px; }
+  &::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.colors.borderDefault};
+    border-radius: 3px;
+  }
   @media (max-width: 480px) { padding: 16px; }
 `;
 
 const ModalFooter = styled.div`
-  flex-shrink: 0; padding: 14px 24px;
+  flex-shrink: 0;
+  padding: 14px 24px;
   border-top: 1px solid ${({ theme }) => theme.colors.borderDefault};
   background: ${({ theme }) => theme.colors.bgTertiary};
-  display: flex; gap: 10px; flex-wrap: wrap;
-  @media (max-width: 480px) { padding: 12px 16px; & > * { flex: 1; min-width: 80px; } }
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+
+  /* Extra bottom padding for phones with gesture nav bar */
+  @media (max-width: 480px) {
+    padding: 12px 16px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+    & > * { flex: 1; min-width: 80px; }
+  }
 `;
 
 const ModalBtn = styled.button`
-  display: inline-flex; align-items: center; gap: 0.4rem;
-  padding: 0.5rem 1.2rem; border-radius: 8px;
-  font-size: 0.83rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none;
-  ${({ $v }) => $v === "save"    && "background:linear-gradient(90deg,#FF2D6B,#3B82F6);color:#fff;&:hover{box-shadow:0 6px 20px rgba(255,45,107,0.35);transform:translateY(-1px);}"}
-  ${({ $v }) => $v === "preview" && "background:rgba(59,130,246,0.12);color:#3B82F6;border:1px solid rgba(59,130,246,0.25);&:hover{background:rgba(59,130,246,0.2);}"}
-  ${({ $v }) => $v === "cancel"  && "background:rgba(255,255,255,0.05);color:#9BA1B0;border:1px solid rgba(255,255,255,0.08);&:hover{background:rgba(255,255,255,0.1);color:#fff;}"}
-  &:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  font-size: 0.83rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+
+  /* Save */
+  ${({ $v, theme }) => $v === "save" && `
+    background: ${theme.colors.gradientPinkBlue};
+    color:#fff;
+    &:hover {
+      box-shadow: ${theme.colors.shadowBlueBtnHover};
+      transform: translateY(-1px);
+    }
+  `}
+
+  /* Preview */
+  ${({ $v, theme }) => $v === "preview" && `
+    background: ${theme.colors.accentBlueBg};
+    color: ${theme.colors.accentBlue};
+    border: 1px solid ${theme.colors.accentBlueBorder};
+    &:hover { background: ${theme.colors.accentBlueBgHover}; }
+  `}
+
+  /* Cancel */
+  ${({ $v, theme }) => $v === "cancel" && `
+    background: ${theme.colors.surfaceSubtle};
+    color: ${theme.colors.textSecondary};
+    border: 1px solid ${theme.colors.borderSubtle};
+    &:hover {
+      background: ${theme.colors.bgGlassLight};
+      color: ${theme.colors.textPrimary};
+    }
+  `}
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
 `;
 
+
+
+
+
 const FormGrid = styled.div`
-  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
   @media (max-width: 600px) { grid-template-columns: 1fr; }
 `;
 
 const FGroup = styled.div`
-  display: flex; flex-direction: column; gap: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
   grid-column: ${({ $full }) => $full ? "1 / -1" : "auto"};
 `;
 
 const FLabel = styled.label`
-  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
-  text-transform: uppercase; color: ${({ theme }) => theme.colors.textTertiary};
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.textTertiary};
 `;
 
 const FInput = styled.input`
-  width: 100%; padding: 9px 12px; border-radius: 8px;
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
   border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  background: ${({ theme }) => theme.colors.bgPrimary}; color: ${({ theme }) => theme.colors.textPrimary};
-  font-size: 0.875rem; transition: border-color 0.2s;
-  &:focus { border-color: ${({ theme }) => theme.colors.gradientPinkBlue}; outline: none; box-shadow: 0 0 0 3px rgba(255,45,107,0.1); }
+  background: ${({ theme }) => theme.colors.bgPrimary};
+  color: ${({ theme }) => theme.colors.textPrimary};
+  font-size: 0.875rem;
+  transition: border-color 0.2s;
+  &:focus {
+    border-color: ${({ theme }) => theme.colors.accentPink};
+    outline: none;
+    box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.accentPinkFocus};
+  }
 `;
 
 const FTextarea = styled.textarea`
-  width: 100%; min-height: 100px; padding: 9px 12px; border-radius: 8px;
+  width: 100%;
+  min-height: 100px;
+  padding: 9px 12px;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
   border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  background: ${({ theme }) => theme.colors.bgPrimary}; color: ${({ theme }) => theme.colors.textPrimary};
-  font-size: 0.875rem; resize: vertical; font-family: inherit; transition: border-color 0.2s;
-  &:focus { border-color: ${({ theme }) => theme.colors.gradientPinkBlue}; outline: none; box-shadow: 0 0 0 3px rgba(255,45,107,0.1); }
+  background: ${({ theme }) => theme.colors.bgPrimary};
+  color: ${({ theme }) => theme.colors.textPrimary};
+  font-size: 0.875rem;
+  resize: vertical;
+  font-family: inherit;
+  transition: border-color 0.2s;
+  &:focus {
+    border-color: ${({ theme }) => theme.colors.accentPink};
+    outline: none;
+    box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.accentPinkFocus};
+  }
 `;
 
 const FFileInput = styled.input`
-  padding: 9px 12px; border: 2px dashed ${({ theme }) => theme.colors.borderDefault};
-  border-radius: 8px; cursor: pointer; width: 100%;
-  color: ${({ theme }) => theme.colors.textSecondary}; font-size: 0.875rem;
-  background: ${({ theme }) => theme.colors.bgPrimary}; transition: border-color 0.2s;
-  &:hover { border-color: ${({ theme }) => theme.colors.gradientPinkBlue}; }
+  padding: 9px 12px;
+  border: 2px dashed ${({ theme }) => theme.colors.borderDefault};
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  cursor: pointer;
+  width: 100%;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: 0.875rem;
+  background: ${({ theme }) => theme.colors.bgPrimary};
+  transition: border-color 0.2s;
+  &:hover { border-color: ${({ theme }) => theme.colors.accentPink}; }
 `;
 
 const ThumbPreview = styled.div`
   margin-top: 8px;
-  img { width: 100%; max-height: 150px; object-fit: cover; border-radius: 8px; border: 1px solid ${({ theme }) => theme.colors.borderDefault}; }
+  img {
+    width: 100%;
+    max-height: 150px;
+    object-fit: cover;
+    border-radius: ${({ theme }) => theme.borderRadius.sm};
+    border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  }
 `;
 
 const RadioBlock = styled.div`grid-column: 1 / -1;`;
 const RadioRow = styled.div`display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px;`;
 
 const RadioChip = styled.button`
-  padding: 7px 14px; border-radius: 8px; cursor: pointer; font-size: 0.82rem;
-  background: ${({ $active, theme }) => $active ? "rgba(255,45,107,0.1)" : theme.colors.bgTertiary};
-  border: 1px solid ${({ $active, theme }) => $active ? theme.colors.gradientPinkBlue : theme.colors.borderDefault};
-  color: ${({ $active, theme }) => $active ? theme.colors.gradientPinkBlue : theme.colors.textSecondary};
+  padding: 7px 14px;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  cursor: pointer;
+  font-size: 0.82rem;
+  background: ${({ $active, theme }) =>
+    $active ? theme.colors.codeGhostBg : theme.colors.bgTertiary};
+  border: 1px solid ${({ $active, theme }) =>
+    $active ? theme.colors.codeGhostBorder : theme.colors.borderDefault};
+  color: ${({ $active, theme }) =>
+    $active ? theme.colors.codeText : theme.colors.textSecondary};
   transition: all 0.15s;
-  &:hover { border-color: ${({ theme }) => theme.colors.gradientPinkBlue}; }
+  &:hover { border-color: ${({ theme }) => theme.colors.accentBlue}; }
 `;
 
-const ToggleRow = styled.div`display: flex; align-items: center; justify-content: space-between; padding: 8px 0;`;
+const ToggleRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+`;
 
 const Toggle = styled.label`
-  position: relative; display: inline-block; width: 42px; height: 24px; cursor: pointer;
+  position: relative;
+  display: inline-block;
+  width: 42px; height: 24px;
+  cursor: pointer;
   input { opacity: 0; width: 0; height: 0; position: absolute; }
-  input:checked + span { background: linear-gradient(90deg, #FF2D6B, #3B82F6); }
+  input:checked + span { background: ${({ theme }) => theme.colors.gradientPinkBlue}; }
   input:checked + span::before { transform: translateY(-50%) translateX(18px); }
 `;
 
 const ToggleTrack = styled.span`
-  position: absolute; inset: 0;
-  background: rgba(255,255,255,0.1); border-radius: 999px; border: 1px solid rgba(255,255,255,0.1); transition: background 0.3s;
+  position: absolute;
+  inset: 0;
+  background: ${({ theme }) => theme.colors.surfaceLight};
+  border-radius: 999px;
+  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  transition: background 0.3s;
   &::before {
-    content: ""; position: absolute; width: 18px; height: 18px;
-    left: 2px; top: 50%; transform: translateY(-50%);
-    background: #fff; border-radius: 50%; transition: transform 0.3s; box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    content: "";
+    position: absolute;
+    width: 18px; height: 18px;
+    left: 2px; top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.3s;
+    box-shadow: 0 1px 4px ${({ theme }) => theme.colors.overlayBg};
   }
 `;
 
 const EditorBlock = styled.div`grid-column: 1 / -1;`;
 
 const PreviewCard = styled.div`
-  display: flex; flex-direction: column;
-  width: min(880px, 92vw); max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  width: min(880px, 92vw);
+  max-height: 88vh;
   background: ${({ theme }) => theme.colors.bgSecondary};
-  border-radius: 18px; border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  overflow: hidden; box-shadow: 0 32px 80px rgba(0,0,0,0.6);
-  @media (max-width: 480px) { width: 100vw; max-height: 96vh; border-radius: 22px 22px 0 0; }
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  overflow: hidden;
+  box-shadow: ${({ theme }) => theme.colors.shadowModalPreview};
+  @media (max-width: 480px) {
+    width: 100vw;
+    max-height: 96vh;
+    border-radius: ${({ theme }) => theme.borderRadius.xl} ${({ theme }) => theme.borderRadius.xl} 0 0;
+  }
 `;
 
-const PreviewBody = styled.div`flex: 1; overflow-y: auto; padding: 2.5rem 3rem; @media (max-width: 480px) { padding: 1.25rem; }`;
-const PreviewTitle = styled.h1`font-family: ${({ theme }) => theme.fonts.heading}; font-size: clamp(1.6rem,4vw,2.4rem); margin-bottom: 0.75rem; color: ${({ theme }) => theme.colors.textPrimary};`;
-const PreviewCategoryBadge = styled.div`display:inline-block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;color:${({ theme }) => theme.colors.gradientPinkBlue};background:rgba(255,45,107,0.08);border:1px solid rgba(255,45,107,0.2);padding:3px 10px;border-radius:999px;margin-bottom:1.5rem;`;
+const PreviewBody = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  padding: 2.5rem 3rem;
+  @media (max-width: 480px) { padding: 1.25rem; }
+`;
+
+const PreviewTitle = styled.h1`
+  font-family: ${({ theme }) => theme.fonts.heading};
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  margin-bottom: 0.75rem;
+  color: ${({ theme }) => theme.colors.textPrimary};
+`;
+
+const PreviewBadgeRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 1rem;
+`;
+
+const PreviewTagsRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 1.75rem;
+`;
+
+const PreviewTag = styled.span`
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-family: ${({ theme }) => theme.fonts.mono};
+  font-weight: 500;
+  background: ${({ theme }) =>
+    theme.mode === 'dark'
+      ? 'linear-gradient(90deg, rgba(255,45,107,0.22) 0%, rgba(59,130,246,0.22) 100%)'
+      : 'linear-gradient(90deg, rgba(232,23,74,0.13) 0%, rgba(29,78,216,0.13) 100%)'
+  };
+  border: 0.5px solid ${({ theme }) =>
+    theme.mode === 'dark' ? 'rgba(255,45,107,0.28)' : 'rgba(232,23,74,0.22)'
+  };
+  color: ${({ theme }) => theme.mode === 'dark' ? '#ffffff' : '#1A1A2E'};
+`;
+
+
+const PreviewCategoryBadge = styled.span`
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  background: ${({ $c }) => $c.bg};
+  border: 1px solid ${({ $c }) => $c.border};
+  color: ${({ $c }) => $c.text};
+`;
+
 const PreviewContent = styled.div`
-  line-height: 1.8; color: ${({ theme }) => theme.colors.textSecondary};
-  img { max-width: 100%; border-radius: 8px; margin: 1rem 0; }
+  line-height: 1.8;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  img {
+    max-width: 100%;
+    border-radius: ${({ theme }) => theme.borderRadius.sm};
+    margin: 1rem 0;
+  }
   h2, h3 { color: ${({ theme }) => theme.colors.textPrimary}; margin: 1.5rem 0 0.75rem; }
   p { margin-bottom: 1.2rem; }
-  pre { background: rgba(0,0,0,0.4); padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.875rem; }
-  code { background: rgba(255,45,107,0.1); color: ${({ theme }) => theme.colors.gradientPinkBlue}; padding: 2px 6px; border-radius: 4px; font-size: 0.875em; }
+  pre {
+    background: ${({ theme }) => theme.colors.codeGhostBg};
+    border: 1px solid ${({ theme }) => theme.colors.codeGhostBorder};
+    padding: 1rem;
+    border-radius: ${({ theme }) => theme.borderRadius.sm};
+    overflow-x: auto;
+    font-size: 0.875rem;
+    color:${({ theme }) => theme.colors.codeText};
+  }
+  code {
+    background: ${({ theme }) => theme.colors.codeGhostBg};
+    border: 1px solid ${({ theme }) => theme.colors.codeGhostBorder};
+    color: ${({ theme }) => theme.colors.codeText};
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.875em;
+  }
   pre code { background: none; color: inherit; padding: 0; }
-  blockquote { border-left: 3px solid ${({ theme }) => theme.colors.gradientPinkBlue}; padding: 0.5rem 1rem; margin: 1.5rem 0; font-style: italic; color: ${({ theme }) => theme.colors.textTertiary}; }
+  blockquote {
+    border-left: 3px solid ${({ theme }) => theme.colors.accentPink};
+    padding: 0.5rem 1rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: ${({ theme }) => theme.colors.textTertiary};
+  }
 `;
-
 
 const Page = styled.div`
   display: flex;
-   min-height: 100vh;
-  @media (max-width: 768px) 
-  { 
+  min-height: 100vh;
+  @media (max-width: 768px) {
     flex-direction: column;
-      padding-bottom: 4.5rem; 
-    }
+    padding-bottom: 4.5rem;
+  }
 `;
 
-
-
-
-// â”€â”€â”€ STEP 2: Replace Sidebar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const Sidebar = styled.aside`
-  /* â”€â”€ Desktop â”€â”€ */
   width: 15rem;
   flex-shrink: 0;
   min-height: 100vh;
@@ -6005,50 +6393,28 @@ const Sidebar = styled.aside`
   flex-direction: column;
 
   @media (max-width: 900px) { width: 200px; }
-
-  /* â”€â”€ Mobile: hide the desktop sidebar entirely â”€â”€ */
-  @media (max-width: 768px) {
-    display: none;
-  }
+  @media (max-width: 768px) { display: none; }
 `;
 
-// â”€â”€â”€ STEP 3: SidebarTop unchanged (only shown on desktop now) â”€
-const SidebarTop = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0 0.4rem;
-  margin-bottom: 2rem;
-  color: ${({ theme }) => theme.colors.textTertiary};
-`;
-
-const SidebarBrand = styled.span`
-  font-family: ${({ theme }) => theme.fonts.heading};
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.textSecondary};
-`;
-
-// â”€â”€â”€ STEP 4: NavSection (desktop only now) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const NavSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
 `;
 
-// â”€â”€â”€ STEP 5: SideLink (desktop only) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const SideLink = styled.button`
   display: flex;
   align-items: center;
   gap: 0.7rem;
   width: 100%;
   padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid ${({ $active }) => $active ? "rgba(255,45,107,0.28)" : "transparent"};
-  background: ${({ $active }) => $active ? "rgba(255,45,107,0.07)" : "transparent"};
-  color: ${({ $active, theme }) => $active ? theme.colors.textPrimary : theme.colors.textSecondary};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  border: 1px solid ${({ $active, theme }) =>
+    $active ? theme.colors.accentPinkSidebarBorder : "transparent"};
+  background: ${({ $active, theme }) =>
+    $active ? theme.colors.accentPinkSidebarBg : "transparent"};
+  color: ${({ $active, theme }) =>
+    $active ? theme.colors.textPrimary : theme.colors.textSecondary};
   cursor: pointer;
   transition: all 0.18s ease;
   text-align: left;
@@ -6078,33 +6444,26 @@ const CountPill = styled.span`
   padding: 2px 7px;
   border-radius: 999px;
   background: ${({ $active, theme }) => $active ? "" : theme.colors.bgGlassLight};
-  color: ${({ $active }) => $active ? "#fff" : "inherit"};
+  color: ${({ $active, theme }) => $active ? "#fff" : "inherit"};
   font-weight: 700;
   min-width: 20px;
   text-align: center;
 `;
 
-// â”€â”€â”€ STEP 6: ADD these NEW components (mobile bottom tab bar) â”€
-
-/** Sticky bottom nav â€” only visible on mobile */
 const MobileTabBar = styled.nav`
   display: none;
 
   @media (max-width: 768px) {
     display: flex;
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 200;
+    bottom: 0; left: 0; right: 0;
+    z-index: ${({ theme }) => theme.zIndex.modal};
     background: ${({ theme }) => theme.colors.bgTertiary};
     border-top: 1px solid ${({ theme }) => theme.colors.borderDefault};
     height: 64px;
     padding: 0 8px;
-    /* Frosted glass */
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    /* Safe area for notched phones */
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 `;
@@ -6120,17 +6479,15 @@ const MobileTab = styled.button`
   background: transparent;
   cursor: pointer;
   padding: 8px 4px;
-  border-radius: 12px;
-  transition: background 0.15s;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  transition: background ${({ theme }) => theme.transitions.fast};
   position: relative;
 
-  /* Active indicator bar at top */
   &::before {
     content: "";
     position: absolute;
     top: 0;
-    left: 20%;
-    right: 20%;
+    left: 20%; right: 20%;
     height: 2px;
     border-radius: 0 0 3px 3px;
     background: ${({ $color }) => $color || "#FF2D6B"};
@@ -6138,7 +6495,7 @@ const MobileTab = styled.button`
     transition: opacity 0.18s;
   }
 
-  &:active { background: rgba(255,255,255,0.05); }
+  &:active { background: ${({ theme }) => theme.colors.surfaceSubtle}; }
 `;
 
 const MobileTabLabel = styled.span`
@@ -6146,7 +6503,8 @@ const MobileTabLabel = styled.span`
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: ${({ $active, theme }) => $active ? theme.colors.textPrimary : theme.colors.textTertiary};
+  color: ${({ $active, theme }) =>
+    $active ? theme.colors.textPrimary : theme.colors.textTertiary};
   transition: color 0.18s;
 `;
 
@@ -6171,38 +6529,14 @@ const MobileTabCount = styled.span`
 const MobileTabIcon = styled.span`
   font-size: 18px;
   line-height: 1;
-  /* colour the icon based on active state */
   color: ${({ $active, $color, theme }) =>
-    $active ? ($color || "#FF2D6B") : theme.colors.textTertiary};
+    $active ? ($color || theme.colors.accentPink) : theme.colors.textTertiary};
   transition: color 0.18s;
-`;
-
-// â”€â”€â”€ STEP 7: ADD this mobile header bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-const MobileHeader = styled.div`
-  display: none;
-
-  @media (max-width: 768px) {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 1rem 1.25rem 0;
-    color: ${({ theme }) => theme.colors.textTertiary};
-  
-  }
-`;
-
-const MobileHeaderBrand = styled.span`
-  font-family: ${({ theme }) => theme.fonts.heading};
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.textSecondary};
 `;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\pages\AdminLogin.jsx
+### src\pages\AdminLogin.jsx
 
 ```
 import { useState } from "react";
@@ -6442,12 +6776,12 @@ const AdminLogin = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+              placeholder="••••••••"
             />
           </Field>
 
           <MagneticButton type="submit">
-            {isLoading ? "Signing in..." : "Sign In â†’"}
+            {isLoading ? "Signing in..." : "Sign In →"}
           </MagneticButton>
         </Form>
 </Card>
@@ -6459,7 +6793,7 @@ export default AdminLogin;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\pages\Blog.jsx
+### src\pages\Blog.jsx
 
 ```
 // src/pages/Blog.jsx
@@ -6475,7 +6809,7 @@ const LOAD_MORE_COUNT = 6;
 
 const Page = styled.div`
   padding: 4rem 4rem 6rem;
-  /* Removed max-width constraint â€” now full width with inner grid */
+  /* Removed max-width constraint — now full width with inner grid */
   max-width: 1200px;
   margin: 0 auto;
   min-height: 100vh;
@@ -6570,10 +6904,10 @@ const CountLabel = styled.span`
 const Blog = () => {
   const [search, setSearch]     = useState("");
   const [visible, setVisible]   = useState(INITIAL_COUNT);
-
+  
   const { data: posts = [], isLoading } = useBlogs();
 
-  if (isLoading) return <PageLoader label="Loading postsâ€¦" />;
+  if (isLoading) return <PageLoader label="Loading posts…" />;
 
   const filtered = posts.filter(
     (p) =>
@@ -6625,7 +6959,7 @@ const Blog = () => {
       {hasMore && (
         <LoadMoreWrap>
           <LoadMoreBtn onClick={handleLoadMore}>
-            Load more â†“
+            Load more ↓
           </LoadMoreBtn>
           <CountLabel>
             Showing {shown.length} of {filtered.length}
@@ -6640,7 +6974,7 @@ export default Blog;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\pages\BlogDetails.jsx
+### src\pages\BlogDetails.jsx
 
 ```
 // src/pages/BlogDetails.jsx
@@ -6651,7 +6985,7 @@ import { ArrowLeft, Clock } from "lucide-react";
 import { getCategoryColor } from "../utils/categoryColors";
 import { useBlogDetail } from "../hooks/useApiData";
 import PageLoader from "../components/ui/PageLoader";
-
+import { useTheme } from 'styled-components';
 
 const Page = styled.div`
   min-height: 100vh;
@@ -6766,17 +7100,19 @@ const Content = styled(motion.div)`
     border-radius: 0 8px 8px 0;
   }
   pre {
-    background: ${({ theme }) => theme.colors.bgTertiary};
+    background: ${({ theme }) => theme.colors.codeGhostBg};
     padding: 1.25rem;
     border-radius: 10px;
     overflow-x: auto;
     font-size: 0.875rem;
     margin: 1.75rem 0;
-    border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+    border: 1px solid ${({ theme }) => theme.colors.codeGhostBorder};
+    color:${({ theme }) => theme.colors.codeText};
   }
   code {
-    background: rgba(255, 45, 107, 0.1);
-    color: ${({ theme }) => theme.colors.accentPink};
+    background:${({ theme }) => theme.colors.codeGhostBg};
+    border: 1px solid ${({ theme }) => theme.colors.codeGhostBorder};
+    color: ${({ theme }) => theme.colors.codeText};
     padding: 2px 7px;
     border-radius: 4px;
     font-size: 0.875em;
@@ -6790,14 +7126,14 @@ const Content = styled(motion.div)`
 const BlogDetail = () => {
   const navigate = useNavigate();
   const { slug } = useParams();
-
-  // Reads from React Query cache â€” no API call if visited before within staleTime
+  const theme = useTheme();
+  // Reads from React Query cache — no API call if visited before within staleTime
   const { data: blog, isLoading } = useBlogDetail(slug);
 
-  if (isLoading) return <PageLoader label="Loading postâ€¦" />;
+  if (isLoading) return <PageLoader label="Loading post…" />;
   if (!blog)     return <Page><Inner><p>Post not found.</p></Inner></Page>;
 
-  const catColors = getCategoryColor(blog.category);
+  const catColors = getCategoryColor(blog.category,theme.mode);
 
   return (
     <Page>
@@ -6852,7 +7188,7 @@ export default BlogDetail;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\pages\CaseStudies.jsx
+### src\pages\CaseStudies.jsx
 
 ```
 // src/pages/CaseStudies.jsx
@@ -6932,7 +7268,7 @@ const CaseStudies = () => {
 
   const { data: projects = [], isLoading } = useCaseStudies();
 
-  if (isLoading) return <PageLoader label="Loading projectsâ€¦" />;
+  if (isLoading) return <PageLoader label="Loading projects…" />;
 
   const shown   = projects.slice(0, visible);
   const hasMore = visible < projects.length;
@@ -6957,7 +7293,7 @@ const CaseStudies = () => {
       {hasMore && (
         <LoadMoreWrap>
           <LoadMoreBtn onClick={() => setVisible((v) => v + LOAD_MORE_COUNT)}>
-            Load more â†“
+            Load more ↓
           </LoadMoreBtn>
           <CountLabel>
             Showing {shown.length} of {projects.length}
@@ -6972,18 +7308,18 @@ export default CaseStudies;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\pages\CaseStudyDetails.jsx
+### src\pages\CaseStudyDetails.jsx
 
 ```
 // src/pages/CaseStudyDetails.jsx
 import { useParams, useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import { motion } from "framer-motion";
 import { getCategoryColor } from "../utils/categoryColors";
 import { ArrowLeft, Github, ExternalLink } from "lucide-react";
 import Tag from "../components/ui/Tag";
 import PageLoader from "../components/ui/PageLoader";
 import { useCaseStudyDetail } from "../hooks/useApiData";
+import { styled, useTheme } from "styled-components";
 
 
 const Page = styled.div`
@@ -7017,18 +7353,27 @@ const BackBtn = styled.button`
   }
 `;
 
+const CategoryRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+  align-items: center;
+`;
+
 const CategoryBadge = styled.span`
   display: inline-block;
-  padding: 0.3rem 0.85rem;
+  padding: 4px 12px;
   border-radius: 999px;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
   text-transform: uppercase;
-  background: ${({ $c }) => $c.bg};
-  border: 1px solid ${({ $c }) => $c.border};
-  color: ${({ $c }) => $c.text};
-  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
+  background: ${({ $c }) => $c?.bg || 'rgba(255,255,255,0.06)'};
+  border: 1px solid ${({ $c }) => $c?.border || 'rgba(255,255,255,0.12)'};
+  color: ${({ $c }) => $c?.text || '#9BA1B0'};
+  white-space: nowrap;
+  flex-shrink: 0;
 `;
 
 const Title = styled.h1`
@@ -7089,17 +7434,19 @@ const Content = styled(motion.div)`
   strong { color: ${({ theme }) => theme.colors.textPrimary}; }
   img { max-width: 100%; border-radius: 10px; margin: 1.5rem 0; border: 1px solid ${({ theme }) => theme.colors.borderDefault}; }
   pre {
-    background: ${({ theme }) => theme.colors.bgTertiary};
+    background: ${({ theme }) => theme.colors.codeGhostBg};
     padding: 1.25rem;
     border-radius: 10px;
     overflow-x: auto;
     font-size: 0.875rem;
     margin: 1.75rem 0;
-    border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+    border: 1px solid ${({ theme }) => theme.colors.codeGhostBorder};
+    color: ${({ theme }) => theme.colors.codeText};
   }
   code {
-    background: rgba(255, 45, 107, 0.1);
-    color: ${({ theme }) => theme.colors.accentPink};
+    background:${({ theme }) => theme.colors.codeGhostBg};
+    border: 1px solid ${({ theme }) => theme.colors.codeGhostBorder};
+    color: ${({ theme }) => theme.colors.codeText};
     padding: 2px 7px;
     border-radius: 4px;
     font-size: 0.875em;
@@ -7150,11 +7497,11 @@ const LinkBtn = styled.a`
 const CaseStudyDetails = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
-
-  // Reads from React Query cache â€” no API call if visited before within staleTime
+  const theme = useTheme();
+  // Reads from React Query cache — no API call if visited before within staleTime
   const { data, isLoading } = useCaseStudyDetail(slug);
 
-  if (isLoading) return <PageLoader label="Loading projectâ€¦" />;
+  if (isLoading) return <PageLoader label="Loading project…" />;
   if (!data)     return <Page><Inner><p>Project not found.</p></Inner></Page>;
 
   const tags = data.tech_stack
@@ -7170,21 +7517,45 @@ const CaseStudyDetails = () => {
         </BackBtn>
 
         <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          {data.category && (
-            <CategoryBadge $c={catColors}>{data.category}</CategoryBadge>
-          )}
-          <Title>{data.title}</Title>
-          <Summary>{data.summary}</Summary>
-          <TechRow>
-            {tags.map((tag, i) => (
-              <Tag key={i}>{tag}</Tag>
-            ))}
-          </TechRow>
-        </motion.div>
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              {data.category && (
+                <CategoryRow>
+                  {(() => {
+                    const categories = data.category
+                      .split(",")
+                      .map((cat) => cat.trim())
+                      .filter(Boolean);
+
+                    const displayCats = categories
+                   
+
+                    return (
+                      <>
+                        {displayCats.map((cat, i) => (
+                          <CategoryBadge key={i} $c={getCategoryColor(cat, theme.mode)}>
+                            {cat}
+                          </CategoryBadge>
+                        ))}
+                        
+                  
+                      </>
+                    );
+                  })()}
+                </CategoryRow>
+              )}
+
+              <Title>{data.title}</Title>
+              <Summary>{data.summary}</Summary>
+              
+              <TechRow>
+                {tags.map((tag, i) => (
+                  <Tag key={i}>{tag}</Tag>
+                ))}
+              </TechRow>
+            </motion.div>
 
         {data.thumbnail && (
           <Thumbnail
@@ -7224,7 +7595,7 @@ export default CaseStudyDetails;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\pages\Contact.jsx
+### src\pages\Contact.jsx
 
 ```
 import { useState } from "react";
@@ -7236,7 +7607,7 @@ import { contactAPI } from "../services/apis";
 import { Github, Linkedin, Twitter, Mail, MapPin, Clock, ArrowRight } from "lucide-react";
 import { personalInfo } from "../data/siteData";
 
-/* â”€â”€â”€ Data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─── Data ─────────────────────────────────────────── */
 const SOCIALS = [
   { icon: Github,   label: "GitHub",    href: `${personalInfo.socials.github}`,   handle: "@darshan12-code" },
   { icon: Linkedin, label: "LinkedIn",  href: `${personalInfo.socials.linkedin}`, handle: "darshan-agrawal-012" },
@@ -7251,7 +7622,7 @@ const AVAILABILITY = [
   { label: "Response",  value: "Within 24 hours",       color: "#FF9F4A" },
 ];
 
-/* â”€â”€â”€ Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─── Component ─────────────────────────────────────── */
 const Contact = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [loading, setLoading] = useState(false);
@@ -7281,14 +7652,14 @@ const Contact = () => {
 
   return (
     <Page>
-      {/* â”€â”€ Page Header â”€â”€ */}
+      {/* ── Page Header ── */}
       <Header>
         <HeaderInner
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55 }}
         >
-          {/* <Eyebrow>05 â€” GET IN TOUCH</Eyebrow> */}
+          {/* <Eyebrow>05 — GET IN TOUCH</Eyebrow> */}
           <H1>
             Let's Build<br />
             <GradientText>Something Great</GradientText>
@@ -7305,7 +7676,7 @@ const Contact = () => {
         </HeaderInner>
       </Header>
 
-      {/* â”€â”€ Toast â”€â”€ */}
+      {/* ── Toast ── */}
       <AnimatePresence>
         {toast && (
           <Toast
@@ -7315,15 +7686,15 @@ const Contact = () => {
             exit={{ y: 20, opacity: 0 }}
             transition={{ duration: 0.25 }}
           >
-            <ToastIcon>{toast.type === "success" ? "âœ“" : "âœ•"}</ToastIcon>
+            <ToastIcon>{toast.type === "success" ? "✓" : "✕"}</ToastIcon>
             {toast.msg}
           </Toast>
         )}
       </AnimatePresence>
-      {/* â”€â”€ Two-col layout â”€â”€ */}
+      {/* ── Two-col layout ── */}
       <BodyGrid>
 
-        {/* LEFT â€” info panel */}
+        {/* LEFT — info panel */}
         <InfoCol
           initial={{ opacity: 0, x: -24 }}
           animate={{ opacity: 1, x: 0 }}
@@ -7349,7 +7720,7 @@ const Contact = () => {
               <MapPin size={14} style={{ marginRight: "0.4rem", verticalAlign: "middle" }} />
               Location
             </InfoCardTitle>
-            <LocationText>Based in India â€” working globally</LocationText>
+            <LocationText>Based in India — working globally</LocationText>
             <TimeRow>
               <Clock size={13} />
               <span id="localTime">IST (UTC+5:30)</span>
@@ -7381,7 +7752,7 @@ const Contact = () => {
           </InfoCard>
         </InfoCol>
 
-        {/* RIGHT â€” form */}
+        {/* RIGHT — form */}
         <FormCol
           initial={{ opacity: 0, x: 24 }}
           animate={{ opacity: 1, x: 0 }}
@@ -7418,7 +7789,7 @@ const Contact = () => {
               />
 
               <SubmitBtn type="submit" disabled={loading}>
-                <span>{loading ? "Sendingâ€¦" : "Send Message"}</span>
+                <span>{loading ? "Sending…" : "Send Message"}</span>
                 {!loading && <ArrowRight size={16} />}
                 {loading && <Spinner />}
               </SubmitBtn>
@@ -7433,16 +7804,16 @@ const Contact = () => {
 
 export default Contact;
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────────────────────
    STYLES
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────────────────────── */
 
 const Page = styled.div`
   min-height: 100vh;
   padding-bottom: 6rem;
 `;
 
-/* â”€â”€ Header â”€â”€ */
+/* ── Header ── */
 const Header = styled.section`
   padding: clamp(6rem, 12vh, 9rem) clamp(1.5rem, 6vw, 5rem) clamp(3rem, 5vh, 4rem);
   border-bottom: 1px solid ${({ theme }) => theme.colors.borderDefault};
@@ -7520,7 +7891,7 @@ const PulseDot = styled.span`
   flex-shrink: 0;
 `;
 
-/* â”€â”€ Body grid â”€â”€ */
+/* ── Body grid ── */
 const BodyGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1.4fr;
@@ -7534,7 +7905,7 @@ const BodyGrid = styled.div`
   }
 `;
 
-/* â”€â”€ Info col â”€â”€ */
+/* ── Info col ── */
 const InfoCol = styled(motion.div)`
   display: flex;
   flex-direction: column;
@@ -7630,7 +8001,7 @@ const SocialText = styled.div`display: flex; flex-direction: column; gap: 1px;`;
 const SocialLabel = styled.span`font-size: 0.8rem; font-weight: 600; color: ${({ theme }) => theme.colors.textPrimary};`;
 const SocialHandle = styled.span`font-size: 0.72rem; color: ${({ theme }) => theme.colors.textTertiary};`;
 
-/* â”€â”€ Form col â”€â”€ */
+/* ── Form col ── */
 const FormCol = styled(motion.div)``;
 
 const FormCard = styled.div`
@@ -7675,7 +8046,7 @@ const Form = styled.form`
   position: relative;
 `;
 
-/* Gradient submit button â€” matches global button style */
+/* Gradient submit button — matches global button style */
 const spinAnim = keyframes`from{transform:rotate(0deg)}to{transform:rotate(360deg)}`;
 const Spinner = styled.span`
   width: 14px; height: 14px; border-radius: 50%;
@@ -7729,7 +8100,7 @@ const SubmitBtn = styled.button`
   @media (max-width: 480px) { align-self: stretch; }
 `;
 
-/* â”€â”€ Toast â”€â”€ */
+/* ── Toast ── */
 const Toast = styled(motion.div)`
   position: fixed;
   bottom: 2rem; right: 2rem;
@@ -7758,7 +8129,7 @@ const ToastIcon = styled.span`
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\pages\Home.jsx
+### src\pages\Home.jsx
 
 ```
 import Hero from '../components/home/Hero';
@@ -7793,7 +8164,7 @@ export default Home;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\services\apis.jsx
+### src\services\apis.jsx
 
 ```
 import axios from "axios";
@@ -7931,7 +8302,7 @@ export default api;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\services\queryClient.jsx
+### src\services\queryClient.jsx
 
 ```
 // src/queryClient.js
@@ -7940,7 +8311,7 @@ export default api;
 // gcTime:    how long unused cache stays in memory before garbage collected
 //
 // With these settings:
-// - Navigating Blog â†’ Case Studies â†’ Blog: NO API call, instant render
+// - Navigating Blog → Case Studies → Blog: NO API call, instant render
 // - Data refreshes only after staleTime expires (5 min for lists, 10 min for details)
 // - If user leaves tab and comes back, no unnecessary refetch
 
@@ -7949,7 +8320,7 @@ import { QueryClient } from "@tanstack/react-query";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // Data stays "fresh" for 5 minutes â€” no refetch on re-mount/navigation
+      // Data stays "fresh" for 5 minutes — no refetch on re-mount/navigation
       staleTime: 5 * 60 * 1000,
       // Keep unused cache for 15 minutes (survives page navigation)
       gcTime: 15 * 60 * 1000,
@@ -7969,7 +8340,7 @@ export default queryClient;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\styles\globalStyles.js
+### src\styles\globalStyles.jsx
 
 ```
 import { createGlobalStyle } from 'styled-components';
@@ -8047,218 +8418,250 @@ export default GlobalStyles;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\styles\theme.js
+### src\styles\theme.js
 
 ```
-// export const theme = {
-//   colors: {
-//     bgPrimary: '#0D0F14',
-//     bgSecondary: '#12141A',
-//     bgTertiary: '#181B23',
-//     bgGlass: 'rgba(13, 15, 20, 0.72)',
-//     bgGlassLight: 'rgba(255, 255, 255, 0.04)',
-//     textPrimary: '#EAEDF3',
-//     textSecondary: '#9BA1B0',
-//     textTertiary: '#5C6170',
-//     textWhite: '#FFFFFF',
-//     accentNavy: '#1E3A5F',
-//     accentNavyLight: '#2A5A8F',
-//     gradientPinkBlue: '#FF2D6B',
-//     gradientPinkBlueGlow: 'rgba(255, 45, 107, 0.35)',
-//     accentGreen: '#00E89D',
-//     accentGreenGlow: 'rgba(0, 232, 157, 0.25)',
-//     accentCoral: '#FF6B4A',
-//     accentCrimson: '#DC2626',
-//     accentBlue: '#3B82F6',
-//     borderDefault: 'rgba(255, 255, 255, 0.06)',
-//     borderHover: 'rgba(255, 255, 255, 0.12)',
-//     borderAccent: 'rgba(255, 45, 107, 0.4)',
-//     shadowCard: '0 4px 24px rgba(0, 0, 0, 0.4)',
-//     shadowCardHover: '0 12px 40px rgba(0, 0, 0, 0.6)',
-//     shadowGlowPink: '0 0 40px rgba(255, 45, 107, 0.2)',
-//     shadowGlowGreen: '0 0 40px rgba(0, 232, 157, 0.15)',
-//     shadowGlowNavy: '0 0 40px rgba(30, 58, 95, 0.3)',
-//     gradientHero: 'linear-gradient(135deg, #0D0F14 0%, #1E3A5F 50%, #0D0F14 100%)',
-//     gradientCard: 'linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%)',
-//     gradientPinkBlue: 'linear-gradient(90deg, #FF2D6B 0%, #3B82F6 100%)',
-//     gradientNavy: 'linear-gradient(180deg, #1E3A5F 0%, #0D0F14 100%)',
-//     gradientText: 'linear-gradient(90deg, #FF2D6B, #FF6B4A, #00E89D, #3B82F6)',
-//     gradientRing: 'conic-gradient(#FF2D6B, #FF6B4A, #00E89D, #3B82F6, #FF2D6B)',
-//   },
-//   fonts: {
-//     heading: "'Clash Display', sans-serif",
-//     body: "'DM Sans', sans-serif",
-//     mono: "'JetBrains Mono', monospace",
-//   },
-//   fontSizes: {
-//     heroName: 'clamp(3rem, 8vw, 7rem)',
-//     heroRole: 'clamp(1rem, 2.5vw, 1.5rem)',
-//     h1: 'clamp(2rem, 4vw, 3.5rem)',
-//     h2: 'clamp(1.5rem, 3vw, 2.5rem)',
-//     h3: '1.25rem',
-//     body: '1rem',
-//     small: '0.875rem',
-//     xs: '0.75rem',
-//   },
-//   spacing: {
-//     xs: '0.5rem',
-//     sm: '1rem',
-//     md: '1.5rem',
-//     lg: '2rem',
-//     xl: '3rem',
-//     xxl: '5rem',
-//     section: 'clamp(4rem, 10vh, 8rem)',
-//   },
-//   borderRadius: {
-//     sm: '6px',
-//     md: '12px',
-//     lg: '20px',
-//     xl: '28px',
-//     full: '9999px',
-//   },
-//   transitions: {
-//     fast: '0.15s cubic-bezier(0.4, 0, 0.2, 1)',
-//     default: '0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-//     smooth: '0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-//     slow: '0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-//     spring: '0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
-//   },
-//   zIndex: {
-//     behind: -1,
-//     base: 0,
-//     card: 10,
-//     navbar: 100,
-//     modal: 200,
-//     toast: 300,
-//     scrollbar: 400,
-//   },
-// };
-
 // src/styles/theme.js
 
 const darkColors = {
-  bgPrimary: '#0D0F14',
-  bgSecondary: '#12141A',
-  bgTertiary: '#181B23',
-  bgGlass: 'rgba(13, 15, 20, 0.72)',
-  bgGlassLight: 'rgba(255, 255, 255, 0.04)',
-  textPrimary: '#EAEDF3',
-  textSecondary: '#9BA1B0',
-  textTertiary: '#5C6170',
-  textWhite: '#FFFFFF',
-  accentNavy: '#1E3A5F',
-  accentNavyLight: '#2A5A8F',
-  gradientPinkBlue: '#FF2D6B',
-  gradientPinkBlueGlow: 'rgba(255, 45, 107, 0.35)',
-  accentGreen: '#00E89D',
-  accentGreenGlow: 'rgba(0, 232, 157, 0.25)',
-  accentCoral: '#FF6B4A',
-  accentCrimson: '#DC2626',
-  accentBlue: '#3B82F6',
-  borderDefault: 'rgba(255, 255, 255, 0.06)',
-  borderHover: 'rgba(255, 255, 255, 0.12)',
-  borderAccent: 'rgba(255, 45, 107, 0.4)',
-  shadowCard: '0 4px 24px rgba(0, 0, 0, 0.4)',
-  shadowCardHover: '0 12px 40px rgba(0, 0, 0, 0.6)',
-  shadowGlowPink: '0 0 40px rgba(255, 45, 107, 0.2)',
-  shadowGlowGreen: '0 0 40px rgba(0, 232, 157, 0.15)',
-  shadowGlowNavy: '0 0 40px rgba(30, 58, 95, 0.3)',
-  gradientHero: 'linear-gradient(135deg, #0D0F14 0%, #1E3A5F 50%, #0D0F14 100%)',
-  gradientCard: 'linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%)',
-  gradientPinkBlue: 'linear-gradient(90deg, #FF2D6B 0%, #3B82F6 100%)',
-  gradientNavy: 'linear-gradient(180deg, #1E3A5F 0%, #0D0F14 100%)',
-  gradientText: 'linear-gradient(90deg, #FF2D6B, #FF6B4A, #00E89D, #3B82F6)',
-  gradientRing: 'conic-gradient(#FF2D6B, #FF6B4A, #00E89D, #3B82F6, #FF2D6B)',
-  // NEW: ink panel decoration colors
-  inkStroke: 'rgba(255,255,255,0.03)',
-  comicPanel: 'rgba(255,255,255,0.02)',
+  // ── Backgrounds ──────────────────────────────────────────────
+  bgPrimary:            '#0D0F14',
+  bgSecondary:          '#12141A',
+  bgTertiary:           '#181B23',
+  bgGlass:              'rgba(13, 15, 20, 0.72)',
+  bgGlassLight:         'rgba(255, 255, 255, 0.04)',
+
+  // ── Text ─────────────────────────────────────────────────────
+  textPrimary:          '#EAEDF3',
+  textSecondary:        '#9BA1B0',
+  textTertiary:         '#5C6170',
+  textWhite:            '#FFFFFF',
+
+  // ── Accent – Navy ────────────────────────────────────────────
+  accentNavy:           '#1E3A5F',
+  accentNavyLight:      '#2A5A8F',
+
+  // ── Accent – Pink / Gradient ──────────────────────────────────
+  accentPink:                  '#FF2D6B',          // raw hex, use for text/icon
+  accentPinkGlow:              'rgba(255, 45, 107, 0.35)',   // hover shadows
+  accentPinkFocus:             'rgba(255, 45, 107, 0.10)',   // focus rings, hover overlays
+  accentPinkSubtleBg:          'rgba(255, 45, 107, 0.09)',   // chip / badge backgrounds
+  accentPinkSubtleBorder:      'rgba(255, 45, 107, 0.18)',   // chip / badge borders
+  accentPinkSubtleBg2:         'rgba(255, 45, 107, 0.08)',   // slightly lighter variant (preview badge)
+  accentPinkSubtleBorder2:     'rgba(255, 45, 107, 0.20)',   // preview badge border
+  accentPinkRingShadow:        'rgba(255, 45, 107, 0.06)',   // modal card ring shadow
+  accentPinkSidebarBorder:     'rgba(255, 45, 107, 0.28)',   // sidebar active item border
+  accentPinkSidebarBg:         'rgba(255, 45, 107, 0.07)',   // sidebar active item bg
+
+  // ── Accent – Blue ─────────────────────────────────────────────
+  accentBlue:           '#3B82F6',
+  accentBlueBg:         'rgba(59, 130, 246, 0.12)',          // preview btn bg
+  accentBlueBorder:     'rgba(59, 130, 246, 0.25)',          // preview btn border
+  accentBlueBgHover:    'rgba(59, 130, 246, 0.20)',          // preview btn hover bg
+
+  // ── Accent – Green ────────────────────────────────────────────
+  accentGreen:          '#00E89D',
+  accentGreenGlow:      'rgba(0, 232, 157, 0.25)',
+
+  // ── Accent – Coral / Crimson / Danger ─────────────────────────
+  accentCoral:          '#FF6B4A',
+  accentCrimson:        '#DC2626',
+  accentDanger:         '#EF4444',              // icon danger color (brighter red)
+  accentDangerLight:    '#FF6060',              // icon danger hover color
+  accentDangerBg:       'rgba(239, 68, 68, 0.12)',    // danger icon btn bg
+  accentDangerBgHover:  'rgba(239, 68, 68, 0.22)',    // danger icon btn hover bg
+
+  // ── Borders ───────────────────────────────────────────────────
+  borderDefault:        'rgba(255, 255, 255, 0.06)',
+  borderHover:          'rgba(255, 255, 255, 0.12)',
+  borderAccent:         'rgba(255, 45, 107, 0.40)',   // strong pink border (form focus etc.)
+  borderSubtle:         'rgba(255, 255, 255, 0.08)',  // cancel btn border / modal btn
+
+  // ── Surfaces (alpha whites for glass / inactive elements) ─────
+  surfaceSubtle:        'rgba(255, 255, 255, 0.05)',  // cancel btn bg, mobile tab active press
+  surfaceLight:         'rgba(255, 255, 255, 0.10)',  // toggle track, radio chip inactive
+
+  // ── Overlay ───────────────────────────────────────────────────
+  overlayBg:            'rgba(0, 0, 0, 0.70)',        // modal backdrop
+
+  // ── Shadows ───────────────────────────────────────────────────
+  shadowCard:           '0 4px 24px rgba(0, 0, 0, 0.4)',
+  shadowCardHover:      '0 8px 32px rgba(0, 0, 0, 0.25)',   // card hover (was inline)
+  shadowCardStrong:     '0 12px 40px rgba(0, 0, 0, 0.6)',   // original shadowCardHover
+  shadowModal:          '0 32px 80px rgba(0, 0, 0, 0.55)',  // modal card shadow
+  shadowModalPreview:   '0 32px 80px rgba(0, 0, 0, 0.60)',  // preview modal shadow
+  shadowGlowPink:       '0 0 40px rgba(255, 45, 107, 0.2)',
+  shadowGlowGreen:      '0 0 40px rgba(0, 232, 157, 0.15)',
+  shadowGlowNavy:       '0 0 40px rgba(30, 58, 95, 0.3)',
+  shadowPinkHover:      '0 8px 28px rgba(255, 45, 107, 0.35)',  // create btn hover
+  shadowBlueBtnHover:   '0 6px 20px rgba(255, 45, 107, 0.35)',  // save btn hover (pink-blue)
+
+  // ── Pre / Code block ──────────────────────────────────────────
+  preBg:                'rgba(0, 0, 0, 0.40)',        // <pre> background in preview
+
+  // ── Gradients ─────────────────────────────────────────────────
+  gradientPinkBlue:     'linear-gradient(90deg, #FF2D6B 0%, #3B82F6 100%)',
+  gradientHero:         'linear-gradient(135deg, #0D0F14 0%, #1E3A5F 50%, #0D0F14 100%)',
+  gradientCard:         'linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%)',
+  gradientNavy:         'linear-gradient(180deg, #1E3A5F 0%, #0D0F14 100%)',
+  gradientText:         'linear-gradient(90deg, #FF2D6B, #FF6B4A, #00E89D, #3B82F6)',
+  gradientRing:         'conic-gradient(#FF2D6B, #FF6B4A, #00E89D, #3B82F6, #FF2D6B)',
+  gradientShimmer:      'linear-gradient(90deg, #FF2D6B 0%, #3B82F6 50%, #FF2D6B 100%)',  // card shimmer bar
+
+  // ── Decorative ────────────────────────────────────────────────
+  inkStroke:            'rgba(255, 255, 255, 0.03)',
+  comicPanel:           'rgba(255, 255, 255, 0.02)',
+  codeGradientBg:     'linear-gradient(90deg, rgba(255,45,107,0.22) 0%, rgba(59,130,246,0.22) 100%)',
+  codeGradientBorder: 'rgba(255, 45, 107, 0.28)',
+  codeGhostBg:        'rgba(255, 255, 255, 0.06)',
+  codeGhostBorder:    'rgba(255, 255, 255, 0.10)',
+  codeText:          '#fff',
 };
 
 const lightColors = {
-  bgPrimary: '#F5F0E8',
-  bgSecondary: '#EDE8DC',
-  bgTertiary: '#E0D9CC',
-  bgGlass: 'rgba(245, 240, 232, 0.85)',
-  bgGlassLight: 'rgba(0, 0, 0, 0.03)',
-  textPrimary: '#1A1A2E',
-  textSecondary: '#3D3D5C',
-  textTertiary: '#7A7A99',
-  textWhite: '#1A1A2E',
-  accentNavy: '#1E3A5F',
-  accentNavyLight: '#2A5A8F',
-  accentPink: '#E8174A',
-  gradientPinkBlueGlow: 'rgba(232, 23, 74, 0.2)',
-  accentGreen: '#007A52',
-  accentGreenGlow: 'rgba(0, 122, 82, 0.15)',
-  accentCoral: '#D44D28',
-  accentCrimson: '#B91C1C',
-  accentBlue: '#1D4ED8',
-  borderDefault: 'rgba(0, 0, 0, 0.08)',
-  borderHover: 'rgba(0, 0, 0, 0.16)',
-  borderAccent: 'rgba(232, 23, 74, 0.3)',
-  shadowCard: '0 4px 24px rgba(0, 0, 0, 0.1)',
-  shadowCardHover: '0 12px 40px rgba(0, 0, 0, 0.18)',
-  shadowGlowPink: '0 0 40px rgba(232, 23, 74, 0.12)',
-  shadowGlowGreen: '0 0 30px rgba(0, 122, 82, 0.1)',
-  shadowGlowNavy: '0 0 40px rgba(30, 58, 95, 0.15)',
-  gradientHero: 'linear-gradient(135deg, #F5F0E8 0%, #C8D8EC 50%, #F5F0E8 100%)',
-  gradientCard: 'linear-gradient(145deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0) 100%)',
-  gradientPinkBlue: 'linear-gradient(90deg, #E8174A 0%, #1D4ED8 100%)',
-  gradientNavy: 'linear-gradient(180deg, #1E3A5F 0%, #F5F0E8 100%)',
-  gradientText: 'linear-gradient(90deg, #E8174A, #D44D28, #007A52, #1D4ED8)',
-  gradientRing: 'conic-gradient(#E8174A, #D44D28, #007A52, #1D4ED8, #E8174A)',
-  inkStroke: 'rgba(0,0,0,0.04)',
-  comicPanel: 'rgba(0,0,0,0.02)',
+  // ── Backgrounds ──────────────────────────────────────────────
+  bgPrimary:            '#F5F0E8',
+  bgSecondary:          '#EDE8DC',
+  bgTertiary:           '#E0D9CC',
+  bgGlass:              'rgba(245, 240, 232, 0.85)',
+  bgGlassLight:         'rgba(0, 0, 0, 0.03)',
+
+  // ── Text ─────────────────────────────────────────────────────
+  textPrimary:          '#1A1A2E',
+  textSecondary:        '#3D3D5C',
+  textTertiary:         '#7A7A99',
+  textWhite:            '#1A1A2E',
+
+  // ── Accent – Navy ────────────────────────────────────────────
+  accentNavy:           '#1E3A5F',
+  accentNavyLight:      '#2A5A8F',
+
+  // ── Accent – Pink / Gradient ──────────────────────────────────
+  accentPink:                  '#E8174A',
+  accentPinkGlow:              'rgba(232, 23, 74, 0.20)',
+  accentPinkFocus:             'rgba(232, 23, 74, 0.10)',
+  accentPinkSubtleBg:          'rgba(232, 23, 74, 0.07)',
+  accentPinkSubtleBorder:      'rgba(232, 23, 74, 0.14)',
+  accentPinkSubtleBg2:         'rgba(232, 23, 74, 0.06)',
+  accentPinkSubtleBorder2:     'rgba(232, 23, 74, 0.16)',
+  accentPinkRingShadow:        'rgba(232, 23, 74, 0.05)',
+  accentPinkSidebarBorder:     'rgba(232, 23, 74, 0.22)',
+  accentPinkSidebarBg:         'rgba(232, 23, 74, 0.06)',
+
+  // ── Accent – Blue ─────────────────────────────────────────────
+  accentBlue:           '#1D4ED8',
+  accentBlueBg:         'rgba(29, 78, 216, 0.10)',
+  accentBlueBorder:     'rgba(29, 78, 216, 0.22)',
+  accentBlueBgHover:    'rgba(29, 78, 216, 0.18)',
+
+  // ── Accent – Green ────────────────────────────────────────────
+  accentGreen:          '#007A52',
+  accentGreenGlow:      'rgba(0, 122, 82, 0.15)',
+
+  // ── Accent – Coral / Crimson / Danger ─────────────────────────
+  accentCoral:          '#D44D28',
+  accentCrimson:        '#B91C1C',
+  accentDanger:         '#DC2626',
+  accentDangerLight:    '#EF4444',
+  accentDangerBg:       'rgba(220, 38, 38, 0.10)',
+  accentDangerBgHover:  'rgba(220, 38, 38, 0.18)',
+
+  // ── Borders ───────────────────────────────────────────────────
+  borderDefault:        'rgba(0, 0, 0, 0.08)',
+  borderHover:          'rgba(0, 0, 0, 0.16)',
+  borderAccent:         'rgba(232, 23, 74, 0.30)',
+  borderSubtle:         'rgba(0, 0, 0, 0.10)',
+
+  // ── Surfaces ─────────────────────────────────────────────────
+  surfaceSubtle:        'rgba(0, 0, 0, 0.04)',
+  surfaceLight:         'rgba(0, 0, 0, 0.06)',
+
+  // ── Overlay ───────────────────────────────────────────────────
+  overlayBg:            'rgba(0, 0, 0, 0.50)',
+
+  // ── Shadows ───────────────────────────────────────────────────
+  shadowCard:           '0 4px 24px rgba(0, 0, 0, 0.10)',
+  shadowCardHover:      '0 8px 32px rgba(0, 0, 0, 0.14)',
+  shadowCardStrong:     '0 12px 40px rgba(0, 0, 0, 0.18)',
+  shadowModal:          '0 32px 80px rgba(0, 0, 0, 0.20)',
+  shadowModalPreview:   '0 32px 80px rgba(0, 0, 0, 0.24)',
+  shadowGlowPink:       '0 0 40px rgba(232, 23, 74, 0.12)',
+  shadowGlowGreen:      '0 0 30px rgba(0, 122, 82, 0.10)',
+  shadowGlowNavy:       '0 0 40px rgba(30, 58, 95, 0.15)',
+  shadowPinkHover:      '0 8px 28px rgba(232, 23, 74, 0.22)',
+  shadowBlueBtnHover:   '0 6px 20px rgba(232, 23, 74, 0.22)',
+
+  // ── Pre / Code block ──────────────────────────────────────────
+  preBg:                'rgba(0, 0, 0, 0.06)',
+
+  // ── Gradients ─────────────────────────────────────────────────
+  gradientPinkBlue:     'linear-gradient(90deg, #E8174A 0%, #1D4ED8 100%)',
+  gradientHero:         'linear-gradient(135deg, #F5F0E8 0%, #C8D8EC 50%, #F5F0E8 100%)',
+  gradientCard:         'linear-gradient(145deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0) 100%)',
+  gradientNavy:         'linear-gradient(180deg, #1E3A5F 0%, #F5F0E8 100%)',
+  gradientText:         'linear-gradient(90deg, #E8174A, #D44D28, #007A52, #1D4ED8)',
+  gradientRing:         'conic-gradient(#E8174A, #D44D28, #007A52, #1D4ED8, #E8174A)',
+  gradientShimmer:      'linear-gradient(90deg, #E8174A 0%, #1D4ED8 50%, #E8174A 100%)',
+
+  // ── Decorative ────────────────────────────────────────────────
+  inkStroke:            'rgba(0, 0, 0, 0.04)',
+  comicPanel:           'rgba(0, 0, 0, 0.02)',
+
+  codeGradientBg:     'linear-gradient(90deg, rgba(232,23,74,0.13) 0%, rgba(29,78,216,0.13) 100%)',
+  codeGradientBorder: 'rgba(232, 23, 74, 0.22)',
+  codeGhostBg:        'rgba(0, 0, 0, 0.06)',
+  codeGhostBorder:    'rgba(0, 0, 0, 0.12)',
+  codeText:          '#1A1A2E',
 };
 
 export const darkTheme = {
   colors: darkColors,
   mode: 'dark',
- fonts: {
+  fonts: {
     heading: "'Clash Display', sans-serif",
-    body: "'DM Sans', sans-serif",
-    mono: "'JetBrains Mono', monospace",
+    body:    "'DM Sans', sans-serif",
+    mono:    "'JetBrains Mono', monospace",
   },
   fontSizes: {
     heroName: 'clamp(3rem, 8vw, 7rem)',
     heroRole: 'clamp(1rem, 2.5vw, 1.5rem)',
-    h1: 'clamp(2rem, 4vw, 3.5rem)',
-    h2: 'clamp(1.5rem, 3vw, 2.5rem)',
-    h3: '1.25rem',
-    body: '1rem',
-    small: '0.875rem',
-    xs: '0.75rem',
+    h1:       'clamp(2rem, 4vw, 3.5rem)',
+    h2:       'clamp(1.5rem, 3vw, 2.5rem)',
+    h3:       '1.25rem',
+    body:     '1rem',
+    small:    '0.875rem',
+    xs:       '0.75rem',
   },
   spacing: {
-    xs: '0.5rem',
-    sm: '1rem',
-    md: '1.5rem',
-    lg: '2rem',
-    xl: '3rem',
-    xxl: '5rem',
+    xs:      '0.5rem',
+    sm:      '1rem',
+    md:      '1.5rem',
+    lg:      '2rem',
+    xl:      '3rem',
+    xxl:     '5rem',
     section: 'clamp(4rem, 10vh, 8rem)',
   },
   borderRadius: {
-    sm: '0.375rem',
-    md: '0.75rem',
-    lg: '1.25rem',
-    xl: '1.75rem',
+    sm:   '0.375rem',
+    md:   '0.75rem',
+    lg:   '1.25rem',
+    xl:   '1.75rem',
     full: '624.9375rem',
   },
   transitions: {
-    fast: '0.15s cubic-bezier(0.4, 0, 0.2, 1)',
+    fast:    '0.15s cubic-bezier(0.4, 0, 0.2, 1)',
     default: '0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-    smooth: '0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-    slow: '0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-    spring: '0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+    smooth:  '0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+    slow:    '0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+    spring:  '0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
   },
   zIndex: {
-    behind: -1,
-    base: 0,
-    card: 10,
-    navbar: 100,
-    modal: 200,
-    toast: 300,
+    behind:    -1,
+    base:       0,
+    card:      10,
+    navbar:   100,
+    modal:    200,
+    toast:    300,
     scrollbar: 400,
   },
 };
@@ -8269,1216 +8672,707 @@ export const lightTheme = {
   mode: 'light',
 };
 
+
 // Keep backward compat
 export const theme = darkTheme;
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\frontend\my_portfolio\src\utils\categoryColors.js
+### src\utils\categoryColors.js
 
 ```
 // src/utils/categoryColors.js
-export const categoryColors = {
-  // Blog categories
-  'tutorial':       { bg: 'rgba(59,130,246,0.1)',   border: 'rgba(59,130,246,0.3)',   text: '#3B82F6' },
-  'opinion':        { bg: 'rgba(255,107,74,0.1)',   border: 'rgba(255,107,74,0.3)',   text: '#FF6B4A' },
-  'deep-dive':      { bg: 'rgba(0,232,157,0.1)',    border: 'rgba(0,232,157,0.3)',    text: '#00E89D' },
-  'career':         { bg: 'rgba(255,45,107,0.1)',   border: 'rgba(255,45,107,0.3)',   text: '#FF2D6B' },
-  'technology':     { bg: 'rgba(139,92,246,0.1)',   border: 'rgba(139,92,246,0.3)',   text: '#8B5CF6' },
-  'article':        { bg: 'rgba(59,130,246,0.1)',   border: 'rgba(59,130,246,0.3)',   text: '#3B82F6' },
-  // Case Study categories
-  'fullstack':      { bg: 'rgba(255,45,107,0.1)',   border: 'rgba(255,45,107,0.3)',   text: '#FF2D6B' },
-  'frontend':       { bg: 'rgba(59,130,246,0.1)',   border: 'rgba(59,130,246,0.3)',   text: '#3B82F6' },
-  'backend':        { bg: 'rgba(0,232,157,0.1)',    border: 'rgba(0,232,157,0.3)',    text: '#00E89D' },
-  'data':           { bg: 'rgba(255,200,0,0.1)',    border: 'rgba(255,200,0,0.3)',    text: '#FFC800' },
-  'ml':             { bg: 'rgba(139,92,246,0.1)',   border: 'rgba(139,92,246,0.3)',   text: '#8B5CF6' },
-  'default':        { bg: 'rgba(255,255,255,0.06)', border: 'rgba(255,255,255,0.12)', text: '#9BA1B0' },
+
+const CATEGORY_MAP = {
+  dark: {
+    // ── Blog ──────────────────────────────────────────────────
+    'tutorial':    { bg: 'rgba(59,130,246,0.12)',   border: 'rgba(59,130,246,0.28)',   text: '#60A5FA' },
+    'opinion':     { bg: 'rgba(255,107,74,0.12)',   border: 'rgba(255,107,74,0.28)',   text: '#FF6B4A' },
+    'deep-dive':   { bg: 'rgba(0,232,157,0.10)',    border: 'rgba(0,232,157,0.25)',    text: '#00E89D' },
+    'career':      { bg: 'rgba(255,45,107,0.12)',   border: 'rgba(255,45,107,0.28)',   text: '#FF2D6B' },
+    'technology':  { bg: 'rgba(139,92,246,0.12)',   border: 'rgba(139,92,246,0.28)',   text: '#A78BFA' },
+    'article':     { bg: 'rgba(59,130,246,0.12)',   border: 'rgba(59,130,246,0.28)',   text: '#60A5FA' },
+    // ── Case Study ────────────────────────────────────────────
+    'fullstack':   { bg: 'rgba(255,45,107,0.12)',   border: 'rgba(255,45,107,0.28)',   text: '#FF2D6B' },
+    'frontend':    { bg: 'rgba(59,130,246,0.12)',   border: 'rgba(59,130,246,0.28)',   text: '#60A5FA' },
+    'backend':     { bg: 'rgba(0,232,157,0.10)',    border: 'rgba(0,232,157,0.25)',    text: '#00E89D' },
+    'data':        { bg: 'rgba(250,204,21,0.10)',   border: 'rgba(250,204,21,0.22)',   text: '#FCD34D' },
+    'ml':          { bg: 'rgba(139,92,246,0.12)',   border: 'rgba(139,92,246,0.28)',   text: '#A78BFA' },
+    'devops':      { bg: 'rgba(255,107,74,0.12)',   border: 'rgba(255,107,74,0.28)',   text: '#FF6B4A' },
+    'database':    { bg: 'rgba(0,232,157,0.10)',    border: 'rgba(0,232,157,0.25)',    text: '#00E89D' },
+    'case study':  { bg: 'rgba(139,92,246,0.12)',   border: 'rgba(139,92,246,0.28)',   text: '#A78BFA' },
+  },
+  light: {
+    // ── Blog ──────────────────────────────────────────────────
+    'tutorial':    { bg: 'rgba(29,78,216,0.08)',    border: 'rgba(29,78,216,0.20)',    text: '#1D4ED8' },
+    'opinion':     { bg: 'rgba(212,68,40,0.08)',    border: 'rgba(212,68,40,0.20)',    text: '#D44D28' },
+    'deep-dive':   { bg: 'rgba(0,122,82,0.08)',     border: 'rgba(0,122,82,0.20)',     text: '#007A52' },
+    'career':      { bg: 'rgba(232,23,74,0.08)',    border: 'rgba(232,23,74,0.20)',    text: '#C0143C' },
+    'technology':  { bg: 'rgba(109,40,217,0.08)',   border: 'rgba(109,40,217,0.20)',   text: '#6D28D9' },
+    'article':     { bg: 'rgba(29,78,216,0.08)',    border: 'rgba(29,78,216,0.20)',    text: '#1D4ED8' },
+    // ── Case Study ────────────────────────────────────────────
+    'fullstack':   { bg: 'rgba(232,23,74,0.08)',    border: 'rgba(232,23,74,0.20)',    text: '#C0143C' },
+    'frontend':    { bg: 'rgba(29,78,216,0.08)',    border: 'rgba(29,78,216,0.20)',    text: '#1D4ED8' },
+    'backend':     { bg: 'rgba(0,122,82,0.08)',     border: 'rgba(0,122,82,0.20)',     text: '#007A52' },
+    'data':        { bg: 'rgba(180,137,0,0.08)',    border: 'rgba(180,137,0,0.20)',    text: '#92700A' },
+    'ml':          { bg: 'rgba(109,40,217,0.08)',   border: 'rgba(109,40,217,0.20)',   text: '#6D28D9' },
+    'devops':      { bg: 'rgba(212,68,40,0.08)',    border: 'rgba(212,68,40,0.20)',    text: '#D44D28' },
+    'database':    { bg: 'rgba(0,122,82,0.08)',     border: 'rgba(0,122,82,0.20)',     text: '#007A52' },
+    'case study':  { bg: 'rgba(109,40,217,0.08)',   border: 'rgba(109,40,217,0.20)',   text: '#6D28D9' },
+  },
 };
 
-export const getCategoryColor = (category) => {
-  if (!category) return categoryColors.default;
-  const key = category.toLowerCase().replace(/\s+/g, '-');
-  return categoryColors[key] || categoryColors.default;
+const FALLBACK = {
+  dark:  { bg: 'rgba(255, 255, 255, 0.04)', border: 'rgba(255,255,255,0.12)', text: '#9BA1B0' },
+  light: { bg: 'rgba(0,0,0,0.06)',       border: 'rgba(0,0,0,0.12)',       text: '#3D3D5C' },
+};
+
+// mode comes from theme.mode — 'dark' | 'light'
+export const getCategoryColor = (category = '', mode = 'dark') => {
+  const key = category.toLowerCase().trim().replace(/\s+/g, '-');
+  return CATEGORY_MAP[mode]?.[key] ?? FALLBACK[mode];
 };
 ```
 
-backend file content
-## Project Structure
 
-|-- models/
-|   |-- blog.py
-|   |-- case_study.py
-|   |-- message.py
-|   |-- user.py
-|   |-- __init__.py
-|-- routes/
-|   |-- auth.py
-|   |-- blogs.py
-|   |-- case_studies.py
-|   |-- contact.py
-|   |-- upload.py
-|   |-- __init__.py
-|-- services/
-|   |-- email_service.py
-|   |-- seed.py
-|-- uploads/
-|-- utils/
-|   |-- decorators.py
-|   |-- helpers.py
-|-- .env
-|-- app.py
-|-- config.py
-|-- extensions.py
-|-- Procfile
-|-- project_structure.md
-|-- requirements.txt
-|-- runtime.txt
-
-## File Contents
-
-
-### D:\Darshan\Projects\My Portfolio\backend\.env
+### src\App.css
 
 ```
-# DATABASE_URL=postgresql://postgres:1234@localhost:5432/portfolio_db
-DATABASE_URL=postgresql://postgres.tkzejgpedeycvlopdoqy:Portfolio2024Dx@aws-1-ap-south-1.pooler.supabase.com:6543/postgres
-# DATABASE_URL=postgresql://postgres:Portfolio2024Dx@aws-0-ap-south-1.pooler.supabase.com:6543/postgres
-SECRET_KEY=supersecretkey
-FLASK_ENV=development
+/* App.css
+   FIXED: Removed max-width and padding from #root — these were causing
+   extra right-side space on mobile because they conflicted with full-width
+   fixed/absolute positioned elements (navbar, waves, floating shapes).
+   Layout padding is now handled per-section in individual components. */
 
+#root {
+  /* max-width: 1280px; ← REMOVED */
+  /* padding: 2rem;     ← REMOVED */
+  /* text-align: center;← REMOVED */
+  width: 100%;
+  overflow-x: hidden;
+}
 
-CLOUDINARY_CLOUD_NAME=dsihbznoc
-CLOUDINARY_API_KEY=111695531584429
-CLOUDINARY_API_SECRET=IiYLmYnj77mVQ9lbsC0kSIpxgrE
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
 
-CONTACT_SENDER_EMAIL=onboarding@resend.dev
-CONTACT_RECEIVER_EMAIL=darshanagrawal007@gmail.com
-RESEND_API_KEY=re_jifFrKiA_BRg4PfDifsZ8jVgzDBVMG9Kg
+@keyframes logo-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+@keyframes float-drift {
+  0%, 100% { transform: translateY(0) rotate(var(--start-rotation)); }
+  25%      { transform: translateY(-20px) rotate(calc(var(--start-rotation) + 5deg)); }
+  50%      { transform: translateY(-10px) rotate(calc(var(--start-rotation) + 10deg)); }
+  75%      { transform: translateY(-25px) rotate(calc(var(--start-rotation) + 3deg)); }
+}
+@keyframes slow-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.floating-shape {
+  position: absolute;
+  animation: float-drift var(--duration, 25s) ease-in-out infinite,
+             slow-spin var(--spin-duration, 60s) linear infinite;
+  will-change: transform;
+  filter: blur(0.5px);
+}
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\app.py
+### src\App.jsx
 
 ```
-from flask import Flask, jsonify, send_from_directory
-from flask_cors import CORS
-from config import Config
-from extensions import db, jwt
-from routes import register_routes
-import os
-import cloudinary
+// src/App.jsx
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+import { QueryClientProvider } from "@tanstack/react-query";
 
-def create_app():
-
-    app = Flask(__name__)
-    app.config.from_object(Config)
-
-    # Configure Cloudinary
-    cloudinary.config(
-        cloud_name=app.config["CLOUDINARY_CLOUD_NAME"],
-        api_key=app.config["CLOUDINARY_API_KEY"],
-        api_secret=app.config["CLOUDINARY_API_SECRET"]
-    )
+// CHANGED: import the configured client instead of creating inline with no options
 
 
-    # Enable CORS
-    CORS(app)
 
-    # Initialize extensions
-    db.init_app(app)
-    jwt.init_app(app)
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
 
-    # Register routes
-    register_routes(app)
+import Navbar from "./components/layout/Navbar";
+import Footer from "./components/layout/Footer";
+import ScrollProgress from "./components/layout/ScrollProgress";
+import NoiseOverlay from "./components/layout/NoiseOverlay";
+import FloatingShapes from "./components/effects/FloatingShapes";
+import WaterWaves from "./components/effects/WaterWaves";
+import PageTransition from "./components/layout/PageTransition";
+import ScrollToTop from "./components/layout/ScrollToTop";
+import LoadingScreen from "./components/ui/LoadingScreen";
+
+import { ThemeProvider as StyledProvider } from "styled-components";
+import { ThemeProvider, useTheme } from "./contexts/ThemeContext";
+import { darkTheme, lightTheme } from "./styles/theme";
+
+import Home from "./pages/Home";
+import CaseStudies from "./pages/CaseStudies";
+import Blog from "./pages/Blog";
+import Contact from "./pages/Contact";
+import AdminLogin from "./pages/AdminLogin";
+import Admin from "./pages/Admin";
+import NotFound from "./components/ui/NotFound";
+import BlogDetail from "./pages/BlogDetails";
+import CaseStudyDetails from "./pages/CaseStudyDetails";
+import CustomCursor from "./components/ui/CustomCursor";
+import ComicGrid from "./components/effects/ComicGrid";
+import queryClient from "./services/queryClient";
+import GlobalStyles from "./styles/globalStyles";
+
+const ProtectedRoute = ({ children }) => {
+  const { isAdmin, loading } = useAuth();
+  if (loading) return <LoadingScreen />;
+  return isAdmin ? children : <Navigate to="/admin/login" replace />;
+};
+
+const AnimatedRoutes = () => {
+  const location = useLocation();
+  return (
+    <>
+      <ScrollToTop />
+      <AnimatePresence mode="wait" initial={false}>
+        <PageTransition key={location.pathname}>
+          <Routes location={location} key={location.pathname}>
+            <Route path="/"                   element={<Home />} />
+            <Route path="/case-studies"       element={<CaseStudies />} />
+            <Route path="/case-studies/:slug" element={<CaseStudyDetails />} />
+            <Route path="/blog"               element={<Blog />} />
+            <Route path="/blog/:slug"         element={<BlogDetail />} />
+            <Route path="/contact"            element={<Contact />} />
+            <Route path="/admin/login"        element={<AdminLogin />} />
+            <Route path="/admin"
+              element={<ProtectedRoute><Admin /></ProtectedRoute>}
+            />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </PageTransition>
+      </AnimatePresence>
+    </>
+  );
+};
+
+const ThemedApp = () => {
+  const { isDark } = useTheme();
+  return (
+    <StyledProvider theme={isDark ? darkTheme : lightTheme}>
+      <GlobalStyles/>
+      <CustomCursor />
+      <NoiseOverlay />
+      <ComicGrid />
+      <FloatingShapes
+        mobileMode="gyro"
+        gyroSensitivity={30}
+        desktopSpin={false} 
+        desktopParallax={true}
+      />
+      <WaterWaves />
+      <ScrollProgress />
+      <Navbar />
+      <AnimatedRoutes />
+      <Footer />
+    </StyledProvider>
+  );
+};
+
+function App() {
+  return (
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <ThemedApp />
+        </AuthProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
+  );
+}
+
+export default App;
+```
+
+
+### src\index.css
+
+```
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  /* FIXED: removed "place-items: center" and "display: flex" which caused 
+     horizontal overflow / extra right-side space on mobile */
+  min-width: 20rem;
+  min-height: 100vh;
+  /* Prevent horizontal scroll globally */
+  overflow-x: hidden;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 0.25rem auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+/* globalStyles.js using createGlobalStyle */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Prevent horizontal overflow at root */
+  overflow-x: hidden;
+}
+body {
+  font-family: 'DM Sans', sans-serif;
+  background-color: #0D0F14;
+  color: #EAEDF3;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+::selection {
+  background: rgba(255, 45, 107, 0.3);
+  color: #fff;
+}
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 0.375rem;
+}
+::-webkit-scrollbar-track {
+  background: #0D0F14;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.1875rem;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+img {
+  max-width: 100%;
+  display: block;
+}
+```
+
+
+### src\main.jsx
+
+```
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>
+);
+```
+
+
+### .env
+
+```
+# VITE_API_URL=http://127.0.0.1:5000/portfolio
+VITE_API_URL=https://portfolio-backend-x9am.onrender.com/portfolio
+```
+
+
+### .env.production
+
+```
+VITE_API_URL=https://portfolio-backend-x9am.onrender.com/portfolio
+```
+
+
+### .gitignore
+
+```
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+```
+
+
+### dump.ps1
+
+```
+$outputFile = "project_structure.md"
+$fence = "``````"
+
+if (Test-Path $outputFile) { Remove-Item $outputFile }
+
+$excludeFolders = @(
+    "node_modules",".git",".vite",".vscode",".idea",".next",
+    "dist","build","coverage",".cache",".turbo","vendor",
+    "public","assets","static","fonts","icons","temp","tmp",
+    "__pycache__",".venv","venv","out","generated","migrations"
+)
+
+$excludeExt = @(
+    ".png",".jpg",".jpeg",".gif",".svg",".ico",
+    ".woff",".woff2",".ttf",".eot",
+    ".pdf",".docx",".xlsx",".zip",".exe",".dll",
+    ".db",".sqlite",".log",".map",".lock",
+    ".pyc",".pyo",".bin",".dat",".cache",
+    ".tsbuildinfo",".snap",".patch",".bak"
+)
+
+$excludeNames = @(
+    "package-lock.json","yarn.lock","pnpm-lock.yaml",
+    ".DS_Store","Thumbs.db","project_structure.md",
+    ".gitignore",".editorconfig","LICENSE","CHANGELOG.md"
+)
+
+function Is-Excluded($fullPath) {
+    $segments = $fullPath -split "[/\\]"
+    foreach ($seg in $segments) {
+        if ($excludeFolders -contains $seg) { return $true }
+    }
+    return $false
+}
+
+"## Project Structure`n" | Out-File $outputFile -Encoding UTF8
+
+cmd /c "tree /f /a" 2>$null | Where-Object {
+    $line = $_
+    -not ($excludeFolders | Where-Object { $line -match [regex]::Escape($_) })
+} | Out-File $outputFile -Append -Encoding UTF8
+
+"`n## File Contents`n" | Out-File $outputFile -Append -Encoding UTF8
+
+Get-ChildItem -Recurse -File | Where-Object {
+    -not (Is-Excluded $_.FullName) -and
+    ($excludeExt -notcontains $_.Extension) -and
+    ($excludeNames -notcontains $_.Name) -and
+    ($_.Length -lt 150kb)
+} | ForEach-Object {
+    "`n### $($_.FullName)`n" | Out-File $outputFile -Append -Encoding UTF8
+    $fence | Out-File $outputFile -Append -Encoding UTF8
+    Get-Content $_.FullName -Encoding UTF8 -ErrorAction SilentlyContinue |
+        Out-File $outputFile -Append -Encoding UTF8
+    "$fence`n" | Out-File $outputFile -Append -Encoding UTF8
+}
+
+Write-Host "Done"
+```
+
+
+### eslint.config.js
+
+```
+import js from '@eslint/js'
+import globals from 'globals'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+import { defineConfig, globalIgnores } from 'eslint/config'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{js,jsx}'],
+    extends: [
+      js.configs.recommended,
+      reactHooks.configs.flat.recommended,
+      reactRefresh.configs.vite,
+    ],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        ecmaFeatures: { jsx: true },
+        sourceType: 'module',
+      },
+    },
+    rules: {
+      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+    },
+  },
+])
+```
+
+
+### index.html
+
+```
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
     
-    @app.route('/health')
-    def health():
-        return {'status': 'ok'}, 200
-    
-    # # Serve uploaded images
-    # @app.route("/uploads/<path:filename>")
-    # def uploaded_file(filename):
-    #     return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Darshan Agrawal — Full Stack Engineer</title>
+    <meta name="description" content="Portfolio of Darshan Agrawal — Full Stack Engineer specializing in React, Python, and cloud-native applications." />
 
-    # Error handlers
-    @app.errorhandler(404)
-    def not_found(e):
-        return jsonify({"error": "Resource not found"}), 404
-
-    @app.errorhandler(500)
-    def server_error(e):
-        return jsonify({"error": "Internal server error"}), 500
-
-    return app
-
-
-app = create_app()
-
-if __name__ == "__main__":
-    app.run(debug=True)
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\config.py
+### media.js
 
 ```
-import os
-from dotenv import load_dotenv
+const breakpoints = {
+  mobile: '480px',
+  tablet: '768px',
+  laptop: '1024px',
+  desktop: '1280px',
+};
 
-load_dotenv()
+export const media = {
+  mobile: `@media (max-width: ${breakpoints.mobile})`,
+  tablet: `@media (max-width: ${breakpoints.tablet})`,
+  laptop: `@media (max-width: ${breakpoints.laptop})`,
+  desktop: `@media (max-width: ${breakpoints.desktop})`,
+}; 
 
-from datetime import timedelta
-
-class Config:
-    SECRET_KEY = os.getenv("SECRET_KEY")
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-    CLOUDINARY_CLOUD_NAME = os.environ.get("CLOUDINARY_CLOUD_NAME")
-    CLOUDINARY_API_KEY = os.environ.get("CLOUDINARY_API_KEY")
-    CLOUDINARY_API_SECRET = os.environ.get("CLOUDINARY_API_SECRET")
-    JWT_SECRET_KEY = os.getenv("SECRET_KEY")
-
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)
-    JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=7)
-```
-
-
-### D:\Darshan\Projects\My Portfolio\backend\extensions.py
-
-```
-# extensions.py
-from flask_sqlalchemy import SQLAlchemy
-from flask_jwt_extended import JWTManager
-
-db = SQLAlchemy()
-jwt = JWTManager()
+export const media2 = {
+  mobile: `@media (max-width: ${breakpoints.mobile})`,
+  tablet: `@media (max-width: ${breakpoints.tablet})`,
+  laptop: `@media (max-width: ${breakpoints.laptop})`,
+  desktop: `@media (max-width: ${breakpoints.desktop})`,
+}; 
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\Procfile
+### package.json
 
 ```
-web: gunicorn app:app --workers 2 --bind 0.0.0.0:$PORT
-```
-
-
-### D:\Darshan\Projects\My Portfolio\backend\requirements.txt
-
-```
-bcrypt==5.0.0
-blinker==1.9.0
-certifi==2026.2.25
-charset-normalizer==3.4.5
-click==8.3.1
-cloudinary==1.44.1
-colorama==0.4.6
-Flask==3.1.3
-flask-cors==6.0.2
-Flask-JWT-Extended==4.7.1
-Flask-SQLAlchemy==3.1.1
-greenlet==3.3.2
-gunicorn==25.1.0
-idna==3.11
-itsdangerous==2.2.0
-Jinja2==3.1.6
-MarkupSafe==3.0.3
-packaging==26.0
-psycopg2-binary==2.9.11
-PyJWT==2.11.0
-python-dotenv==1.2.2
-requests==2.32.5
-resend==2.23.0
-six==1.17.0
-SQLAlchemy==2.0.47
-typing_extensions==4.15.0
-urllib3==2.6.3
-Werkzeug==3.1.6
-```
-
-
-### D:\Darshan\Projects\My Portfolio\backend\runtime.txt
-
-```
-python-3.11.0
-```
-
-
-### D:\Darshan\Projects\My Portfolio\backend\models\blog.py
-
-```
-from datetime import datetime
-from extensions import db
-class Blog(db.Model):
-    __tablename__ = "blog_posts"
-    __table_args__ = {"schema": "app_schema"}
-
-    id = db.Column(db.Integer, primary_key=True)
-
-    title = db.Column(db.String(200), nullable=False)
-    slug = db.Column(db.String(200), unique=True, nullable=False)
-
-    excerpt = db.Column(db.Text)
-
-    # MAIN CONTENT
-    content = db.Column(db.Text)   # TipTap HTML stored here
-
-    category = db.Column(db.String(100))
-    content_type = db.Column(db.String(20), default="rich")
-
-    read_time = db.Column(db.String(20))
-
-    is_published = db.Column(db.Boolean, default=True)
-
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-    def __repr__(self):
-        return f"<Blog {self.slug}>"
+{
+  "name": "my_portfolio",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@react-spring/web": "^10.0.3",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.5.0",
+    "@tanstack/react-query": "^5.90.21",
+    "@tiptap/extension-code-block-lowlight": "^3.20.1",
+    "@tiptap/extension-image": "^3.20.1",
+    "@tiptap/extension-link": "^3.20.1",
+    "@tiptap/extension-placeholder": "^3.20.1",
+    "@tiptap/extension-text-align": "^3.20.1",
+    "@tiptap/extension-underline": "^3.20.1",
+    "@tiptap/extension-youtube": "^3.20.1",
+    "@tiptap/react": "^3.20.1",
+    "@tiptap/starter-kit": "^3.20.1",
+    "axios": "^1.13.6",
+    "framer-motion": "^12.34.5",
+    "lottie-react": "^2.4.1",
+    "lowlight": "^3.3.0",
+    "lucide-react": "^0.577.0",
+    "quill": "^2.0.3",
+    "react": "^19.2.0",
+    "react-countup": "^6.5.3",
+    "react-dom": "^19.2.0",
+    "react-flip-toolkit": "^7.2.4",
+    "react-icons": "^5.6.0",
+    "react-intersection-observer": "^10.0.3",
+    "react-parallax-tilt": "^1.7.320",
+    "react-router-dom": "^7.13.1",
+    "react-spring": "^10.0.3",
+    "react-use": "^17.6.0",
+    "styled-components": "^6.3.11",
+    "swr": "^2.4.1",
+    "three": "^0.183.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@types/styled-components": "^5.1.36",
+    "@vitejs/plugin-react": "^5.1.1",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "vite": "^8.0.0-beta.13"
+  },
+  "overrides": {
+    "vite": "^8.0.0-beta.13"
+  }
+}
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\models\case_study.py
+### README.md
 
 ```
-from datetime import datetime
-from extensions import db
+# React + Vite
 
-class CaseStudy(db.Model):
-    __tablename__ = "case_studies"
-    __table_args__ = {"schema": "app_schema"}
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-    id = db.Column(db.Integer, primary_key=True)
+Currently, two official plugins are available:
 
-    title = db.Column(db.String(200), nullable=False)
-    slug = db.Column(db.String(200), unique=True, nullable=False)
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-    summary = db.Column(db.Text)
-    content = db.Column(db.Text)
+## React Compiler
 
-    tech_stack = db.Column(db.Text)
+The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
 
-    thumbnail = db.Column(db.Text) 
+Note: This will impact Vite dev & build performances.
 
-    github_url = db.Column(db.Text)
-    live_url = db.Column(db.Text)
+## Expanding the ESLint configuration
 
-    category = db.Column(db.String(50))
-    company_project = db.Column(db.Boolean, default=False)
-    # In your CaseStudy model
-    is_featured = db.Column(db.Boolean, default=False, nullable=False)
-    is_published = db.Column(db.Boolean, default=True)
-
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "title": self.title,
-            "slug": self.slug,
-            "summary": self.summary,
-            "content": self.content,
-            "techStack": self.tech_stack,
-            "thumbnail": self.thumbnail,
-            "githubUrl": self.github_url,
-            "liveUrl": self.live_url,
-            "category": self.category,
-            "companyProject": self.company_project,
-            "isFeatured": self.is_featured,
-            "isPublished": self.is_published,
-            "createdAt": self.created_at.isoformat() if self.created_at else None,
-        }
-
-    def __repr__(self):
-        return f"<CaseStudy {self.slug}>"
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\models\message.py
+### vercel.json
 
 ```
-from datetime import datetime
-from extensions import db
-
-class Message(db.Model):
-    __tablename__ = "messages"
-    __table_args__ = {"schema": "app_schema"}
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    email = db.Column(db.String(150))
-    message = db.Column(db.Text, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-    def __repr__(self):
-        return f"<Message {self.email}>"
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
 ```
 
 
-### D:\Darshan\Projects\My Portfolio\backend\models\user.py
+### vite.config.js
 
 ```
-from datetime import datetime
-from extensions import db
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-class User(db.Model):
-    __tablename__ = "users"
-    __table_args__ = {"schema": "app_schema"}
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(150), unique=True, nullable=False)
-    password_hash = db.Column(db.Text, nullable=False)
-    role = db.Column(db.String(20), default="admin")
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-    def __repr__(self):
-        return f"<User {self.email}>"
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [
+    react({
+      babel: {
+        plugins: [['babel-plugin-react-compiler']],
+      },
+    }),
+  ],
+})
 ```
 
-
-### D:\Darshan\Projects\My Portfolio\backend\models\__init__.py
-
-```
-from .user import User
-from .case_study import CaseStudy
-from .blog import Blog
-from .message import Message
-```
-
-
-### D:\Darshan\Projects\My Portfolio\backend\routes\auth.py
-
-```
-from flask import Blueprint, request, jsonify
-from extensions import db
-from models import User
-from flask_jwt_extended import create_refresh_token,create_access_token, jwt_required, get_jwt_identity
-import bcrypt
-
-
-auth_bp = Blueprint(
-    "auth",
-    __name__,
-    url_prefix="/portfolio/auth"
-)
-
-#REGISTER
-@auth_bp.route("/register", methods=["POST"])
-def register():
-    data = request.json
-
-    hashed = bcrypt.hashpw(data["password"].encode("utf-8"),
-                           bcrypt.gensalt()
-                           )
-    user = User(
-        name=data["name"],
-        email=data["email"],
-        password_hash=hashed.decode("utf-8")
-    )
-
-    return jsonify({"message": "User registered successfully"}),201
-
-# LOGIN
-# LOGIN
-@auth_bp.route("/login", methods=["POST"])
-def login():
-    data = request.json
-
-    user = User.query.filter_by(email=data["email"]).first()
-    hashed = bcrypt.hashpw(data["password"].encode("utf-8"), bcrypt.gensalt())
-
-    print(hashed.decode())
-    if not user:
-        return {"error": "Invalid credentials"}, 401
-
-    if not bcrypt.checkpw(
-        data["password"].encode("utf-8"),
-        user.password_hash.encode("utf-8")
-    ):
-        return {"error": "Invalid credentials"}, 401
-
-    access_token = create_access_token(
-        identity=str(user.id),   # âœ… FIX
-        additional_claims={"role": user.role}
-    )
-
-    refresh_token = create_refresh_token(
-        identity=str(user.id)    # âœ… FIX
-    )
-
-    return {
-        "access_token": access_token,
-        "refresh_token": refresh_token
-    }, 200
-
-
-
-@auth_bp.route("/refresh", methods=["POST"])
-@jwt_required(refresh=True)
-def refresh():
-    user_id = get_jwt_identity()
-
-    # fetch user to get role
-    user = User.query.get(user_id)
-   
-    new_access_token = create_access_token(
-        identity=str(user.id),
-        additional_claims={"role": user.role}
-    )
-
-    return {
-        "access_token": new_access_token
-    }, 200
-# GET CURRENT USER
-@auth_bp.route("/me", methods=["GET"])
-@jwt_required()
-def me():
-    user_id = get_jwt_identity()
-    user = User.query.get(int(user_id))
-    print("user: ",user_id, user)
-    return jsonify({
-        "id": user.id,
-        "email": user.email,
-        "role": user.role
-    })
-
-
-```
-
-
-### D:\Darshan\Projects\My Portfolio\backend\routes\blogs.py
-
-```
-from flask import Blueprint, request, jsonify
-from extensions import db
-from models import Blog
-from flask_jwt_extended import jwt_required
-from utils.decorators import admin_required
-from utils.helpers import generate_slug
-
-blog_bp = Blueprint(
-    "blogs",
-    __name__,
-    url_prefix="/portfolio/blogs"
-)
-def calculate_read_time(text):
-    if not text:
-        return "1 min read"
-
-    words = len(text.split())
-    minutes = max(1, round(words / 200))
-    return f"{minutes} min read"
-# SERIALIZER
-def serialize_blog(blog):
-    return {
-        "id": blog.id,
-        "title": blog.title,
-        "slug": blog.slug,
-        "excerpt": blog.excerpt,
-        "content": blog.content,
-        "content_type": blog.content_type,
-        "category": blog.category,
-        "read_time": blog.read_time,
-        "is_published": blog.is_published,
-        "created_at": blog.created_at.isoformat() if blog.created_at else None,
-        "updated_at": blog.updated_at.isoformat() if blog.updated_at else None
-    }
-
-# GET ALL (Public)
-@blog_bp.route("", methods=["GET"])
-def get_all():
-
-    page = request.args.get("page", 1, type=int)
-    limit = request.args.get("limit", 10, type=int)
-
-    pagination = (
-        Blog.query
-        .filter_by(is_published=True)
-        .order_by(Blog.created_at.desc())
-        .paginate(page=page, per_page=limit, error_out=False)
-    )
-
-    return jsonify({
-        "total": pagination.total,
-        "pages": pagination.pages,
-        "current_page": pagination.page,
-        "data": [serialize_blog(b) for b in pagination.items]
-    })
-
-# GET BY SLUG
-@blog_bp.route("/<slug>", methods=["GET"])
-def get_by_slug(slug):
-
-    blog = Blog.query.filter_by(slug=slug, is_published=True).first_or_404()
-
-    return jsonify(serialize_blog(blog))
-
-
-# ADMIN GET ALL (includes drafts)
-@blog_bp.route("/admin", methods=["GET"])
-@jwt_required()
-@admin_required
-def admin_get_all():
-
-    blogs = Blog.query.order_by(Blog.created_at.desc()).all()
-
-    return jsonify({
-        "total": len(blogs),
-        "data": [serialize_blog(b) for b in blogs]
-    })
-
-# CREATE (ADMIN)
-@blog_bp.route("", methods=["POST"])
-@jwt_required()
-@admin_required
-def create_blog():
-
-    data = request.json
-
-    slug = generate_slug(data["title"])
-
-    content = data.get("content", "")
-
-    blog = Blog(
-        title=data.get("title"),
-        slug=slug,
-        excerpt=data.get("excerpt"),
-        content=content,
-        category=data.get("category"),
-        content_type=data.get("content_type", "rich"),
-        read_time=calculate_read_time(content),
-        is_published=data.get("is_published", True)
-    )
-
-    db.session.add(blog)
-    db.session.commit()
-
-    return jsonify({
-        "message": "Blog Created",
-        "data": serialize_blog(blog)
-    }), 201
-
-
-# UPDATE
-@blog_bp.route("/<int:id>", methods=["PUT"])
-@jwt_required()
-@admin_required
-def update_blog(id):
-
-    blog = Blog.query.get_or_404(id)
-    data = request.json
-
-    if "title" in data:
-        blog.title = data["title"]
-        blog.slug = generate_slug(data["title"])
-
-    blog.excerpt = data.get("excerpt", blog.excerpt)
-    blog.content = data.get("content", blog.content)
-    blog.category = data.get("category", blog.category)
-    blog.content_type = data.get("content_type", blog.content_type)
-    blog.read_time = calculate_read_time(blog.content)
-    blog.is_published = data.get("is_published", blog.is_published)
-
-    if blog.content:
-        blog.read_time = calculate_read_time(blog.content)
-    elif blog.html_content:
-        blog.read_time = calculate_read_time(blog.html_content)
-
-    blog.is_published = data.get("is_published", blog.is_published)
-
-    db.session.commit()
-
-    return jsonify({
-        "message": "Blog Updated",
-        "data": serialize_blog(blog)
-    })
-
-# DELETE
-@blog_bp.route("/<int:id>", methods=["DELETE"])
-@jwt_required()
-@admin_required
-def delete_blog(id):
-
-    blog = Blog.query.get_or_404(id)
-
-    db.session.delete(blog)
-    db.session.commit()
-
-    return jsonify({
-        "message": "Blog Deleted"
-    })
-```
-
-
-### D:\Darshan\Projects\My Portfolio\backend\routes\case_studies.py
-
-```
-from flask import Blueprint, request, jsonify
-from extensions import db
-from models import CaseStudy
-from flask_jwt_extended import jwt_required
-from utils.decorators import admin_required
-from utils.helpers import generate_slug
-import json
-
-case_bp = Blueprint(
-    "case_studies",
-    __name__,
-    url_prefix="/portfolio/case-studies"
-)
-def serialize_case(case):
-    return {
-        "id": case.id,
-        "title": case.title,
-        "slug": case.slug,
-        "summary": case.summary,
-        "content": case.content,
-        "tech_stack": case.tech_stack,
-        "thumbnail": case.thumbnail,        # â† single URL string, no JSON parsing
-        "github_url": case.github_url,
-        "live_url": case.live_url,
-        "category": case.category,
-        "company_project": case.company_project,
-        "is_published": case.is_published,
-        "created_at": case.created_at.isoformat() if case.created_at else None
-    }
-
-def safe_preview_images(value):
-    """Always store preview_images as a valid JSON string"""
-    if not value:
-        return json.dumps([])
-    if isinstance(value, list):
-        return json.dumps(value)
-    if isinstance(value, str):
-        try:
-            parsed = json.loads(value)
-            if isinstance(parsed, list):
-                return value  # already valid JSON array string
-            return json.dumps([value])
-        except:
-            return json.dumps([value])
-    return json.dumps([])
-
-
-@case_bp.route("", methods=["GET"])
-def get_all():
-    cases = CaseStudy.query.filter_by(is_published=True)\
-        .order_by(CaseStudy.created_at.desc()).all()
-
-    return jsonify({
-        "data": [serialize_case(c) for c in cases]
-    })
-
-
-@case_bp.route("/<slug>", methods=["GET"])
-def get_by_slug(slug):
-    case = CaseStudy.query.filter_by(
-        slug=slug,
-        is_published=True
-    ).first_or_404()
-
-    return jsonify(serialize_case(case))
-
-
-@case_bp.route("", methods=["POST"])
-@jwt_required()
-@admin_required
-def create_case():
-    try:
-        data = request.form
-        slug = generate_slug(data["title"])
-
-        existing = CaseStudy.query.filter_by(slug=slug).first()
-        if existing:
-            import time
-            slug = f"{slug}-{int(time.time())}"
-
-        case = CaseStudy(
-            title=data.get("title"),
-            slug=slug,
-            summary=data.get("summary"),
-            content=data.get("content"),
-            tech_stack=data.get("tech_stack"),
-            thumbnail=data.get("thumbnail") or None,   # â† single URL
-            github_url=data.get("github_url") or None,
-            live_url=data.get("live_url") or None,
-            category=data.get("category") or None,
-            company_project=data.get("company_project") == "true",
-            is_published=data.get("is_published", "true") == "true"
-        )
-
-        db.session.add(case)
-        db.session.commit()
-
-        return jsonify({"message": "Case Study Created", "data": serialize_case(case)})
-
-    except Exception as e:
-        db.session.rollback()
-        print("CREATE CASE ERROR:", str(e))
-        return jsonify({"error": str(e)}), 500
-
-
-@case_bp.route("/<int:id>", methods=["PUT"])
-@jwt_required()
-@admin_required
-def update_case(id):
-    case = CaseStudy.query.get_or_404(id)
-    data = request.form
-
-    case.title = data.get("title", case.title)
-    case.summary = data.get("summary", case.summary)
-    case.content = data.get("content", case.content)
-    case.tech_stack = data.get("tech_stack", case.tech_stack)
-    case.github_url = data.get("github_url") or None
-    case.live_url = data.get("live_url") or None
-    case.category = data.get("category") or None
-    case.company_project = data.get("company_project") == "true"
-    case.is_published = data.get("is_published", "true") == "true"
-
-    new_thumbnail = data.get("thumbnail")
-    if new_thumbnail:
-        case.thumbnail = new_thumbnail
-
-    db.session.commit()
-    return jsonify({"message": "Case Study Updated", "data": serialize_case(case)})
-
-# In your case_studies route
-@case_bp.route("/featured", methods=["GET"])
-def get_featured():
-    cases = CaseStudy.query.filter_by(is_featured=True)\
-                .order_by(CaseStudy.created_at.desc())\
-                .limit(4).all()
-
-    return jsonify({
-        "data": [s.to_dict() for s in cases]
-    })
-@case_bp.route("/<int:id>", methods=["DELETE"])
-@jwt_required()
-@admin_required
-def delete_case(id):
-    case = CaseStudy.query.get_or_404(id)
-
-    db.session.delete(case)
-    db.session.commit()
-
-    return jsonify({
-        "message": "Case Study Deleted"
-    })
-```
-
-
-### D:\Darshan\Projects\My Portfolio\backend\routes\contact.py
-
-```
-from flask import Blueprint, request, jsonify
-from extensions import db
-from models import Message
-from services.email_service import send_contact_notification
-contact_bp = Blueprint("contact", __name__,
-                    url_prefix="/portfolio/contact")
-
-
-@contact_bp.route("", methods=["POST"])
-def contact():
-    data = request.json
-
-    if not all(k in data for k in ["name", "email", "message"]):
-        return jsonify({"error": "Missing required fields"}), 400
-
-    message = Message(**data)
-    db.session.add(message)
-    db.session.commit()
-
-    try:
-        send_contact_notification(
-        data["name"],
-        data["email"],
-        data.get("subject", "Portfolio Contact"),  # fallback if no subject
-        data["message"]
-    )
-    except Exception as e:
-        print(f"Email notification failed: {e}")
-
-    return jsonify({"message": "Message sent successfully"}), 201
-# GET ALL
-@contact_bp.route("", methods=["GET"])
-def get_all():
-    page = request.args.get("page", 1, type=int)
-    per_page = request.args.get("limit", 5, type=int)
-
-    pagination = Message.query.paginate(page=page, per_page=per_page, error_out=False)
-
-    return jsonify({
-        "total": pagination.total,
-        "pages": pagination.pages,
-        "current_page": pagination.page,
-        "data": [{
-           "id": c.id,
-        "name": c.name,
-        "email": c.email,
-        "message": c.message
-        } for c in pagination.items]
-    })
-```
-
-
-### D:\Darshan\Projects\My Portfolio\backend\routes\upload.py
-
-```
-import cloudinary
-import cloudinary.uploader
-from flask import Blueprint, request, jsonify
-from flask_jwt_extended import jwt_required
-from utils.decorators import admin_required
-
-upload_bp = Blueprint("upload", __name__, url_prefix="/portfolio")
-
-ALLOWED_IMAGES = {"png", "jpg", "jpeg", "gif", "webp", "svg"}
-ALLOWED_VIDEOS = {"mp4", "mov", "avi", "webm"}
-
-def allowed_file(filename, allowed):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in allowed
-
-@upload_bp.route("/upload", methods=["POST"])
-@jwt_required()
-@admin_required
-def upload_media():
-    uploaded_urls = []
-
-    # Handle images
-    if "images" in request.files:
-        for file in request.files.getlist("images"):
-            if allowed_file(file.filename, ALLOWED_IMAGES):
-                result = cloudinary.uploader.upload(
-                    file,
-                    folder="portfolio/content",
-                    resource_type="image"
-                )
-                uploaded_urls.append({
-                    "url": result["secure_url"],
-                    "type": "image"
-                })
-
-    # Handle videos
-    if "videos" in request.files:
-        for file in request.files.getlist("videos"):
-            if allowed_file(file.filename, ALLOWED_VIDEOS):
-                result = cloudinary.uploader.upload(
-                    file,
-                    folder="portfolio/content",
-                    resource_type="video"  # â† video resource type
-                )
-                uploaded_urls.append({
-                    "url": result["secure_url"],
-                    "type": "video"
-                })
-
-    if not uploaded_urls:
-        return jsonify({"error": "No valid files provided"}), 400
-
-    return jsonify({
-        "success": True,
-        "files": uploaded_urls
-    }), 200
-```
-
-
-### D:\Darshan\Projects\My Portfolio\backend\routes\__init__.py
-
-```
-from .auth import auth_bp
-from .case_studies import case_bp
-from .blogs import blog_bp
-from .contact import contact_bp
-from .upload import upload_bp  
-def register_routes(app):
-    app.register_blueprint(auth_bp)
-    app.register_blueprint(case_bp)
-    app.register_blueprint(blog_bp)
-    app.register_blueprint(contact_bp)
-    app.register_blueprint(upload_bp)    
-```
-
-
-### D:\Darshan\Projects\My Portfolio\backend\services\email_service.py
-
-```
-import resend
-import os
-from datetime import datetime
-
-resend.api_key = os.environ.get("RESEND_API_KEY")
-
-RECEIVER_EMAIL = os.environ.get("CONTACT_RECEIVER_EMAIL")
-SENDER_EMAIL = os.environ.get("CONTACT_SENDER_EMAIL", "onboarding@resend.dev")
-
-
-def send_contact_notification(name, email, subject, message):
-    """Send notification to you when someone contacts you."""
-    html = build_notification_email(name, email, subject, message)
-
-    params = {
-        "from": f"Portfolio Contact <{SENDER_EMAIL}>",
-        "to": [RECEIVER_EMAIL],
-        "subject": f"ðŸ“¬ New Contact: {subject}",
-        "html": html,
-    }
-
-    response = resend.Emails.send(params)
-    return response
-
-
-def build_notification_email(name, email, subject, message):
-    timestamp = datetime.now().strftime("%B %d, %Y at %I:%M %p")
-    return f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body style="margin:0;padding:0;background-color:#0f0f0f;font-family:'Segoe UI',Arial,sans-serif;">
-      <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#0f0f0f;padding:40px 20px;">
-        <tr>
-          <td align="center">
-            <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
-
-              <!-- Header -->
-              <tr>
-                <td style="background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:40px;border-radius:16px 16px 0 0;text-align:center;">
-                  <p style="margin:0 0 8px 0;color:rgba(255,255,255,0.7);font-size:13px;letter-spacing:3px;text-transform:uppercase;">Portfolio Contact Form</p>
-                  <h1 style="margin:0;color:#ffffff;font-size:28px;font-weight:700;">Someone reached out! ðŸ‘‹</h1>
-                </td>
-              </tr>
-
-              <!-- Body -->
-              <tr>
-                <td style="background-color:#1a1a1a;padding:40px;border-radius:0 0 16px 16px;">
-
-                  <!-- Sender Info -->
-                  <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:30px;">
-                    <tr>
-                      <td style="background-color:#252525;border-radius:12px;padding:24px;">
-                        <table width="100%" cellpadding="0" cellspacing="0">
-                          <tr>
-                            <td style="padding-bottom:16px;border-bottom:1px solid #333;">
-                              <p style="margin:0 0 4px 0;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;">From</p>
-                              <p style="margin:0;color:#ffffff;font-size:18px;font-weight:600;">{name}</p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td style="padding-top:16px;padding-bottom:16px;border-bottom:1px solid #333;">
-                              <p style="margin:0 0 4px 0;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Email</p>
-                              <a href="mailto:{email}" style="color:#6366f1;font-size:15px;text-decoration:none;">{email}</a>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td style="padding-top:16px;padding-bottom:16px;border-bottom:1px solid #333;">
-                              <p style="margin:0 0 4px 0;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Subject</p>
-                              <p style="margin:0;color:#ffffff;font-size:15px;">{subject}</p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td style="padding-top:16px;">
-                              <p style="margin:0 0 4px 0;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Received</p>
-                              <p style="margin:0;color:#ffffff;font-size:15px;">{timestamp}</p>
-                            </td>
-                          </tr>
-                        </table>
-                      </td>
-                    </tr>
-                  </table>
-
-                  <!-- Message -->
-                  <p style="margin:0 0 12px 0;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Message</p>
-                  <div style="background-color:#252525;border-left:4px solid #6366f1;border-radius:0 12px 12px 0;padding:24px;margin-bottom:30px;">
-                    <p style="margin:0;color:#e0e0e0;font-size:15px;line-height:1.8;">{message}</p>
-                  </div>
-
-                  <!-- Reply Button -->
-                  <table width="100%" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td align="center">
-                        <a href="mailto:{email}?subject=Re: {subject}"
-                           style="display:inline-block;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#ffffff;text-decoration:none;padding:14px 40px;border-radius:8px;font-size:15px;font-weight:600;letter-spacing:0.5px;">
-                          Reply to {name}
-                        </a>
-                      </td>
-                    </tr>
-                  </table>
-
-                </td>
-              </tr>
-
-              <!-- Footer -->
-              <tr>
-                <td style="padding:24px;text-align:center;">
-                  <p style="margin:0;color:#555;font-size:12px;">Sent via your portfolio contact form</p>
-                </td>
-              </tr>
-
-            </table>
-          </td>
-        </tr>
-      </table>
-    </body>
-    </html>
-    """
-```
-
-
-### D:\Darshan\Projects\My Portfolio\backend\services\seed.py
-
-```
-# from app import create_app
-# from extensions import db
-# from models import User, CaseStudy, Blog
-# import bcrypt
-
-# app = create_app()
-
-# with app.app_context():
-
-#     # Create Admin
-#     hashed = bcrypt.hashpw("admin123".encode("utf-8"), bcrypt.gensalt())
-
-#     admin = User(
-#         name="Darshan",
-#         email="admin@test.com",
-#         password_hash=hashed.decode("utf-8"),
-#         role="admin"
-#     )
-
-#     db.session.add(admin)
-
-#     # Dummy Case Studies
-#     for i in range(1, 6):
-#         case = CaseStudy(
-#             title=f"Project {i}",
-#             slug=f"project-{i}",
-#             summary="Sample summary",
-#             content="Full content here",
-#             tech_stack="React, Flask",
-#             is_published=True
-#         )
-#         db.session.add(case)
-
-#     db.session.commit()
-
-# print("Dummy data added.")
-
-from app import create_app
-from extensions import db
-from models import CaseStudy, Blog, Message
-from utils.helpers import generate_slug
-
-app = create_app()
-
-with app.app_context():
-
-    # -------- CASE STUDIES --------
-    case_titles = [
-        "React Dashboard Analytics",
-        "E-commerce MERN Platform",
-        "AI Resume Screening System",
-        "Real-Time Chat Application",
-        "Portfolio SaaS Builder"
-    ]
-
-    for title in case_titles:
-        case = CaseStudy(
-            title=title,
-            slug=generate_slug(title),
-            summary="This is a sample summary for " + title,
-            content="Detailed content about " + title,
-            tech_stack="React, Flask, PostgreSQL",
-            github_url="https://github.com/example",
-            live_url="https://example.com",
-            is_published=True
-        )
-        db.session.add(case)
-
-    # -------- BLOG POSTS --------
-    blog_titles = [
-        "Understanding JWT Authentication",
-        "Scaling Flask Applications",
-        "React Performance Optimization",
-        "Database Indexing Explained",
-        "Building Secure REST APIs"
-    ]
-
-    for title in blog_titles:
-        blog = Blog(
-            title=title,
-            slug=generate_slug(title),
-            excerpt="Short excerpt for " + title,
-            content="Full blog content about " + title,
-            is_published=True
-        )
-        db.session.add(blog)
-
-    # -------- CONTACT MESSAGES --------
-    contacts = [
-        {"name": "Amit", "email": "amit@test.com", "message": "Interested in collaboration."},
-        {"name": "Sneha", "email": "sneha@test.com", "message": "Loved your portfolio!"},
-        {"name": "Rohan", "email": "rohan@test.com", "message": "Can we schedule a call?"}
-    ]
-
-    for c in contacts:
-        message = Message(
-            name=c["name"],
-            email=c["email"],
-            message=c["message"]
-        )
-        db.session.add(message)
-
-    db.session.commit()
-
-print("Dummy data inserted successfully.")
-```
-
-
-### D:\Darshan\Projects\My Portfolio\backend\utils\decorators.py
-
-```
-from functools import wraps
-from flask import jsonify
-from flask_jwt_extended import get_jwt
-from flask_jwt_extended import verify_jwt_in_request
-
-
-def admin_required(fn):
-    @wraps(fn)
-    def wrapper(*args, **kwargs):
-        verify_jwt_in_request()
-        claims = get_jwt()
-
-        if claims.get("role") != "admin":
-            return jsonify({"error": "Admin access required"}), 403
-
-        return fn(*args, **kwargs)
-
-    return wrapper
-
-```
-
-
-### D:\Darshan\Projects\My Portfolio\backend\utils\helpers.py
-
-```
-import re
-
-
-def generate_slug(title):
-    slug = title.lower()
-    slug = re.sub(r'[^a-z0-9]+', '-', slug)
-    return slug.strip("-")
-```
-
-
-### D:\Darshan\Projects\My Portfolio\backend\venv\.gitignore
-
-```
-# Created by venv; see https://docs.python.org/3/library/venv.html
-*
-```

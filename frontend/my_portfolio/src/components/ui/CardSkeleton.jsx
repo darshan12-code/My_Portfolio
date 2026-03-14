@@ -1,4 +1,4 @@
-// src/components/ui/AdminCardSkeleton.jsx
+// src/components/ui/CardSkeleton.jsx
 import styled, { keyframes,css  } from "styled-components";
 
 /**
@@ -6,7 +6,7 @@ import styled, { keyframes,css  } from "styled-components";
  * ─────
  * count   number   how many skeleton cards to render   default 6
  */
-const AdminCardSkeleton = ({ count = 6 }) => (
+const CardSkeleton = ({ count = 6 }) => (
   <>
     {Array.from({ length: count }).map((_, i) => (
       <SkeletonCard key={i}>
@@ -31,7 +31,7 @@ const AdminCardSkeleton = ({ count = 6 }) => (
   </>
 );
 
-export default AdminCardSkeleton;
+export default CardSkeleton;
 
 /* ── styles ── */
 

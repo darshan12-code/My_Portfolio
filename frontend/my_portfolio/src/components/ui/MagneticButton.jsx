@@ -8,7 +8,7 @@ const Btn = styled(motion.button)`
   font-family: ${({ theme }) => theme.fonts.body};
   font-weight: 600;
   font-size: ${({ theme }) => theme.fontSizes.small};
-  color: ${({ theme }) => theme.colors.textWhite};
+  color: ${({ theme }) => theme.colors.codeText};
   border-radius: ${({ theme }) => theme.borderRadius.full};
   cursor: pointer;
   overflow: hidden;

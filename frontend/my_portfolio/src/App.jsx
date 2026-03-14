@@ -27,7 +27,7 @@ import Home from "./pages/Home";
 import CaseStudies from "./pages/CaseStudies";
 import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
-import AdminLogin from "./pages/AdminLogin";
+import AdminLogin from "./components/admin/AdminLogin";
 import Admin from "./pages/Admin";
 import NotFound from "./components/ui/NotFound";
 import BlogDetail from "./pages/BlogDetails";

@@ -1,13 +1,13 @@
-// src/pages/CaseStudyDetails.jsx
-import { useParams, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { getCategoryColor } from "../utils/categoryColors";
-import { ArrowLeft, Github, ExternalLink } from "lucide-react";
-import Tag from "../components/ui/Tag";
-import PageLoader from "../components/ui/PageLoader";
-import { useCaseStudyDetail } from "../hooks/useApiData";
-import { styled, useTheme } from "styled-components";
-
+import { useParams } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { Github, ExternalLink } from 'lucide-react';
+import styled from 'styled-components';
+import { useCaseStudyDetail } from '../hooks/useApiData';
+import PageLoader from '../components/ui/PageLoader';
+import BackButton from '../components/ui/BackButton';
+import CategoryBadge from '../components/ui/CategoryBadge';
+import ProseContent from '../components/ui/ProseContent';
+import TagList from '../components/ui/TagList';
 
 const Page = styled.div`
   min-height: 100vh;
@@ -19,48 +19,12 @@ const Inner = styled.div`
   margin: 0 auto;
 `;
 
-const BackBtn = styled.button`
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 2.5rem;
-  padding: 0.5rem 1.1rem;
-  border-radius: 999px;
-  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  background: transparent;
-  color: ${({ theme }) => theme.colors.textSecondary};
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    border-color: ${({ theme }) => theme.colors.accentPink};
-    color: ${({ theme }) => theme.colors.accentPink};
-    transform: translateX(-3px);
-  }
-`;
-
 const CategoryRow = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 1rem;
   align-items: center;
-`;
-
-const CategoryBadge = styled.span`
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background: ${({ $c }) => $c?.bg || 'rgba(255,255,255,0.06)'};
-  border: 1px solid ${({ $c }) => $c?.border || 'rgba(255,255,255,0.12)'};
-  color: ${({ $c }) => $c?.text || '#9BA1B0'};
-  white-space: nowrap;
-  flex-shrink: 0;
 `;
 
 const Title = styled.h1`
@@ -79,6 +43,8 @@ const Summary = styled.p`
   max-width: 680px;
 `;
 
+const TechRow = styled.div`margin-bottom: 3rem;`;
+
 const Thumbnail = styled(motion.img)`
   width: 100%;
   max-height: 440px;
@@ -86,60 +52,6 @@ const Thumbnail = styled(motion.img)`
   border-radius: 14px;
   margin-bottom: 2rem;
   border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-`;
-
-const TechRow = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin-bottom: 3rem;
-`;
-
-const Content = styled(motion.div)`
-  line-height: 1.85;
-  font-size: clamp(0.95rem, 2vw, 1.05rem);
-  color: ${({ theme }) => theme.colors.textSecondary};
-
-  h2 {
-    font-family: ${({ theme }) => theme.fonts.heading};
-    font-size: clamp(1.4rem, 3vw, 1.75rem);
-    margin: 3rem 0 1rem;
-    color: ${({ theme }) => theme.colors.textPrimary};
-    position: relative;
-    padding-left: 1rem;
-    &::before {
-      content: "";
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 3px;
-      background: ${({ theme }) => theme.colors.accentPink};
-      border-radius: 2px;
-    }
-  }
-  h3 { font-size: 1.2rem; margin: 2rem 0 0.75rem; color: ${({ theme }) => theme.colors.textPrimary}; }
-  p  { margin-bottom: 1.4rem; }
-  strong { color: ${({ theme }) => theme.colors.textPrimary}; }
-  img { max-width: 100%; border-radius: 10px; margin: 1.5rem 0; border: 1px solid ${({ theme }) => theme.colors.borderDefault}; }
-  pre {
-    background: ${({ theme }) => theme.colors.codeGhostBg};
-    padding: 1.25rem;
-    border-radius: 10px;
-    overflow-x: auto;
-    font-size: 0.875rem;
-    margin: 1.75rem 0;
-    border: 1px solid ${({ theme }) => theme.colors.codeGhostBorder};
-    color: ${({ theme }) => theme.colors.codeText};
-  }
-  code {
-    background:${({ theme }) => theme.colors.codeGhostBg};
-    border: 1px solid ${({ theme }) => theme.colors.codeGhostBorder};
-    color: ${({ theme }) => theme.colors.codeText};
-    padding: 2px 7px;
-    border-radius: 4px;
-    font-size: 0.875em;
-  }
-  pre code { background: none; color: inherit; padding: 0; }
-  ul, ol { padding-left: 1.5rem; margin-bottom: 1.4rem; li { margin-bottom: 0.5rem; } }
 `;
 
 const LinkRow = styled.div`
@@ -183,66 +95,42 @@ const LinkBtn = styled.a`
 
 const CaseStudyDetails = () => {
   const { slug } = useParams();
-  const navigate = useNavigate();
-  const theme = useTheme();
-  // Reads from React Query cache — no API call if visited before within staleTime
   const { data, isLoading } = useCaseStudyDetail(slug);
 
   if (isLoading) return <PageLoader label="Loading project…" />;
   if (!data)     return <Page><Inner><p>Project not found.</p></Inner></Page>;
 
-  const tags = data.tech_stack
-    ? data.tech_stack.split(",").map((t) => t.trim())
-    : [];
-  const catColors = getCategoryColor(data.category);
+  const categories = (data.category || '')
+    .split(',').map(c => c.trim()).filter(Boolean);
 
   return (
     <Page>
       <Inner>
-        <BackBtn onClick={() => navigate("/case-studies")}>
-          <ArrowLeft size={14} /> Back to Case Studies
-        </BackBtn>
+        {/* ← BackButton */}
+        <BackButton to="/case-studies" label="Back to Case Studies" />
 
         <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              {data.category && (
-                <CategoryRow>
-                  {(() => {
-                    const categories = data.category
-                      .split(",")
-                      .map((cat) => cat.trim())
-                      .filter(Boolean);
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          {categories.length > 0 && (
+            <CategoryRow>
+              {/* ← CategoryBadge, one per category */}
+              {categories.map((cat, i) => (
+                <CategoryBadge key={i} category={cat} />
+              ))}
+            </CategoryRow>
+          )}
 
-                    const displayCats = categories
-                   
+          <Title>{data.title}</Title>
+          <Summary>{data.summary}</Summary>
 
-                    return (
-                      <>
-                        {displayCats.map((cat, i) => (
-                          <CategoryBadge key={i} $c={getCategoryColor(cat, theme.mode)}>
-                            {cat}
-                          </CategoryBadge>
-                        ))}
-                        
-                  
-                      </>
-                    );
-                  })()}
-                </CategoryRow>
-              )}
-
-              <Title>{data.title}</Title>
-              <Summary>{data.summary}</Summary>
-              
-              <TechRow>
-                {tags.map((tag, i) => (
-                  <Tag key={i}>{tag}</Tag>
-                ))}
-              </TechRow>
-            </motion.div>
+          <TechRow>
+            {/* ← TagList replaces the manual split + map + Tag loop */}
+            <TagList tags={data.tech_stack} />
+          </TechRow>
+        </motion.div>
 
         {data.thumbnail && (
           <Thumbnail
@@ -254,12 +142,8 @@ const CaseStudyDetails = () => {
           />
         )}
 
-        <Content
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          dangerouslySetInnerHTML={{ __html: data.content }}
-        />
+        {/* ← ProseContent — always rich HTML for case studies */}
+        <ProseContent html={data.content} />
 
         <LinkRow>
           {data.github_url && (

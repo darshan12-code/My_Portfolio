@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components';
-
 const GlobalStyles = createGlobalStyle`
   *, *::before, *::after {
     margin: 0;
@@ -7,9 +6,6 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
-  /* FIXED: #root was getting max-width:1280px + padding:2rem from App.css
-     on desktop which is fine, but on mobile we reset it to prevent 
-     the extra right-side space */
   #root {
     max-width: 100%;
     padding: 0;
@@ -47,15 +43,17 @@ const GlobalStyles = createGlobalStyle`
   a { color: inherit; text-decoration: none; }
   img { max-width: 100%; display: block; }
 
-  /* Keyboard nav focus rings */
-  :focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.gradientPinkBlue};
-    outline-offset: 3px;
-    border-radius: 4px;
-  }
+  /* Remove all default focus outlines — we handle them below */
+  :focus { outline: none; }
+  :focus:not(:focus-visible) { outline: none; box-shadow: none; }
 
-  :focus:not(:focus-visible) {
+  
+   :focus-visible {
     outline: none;
+    border-radius: 4px;
+    box-shadow:
+      0 0 0 2px ${({ theme }) => theme.colors.accentBlue},
+      0 0 0 5px ${({ theme }) => theme.colors.accentBlueBg};
   }
 
   a:focus-visible,
@@ -63,10 +61,11 @@ const GlobalStyles = createGlobalStyle`
   input:focus-visible,
   textarea:focus-visible,
   select:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.gradientPinkBlue};
-    outline-offset: 3px;
-    box-shadow: 0 0 0 4px ${({ theme }) => theme.colors.gradientPinkBlueGlow};
+    outline: none;
+    border-radius: 6px;
+    box-shadow:
+      0 0 0 2px ${({ theme }) => theme.colors.accentBlue},
+      0 0 0 5px ${({ theme }) => theme.colors.accentBlueBg};
   }
 `;
-
 export default GlobalStyles;
