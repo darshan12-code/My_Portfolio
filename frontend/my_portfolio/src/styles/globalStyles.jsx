@@ -48,13 +48,13 @@ const GlobalStyles = createGlobalStyle`
   :focus:not(:focus-visible) { outline: none; box-shadow: none; }
 
   
-   :focus-visible {
-    outline: none;
-    border-radius: 4px;
-    box-shadow:
-      0 0 0 2px ${({ theme }) => theme.colors.accentBlue},
-      0 0 0 5px ${({ theme }) => theme.colors.accentBlueBg};
-  }
+  //  :focus-visible {
+  //   outline: none;
+  //   border-radius: 4px;
+  //   box-shadow:
+  //     0 0 0 2px ${({ theme }) => theme.colors.accentBlue},
+  //     0 0 0 5px ${({ theme }) => theme.colors.accentBlueBg};
+  // }
 
   a:focus-visible,
   button:focus-visible,
