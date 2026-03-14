@@ -5,10 +5,18 @@ import Tag from "../ui/Tag";
 import Tilt from "react-parallax-tilt";
 import { getCategoryColor } from "../../utils/categoryColors";
 import ProjectThumbnail from "../../assets/project_thumbnail.png";
-
+import { useTheme } from "styled-components";
 const ProjectCard = ({ project }) => {
   const navigate = useNavigate();
-  const colors = getCategoryColor(project.category || (project.tags && project.tags[0]));
+  const theme = useTheme();
+
+  const categories = (project.category || "")
+    .split(",")
+    .map((c) => c.trim())
+    .filter(Boolean);
+
+  const shownCats   = categories.slice(0, 2);
+  const extraCount  = categories.length - 2;
 
   return (
     <Tilt
@@ -35,14 +43,20 @@ const ProjectCard = ({ project }) => {
             loading="lazy"
           />
           <ImageOverlay />
-          {project.category && (
-            <CategoryBadge $c={colors}>{project.category}</CategoryBadge>
+          {categories.length > 0 && (
+            <CategoryBadge>
+              {shownCats.map((cat, i) => (
+                <CategoryPill key={i} $c={getCategoryColor(cat, theme.mode)}>
+                  {cat}
+                </CategoryPill>
+              ))}
+              {extraCount > 0 && <MorePill>+{extraCount}</MorePill>}
+            </CategoryBadge>
           )}
         </ImageWrap>
 
         <CardBody>
           <Title>{project.title}</Title>
-          {/* Fixed height desc — always 3 lines regardless of content length */}
           <Desc>{project.description}</Desc>
 
           {project.tags && project.tags.length > 0 && (
@@ -56,7 +70,6 @@ const ProjectCard = ({ project }) => {
             </Tags>
           )}
 
-          {/* Pushed to bottom via flex */}
           <ArrowChip whileHover={{ x: 5 }} transition={{ type: "spring", stiffness: 400 }}>
             View Case Study →
           </ArrowChip>
@@ -67,7 +80,6 @@ const ProjectCard = ({ project }) => {
     </Tilt>
   );
 };
-
 export default ProjectCard;
 
 /* ─── STYLES ─────────────────────────────────────────── */
@@ -141,11 +153,21 @@ const ImageOverlay = styled.div`
     opacity: 0.8;
   }
 `;
-
 const CategoryBadge = styled.span`
   position: absolute;
   bottom: 0.65rem;
   left: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+  max-width: calc(100% - 1.5rem);  /* never overflow the image */
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+`;
+
+// individual pill inside the image badge row
+const CategoryPill = styled.span`
   display: inline-block;
   padding: 0.2rem 0.65rem;
   border-radius: 999px;
@@ -156,6 +178,25 @@ const CategoryBadge = styled.span`
   background: ${({ $c }) => $c.bg};
   border: 1px solid ${({ $c }) => $c.border};
   color: ${({ $c }) => $c.text};
+  white-space: nowrap;
+  /* truncate if single category is very long */
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  backdrop-filter: blur(8px);
+`;
+
+const MorePill = styled.span`
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.8);
+  white-space: nowrap;
+  flex-shrink: 0;
   backdrop-filter: blur(8px);
 `;
 
@@ -168,22 +209,32 @@ const CardBody = styled.div`
   /* Clip anything that overflows — belt-and-suspenders */
   overflow: hidden;
 `;
-
 const Title = styled.h3`
   font-family: ${({ theme }) => theme.fonts.heading};
   font-size: ${({ theme }) => theme.fontSizes.h3};
   color: ${({ theme }) => theme.colors.textPrimary};
   margin-bottom: 0.5rem;
   line-height: 1.25;
-  /* Always 2 lines max so titles don't push content down */
+
+  /* truncate to 2 lines with ellipsis — works on all content lengths */
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  word-break: break-word;       /* breaks very long single words like URLs */
+
   transition: color 0.2s ease;
 
   ${CardLink}:hover & {
-    color: ${({ theme }) => theme.colors.gradientPinkBlue};
+    background: ${({ theme }) => theme.colors.gradientPinkBlue};
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    /* re-assert clamp so ellipsis survives gradient paint */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 `;
 

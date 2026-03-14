@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, useTheme } from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Pencil, Trash2, ArrowBigLeft, ArrowBigRight,
@@ -13,7 +13,8 @@ import MagneticButton from "../components/ui/MagneticButton";
 import RichEditor from "../components/ui/RichEditor";
 import AdminCardSkeleton from "../components/ui/AdminCardSkeleton";
 import EmptyState from "../components/ui/EmptyState";
-
+import { getCategoryColor } from "../utils/categoryColors";
+import Tilt from "react-parallax-tilt";
 
 
 const ITEMS_PER_PAGE = 9;
@@ -45,7 +46,7 @@ const Admin = () => {
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
   const savedScrollY = useRef(0);
-
+  const theme = useTheme();
   const schemas = {
     blogs: [
       { name: "title",        label: "Blog Title",   type: "text"     },
@@ -292,6 +293,7 @@ const TAB_CONFIG = [
   { key: "cases",    label: "Cases",    color: "#3B82F6", icon: "📁", count: cases.length    },
   { key: "messages", label: "Messages", color: "#00E89D", icon: "💬", count: messages.length },
 ];
+
   return (
     <>
       <Page>
@@ -361,6 +363,16 @@ const TAB_CONFIG = [
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: i * 0.04 }}>
+                     <Tilt
+      tiltMaxAngleX={8}
+      tiltMaxAngleY={8}
+      glareEnable
+      glareMaxOpacity={0.07}
+      glareColor="#3B82F6"
+      scale={1.02}
+      transitionSpeed={500}
+      style={{ borderRadius: "14px", transformStyle: "preserve-3d", height: "100%" }}
+    >
                     <Card>
                       <CardShimmerBar />
                       <CardHeader>
@@ -377,10 +389,58 @@ const TAB_CONFIG = [
                         )}
                       </CardHeader>
                       <CardBody>
-                        {tab === "blogs" && (<><CategoryChip>{item.category || "—"}</CategoryChip><CardPreview>{previewText(item.excerpt || item.content)}</CardPreview></>)}
-                        {tab === "cases" && (<><CategoryChip>{(item.tech_stack || "").split(",")[0] || "—"}</CategoryChip><CardPreview>{previewText(item.summary)}</CardPreview></>)}
-                        {tab === "messages" && (<><CategoryChip>{item.email}</CategoryChip><CardPreview>{previewText(item.message)}</CardPreview></>)}
-                      </CardBody>
+                          {(tab === "blogs" || tab === "cases") && (
+                            <>
+                              <ChipsRow>
+                                {(() => {
+                                  const categories = (item.category || "—")
+                                    .split(",")
+                                    .map(cat => cat.trim())
+                                    .filter(Boolean);
+
+                                  const displayCategories = categories.slice(0, 2);
+                                  const remainingCount = categories.length - 2;
+
+                                  return (
+                                    <>
+                                      {displayCategories.map((cat, i) => (
+                                        <CategoryChip key={i} $c={getCategoryColor(cat, theme.mode)}>
+                                          {cat}
+                                        </CategoryChip>
+                                      ))}
+                                      
+                                      {remainingCount > 0 && (
+                                        <CategoryChip $c={getCategoryColor('', theme.mode)}>
+                                          +{remainingCount}
+                                        </CategoryChip>
+                                      )}
+                                    </>
+                                  );
+                                })()}
+                              </ChipsRow>
+                              
+                              <CardPreview>
+                                {tab === "blogs" 
+                                  ? previewText(item.excerpt || item.content) 
+                                  : previewText(item.summary)
+                                }
+                              </CardPreview>
+                            </>
+                          )}
+
+                         {tab === "messages" && (
+                            <>
+                              <CategoryChip $variant="email">
+                                {item.email}
+                              </CategoryChip>
+                              <CardPreview>{previewText(item.message)}</CardPreview>
+                            </>
+                          )}
+
+                          {tab === "projects" && (
+                            <CardPreview>{previewText(item.description)}</CardPreview>  
+                          )}
+                        </CardBody>
                       {tab !== "messages" && (
                         <CardStatusRow>
                           <StatusDot $on={item.is_published} />
@@ -388,6 +448,7 @@ const TAB_CONFIG = [
                         </CardStatusRow>
                       )}
                     </Card>
+                    </Tilt>
                   </motion.div>
                 ))
               )}
@@ -426,7 +487,7 @@ const TAB_CONFIG = [
           {showForm && (
             <Overlay as={motion.div}
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              transition={{ duration: 0.18 }} onClick={closeForm}>
+              transition={{ duration: 0.18 }}>
               <ModalCard as={motion.div}
                 initial={{ scale: 0.94, opacity: 0, y: 30 }}
                 animate={{ scale: 1,    opacity: 1, y: 0  }}
@@ -472,7 +533,25 @@ const TAB_CONFIG = [
                 </ModalHeader>
                 <PreviewBody>
                   <PreviewTitle>{formData.title}</PreviewTitle>
-                  {formData.category && <PreviewCategoryBadge>{formData.category}</PreviewCategoryBadge>}
+
+                  {formData.category && (
+                    <PreviewBadgeRow>
+                      {formData.category.split(",").map(cat => cat.trim()).filter(Boolean).map((cat, i) => (
+                        <PreviewCategoryBadge key={i} $c={getCategoryColor(cat, theme.mode)}>
+                          {cat}
+                        </PreviewCategoryBadge>
+                      ))}
+                    </PreviewBadgeRow>
+                  )}
+
+                  {formData.tech_stack && (
+                    <PreviewTagsRow>
+                      {formData.tech_stack.split(",").map(t => t.trim()).filter(Boolean).map((tag, i) => (
+                        <PreviewTag key={i}>{tag}</PreviewTag>
+                      ))}
+                    </PreviewTagsRow>
+                  )}
+
                   <PreviewContent dangerouslySetInnerHTML={{ __html: formData.content }} />
                 </PreviewBody>
               </PreviewCard>
@@ -542,7 +621,7 @@ const CreateBtn = styled.button`
   border-radius: 999px;
   border: none;
   background: ${({ theme }) => theme.colors.gradientPinkBlue};
-  color: ${({ theme }) => theme.colors.textWhite};
+  color: #fff;
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
@@ -570,6 +649,15 @@ const shimmerMove = keyframes`
   100% { background-position:  200% 0 }
 `;
 
+
+
+
+
+
+
+
+
+
 const Card = styled.div`
   background: ${({ theme }) => theme.colors.bgSecondary};
   border-radius: ${({ theme }) => theme.borderRadius.md};
@@ -578,6 +666,11 @@ const Card = styled.div`
   position: relative;
   overflow: hidden;
   transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+
+  /* ── uniform height layout ── */
+  display: flex;
+  flex-direction: column;
+
   &:hover {
     border-color: ${({ theme }) => theme.colors.borderHover};
     box-shadow: ${({ theme }) => theme.colors.shadowCardHover};
@@ -585,6 +678,58 @@ const Card = styled.div`
   }
 `;
 
+const CardBody = styled.div`
+  font-size: 0.85rem;
+  flex: 1;                /* grows to fill space between header and status row */
+  min-height: 0;          /* prevents flex blowout */
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+`;
+
+const ChipsRow = styled.div`
+  display: flex;
+  flex-wrap: nowrap;      /* no wrap — chips stay on one line */
+  gap: 4px;
+  margin-bottom: 6px;
+  overflow: hidden;       /* hides any overflow if chips are somehow too wide */
+`;
+const CategoryChip = styled.span`
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  /* Email Variant Logic */
+  background: ${({ $variant, theme }) => 
+    $variant === 'email' ? theme.colors.accentBlueBg : (props => props.$c?.bg || 'rgba(255,255,255,0.06)')};
+  
+  border: 1px solid ${({ $variant, theme }) => 
+    $variant === 'email' ? theme.colors.accentBlueBg : (props => props.$c?.border || 'rgba(255,255,255,0.12)')};
+  
+  /* Make sure text is visible against gradient, or use standard color */
+  color: ${({ $variant,theme, $c }) => 
+    $variant === 'email' ?  theme.colors.codeText : ($c?.text || '#9BA1B0')};
+`;
+
+const CardPreview = styled.p`
+  color: ${({ theme }) => theme.colors.textTertiary};
+  font-size: 0.82rem;
+  line-height: 1.5;
+  margin: 0;
+  flex: 1;
+
+  /* clamp to exactly 2 lines always */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+`;
 const CardShimmerBar = styled.div`
   position: absolute; top: 0; left: 0; right: 0; height: 2px;
   background: ${({ theme }) => theme.colors.gradientShimmer};
@@ -634,34 +779,9 @@ const IconBtn = styled.button`
     background: ${({ $danger, theme }) =>
       $danger ? theme.colors.accentDangerBgHover : theme.colors.borderHover};
     color: ${({ $danger, theme }) =>
-      $danger ? theme.colors.accentDangerLight : theme.colors.textWhite};
+      $danger ? theme.colors.accentDangerLight : "#fff"};
     transform: scale(1.1);
   }
-`;
-
-const CardBody = styled.div`
-  font-size: 0.85rem;
-`;
-
-const CategoryChip = styled.span`
-  display: inline-block;
-  padding: 2px 9px;
-  border-radius: 999px;
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background: ${({ theme }) => theme.colors.accentPinkSubtleBg};
-  border: 1px solid ${({ theme }) => theme.colors.accentPinkSubtleBorder};
-  color: ${({ theme }) => theme.colors.accentPink};
-  margin-bottom: 0.5rem;
-`;
-
-const CardPreview = styled.p`
-  color: ${({ theme }) => theme.colors.textTertiary};
-  font-size: 0.82rem;
-  line-height: 1.5;
-  margin: 0;
 `;
 
 const CardStatusRow = styled.div`
@@ -825,7 +945,7 @@ const ModalBtn = styled.button`
   /* Save */
   ${({ $v, theme }) => $v === "save" && `
     background: ${theme.colors.gradientPinkBlue};
-    color: ${theme.colors.textWhite};
+    color:#fff;
     &:hover {
       box-shadow: ${theme.colors.shadowBlueBtnHover};
       transform: translateY(-1px);
@@ -949,13 +1069,13 @@ const RadioChip = styled.button`
   cursor: pointer;
   font-size: 0.82rem;
   background: ${({ $active, theme }) =>
-    $active ? theme.colors.accentPinkFocus : theme.colors.bgTertiary};
+    $active ? theme.colors.codeGhostBg : theme.colors.bgTertiary};
   border: 1px solid ${({ $active, theme }) =>
-    $active ? theme.colors.accentPink : theme.colors.borderDefault};
+    $active ? theme.colors.codeGhostBorder : theme.colors.borderDefault};
   color: ${({ $active, theme }) =>
-    $active ? theme.colors.accentPink : theme.colors.textSecondary};
+    $active ? theme.colors.codeText : theme.colors.textSecondary};
   transition: all 0.15s;
-  &:hover { border-color: ${({ theme }) => theme.colors.accentPink}; }
+  &:hover { border-color: ${({ theme }) => theme.colors.accentBlue}; }
 `;
 
 const ToggleRow = styled.div`
@@ -988,7 +1108,7 @@ const ToggleTrack = styled.span`
     width: 18px; height: 18px;
     left: 2px; top: 50%;
     transform: translateY(-50%);
-    background: ${({ theme }) => theme.colors.textWhite};
+    background: #fff;
     border-radius: 50%;
     transition: transform 0.3s;
     box-shadow: 0 1px 4px ${({ theme }) => theme.colors.overlayBg};
@@ -1028,18 +1148,50 @@ const PreviewTitle = styled.h1`
   color: ${({ theme }) => theme.colors.textPrimary};
 `;
 
-const PreviewCategoryBadge = styled.div`
+const PreviewBadgeRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 1rem;
+`;
+
+const PreviewTagsRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 1.75rem;
+`;
+
+const PreviewTag = styled.span`
   display: inline-block;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors.accentPink};
-  background: ${({ theme }) => theme.colors.accentPinkSubtleBg2};
-  border: 1px solid ${({ theme }) => theme.colors.accentPinkSubtleBorder2};
   padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-family: ${({ theme }) => theme.fonts.mono};
+  font-weight: 500;
+  background: ${({ theme }) =>
+    theme.mode === 'dark'
+      ? 'linear-gradient(90deg, rgba(255,45,107,0.22) 0%, rgba(59,130,246,0.22) 100%)'
+      : 'linear-gradient(90deg, rgba(232,23,74,0.13) 0%, rgba(29,78,216,0.13) 100%)'
+  };
+  border: 0.5px solid ${({ theme }) =>
+    theme.mode === 'dark' ? 'rgba(255,45,107,0.28)' : 'rgba(232,23,74,0.22)'
+  };
+  color: ${({ theme }) => theme.mode === 'dark' ? '#ffffff' : '#1A1A2E'};
+`;
+
+
+const PreviewCategoryBadge = styled.span`
+  display: inline-block;
+  padding: 4px 12px;
   border-radius: 999px;
-  margin-bottom: 1.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  background: ${({ $c }) => $c.bg};
+  border: 1px solid ${({ $c }) => $c.border};
+  color: ${({ $c }) => $c.text};
 `;
 
 const PreviewContent = styled.div`
@@ -1053,15 +1205,18 @@ const PreviewContent = styled.div`
   h2, h3 { color: ${({ theme }) => theme.colors.textPrimary}; margin: 1.5rem 0 0.75rem; }
   p { margin-bottom: 1.2rem; }
   pre {
-    background: ${({ theme }) => theme.colors.preBg};
+    background: ${({ theme }) => theme.colors.codeGhostBg};
+    border: 1px solid ${({ theme }) => theme.colors.codeGhostBorder};
     padding: 1rem;
     border-radius: ${({ theme }) => theme.borderRadius.sm};
     overflow-x: auto;
     font-size: 0.875rem;
+    color:${({ theme }) => theme.colors.codeText};
   }
   code {
-    background: ${({ theme }) => theme.colors.accentPinkSubtleBg};
-    color: ${({ theme }) => theme.colors.accentPink};
+    background: ${({ theme }) => theme.colors.codeGhostBg};
+    border: 1px solid ${({ theme }) => theme.colors.codeGhostBorder};
+    color: ${({ theme }) => theme.colors.codeText};
     padding: 2px 6px;
     border-radius: 4px;
     font-size: 0.875em;
@@ -1147,7 +1302,7 @@ const CountPill = styled.span`
   padding: 2px 7px;
   border-radius: 999px;
   background: ${({ $active, theme }) => $active ? "" : theme.colors.bgGlassLight};
-  color: ${({ $active, theme }) => $active ? theme.colors.textWhite : "inherit"};
+  color: ${({ $active, theme }) => $active ? "#fff" : "inherit"};
   font-weight: 700;
   min-width: 20px;
   text-align: center;
@@ -1220,7 +1375,7 @@ const MobileTabCount = styled.span`
   padding: 0 4px;
   border-radius: 999px;
   background: ${({ $color }) => $color || "#FF2D6B"};
-  color: ${({ theme }) => theme.colors.textWhite};
+  color: #fff;
   font-size: 0.6rem;
   font-weight: 800;
   display: flex;

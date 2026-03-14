@@ -1,9 +1,9 @@
-import styled from "styled-components";
+import { styled, useTheme } from "styled-components";
 import { motion } from "framer-motion";
 import React from "react";
 import { getCategoryColor } from "../../utils/categoryColors";
 import { useNavigate } from "react-router-dom";
-
+import Tilt from "react-parallax-tilt";
 /* ---------- Badge ---------- */
 
 const CategoryBadge = styled.span`
@@ -14,9 +14,36 @@ const CategoryBadge = styled.span`
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  background: ${({ $colors }) => $colors.bg};
-  border: 1px solid ${({ $colors }) => $colors.border};
-  color: ${({ $colors }) => $colors.text};
+  background: ${({ $c }) => $c.bg};
+  border: 1px solid ${({ $c }) => $c.border};
+  color: ${({ $c }) => $c.text};
+  /* truncate long single category */
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const MoreBadge = styled.span`
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: ${({ theme }) => theme.colors.bgGlassLight};
+  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  color: ${({ theme }) => theme.colors.textTertiary};
+  white-space: nowrap;
+  flex-shrink: 0;
+`;
+
+const BadgeRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  max-width: 100%;
 `;
 
 /* ---------- Card ---------- */
@@ -166,9 +193,28 @@ const ArrowChip = styled(motion.span)`
 
 const BlogCard = ({ post }) => {
   const navigate = useNavigate();
-  const colors = getCategoryColor(post.category);
+  const theme = useTheme();
+
+  // split on comma, trim, filter empty
+  const categories = (post.category || "")
+    .split(",")
+    .map((c) => c.trim())
+    .filter(Boolean);
+
+  const shown     = categories.slice(0, 2);
+  const extraCount = categories.length - 2;
 
   return (
+     <Tilt
+      tiltMaxAngleX={8}
+      tiltMaxAngleY={8}
+      glareEnable
+      glareMaxOpacity={0.07}
+      glareColor="#3B82F6"
+      scale={1.02}
+      transitionSpeed={500}
+      style={{ borderRadius: "14px", transformStyle: "preserve-3d", height: "100%" }}
+    >
     <CardLink
       onClick={() => navigate(post.link)}
       initial={{ y: 20, opacity: 0 }}
@@ -179,26 +225,28 @@ const BlogCard = ({ post }) => {
     >
       <div>
         <Meta>
-          <CategoryBadge $colors={colors}>
-            {post.category}
-          </CategoryBadge>
+          <BadgeRow>
+            {shown.map((cat, i) => (
+              <CategoryBadge key={i} $c={getCategoryColor(cat, theme.mode)}>
+                {cat}
+              </CategoryBadge>
+            ))}
+            {extraCount > 0 && <MoreBadge>+{extraCount}</MoreBadge>}
+          </BadgeRow>
           <span>·</span>
           <span>{post.readTime}</span>
         </Meta>
 
         <Title>{post.title}</Title>
-
         <Excerpt>{post.excerpt}</Excerpt>
       </div>
 
       <Footer>
         <Date>{post.date}</Date>
-
-        <ArrowChip whileHover={{ x: 4 }}>
-          Read more →
-        </ArrowChip>
+        <ArrowChip whileHover={{ x: 4 }}>Read more →</ArrowChip>
       </Footer>
     </CardLink>
+    </Tilt>
   );
 };
 

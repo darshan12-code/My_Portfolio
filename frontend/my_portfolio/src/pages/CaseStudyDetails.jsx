@@ -1,12 +1,12 @@
 // src/pages/CaseStudyDetails.jsx
 import { useParams, useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import { motion } from "framer-motion";
 import { getCategoryColor } from "../utils/categoryColors";
 import { ArrowLeft, Github, ExternalLink } from "lucide-react";
 import Tag from "../components/ui/Tag";
 import PageLoader from "../components/ui/PageLoader";
 import { useCaseStudyDetail } from "../hooks/useApiData";
+import { styled, useTheme } from "styled-components";
 
 
 const Page = styled.div`
@@ -40,18 +40,27 @@ const BackBtn = styled.button`
   }
 `;
 
+const CategoryRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+  align-items: center;
+`;
+
 const CategoryBadge = styled.span`
   display: inline-block;
-  padding: 0.3rem 0.85rem;
+  padding: 4px 12px;
   border-radius: 999px;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
   text-transform: uppercase;
-  background: ${({ $c }) => $c.bg};
-  border: 1px solid ${({ $c }) => $c.border};
-  color: ${({ $c }) => $c.text};
-  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
+  background: ${({ $c }) => $c?.bg || 'rgba(255,255,255,0.06)'};
+  border: 1px solid ${({ $c }) => $c?.border || 'rgba(255,255,255,0.12)'};
+  color: ${({ $c }) => $c?.text || '#9BA1B0'};
+  white-space: nowrap;
+  flex-shrink: 0;
 `;
 
 const Title = styled.h1`
@@ -112,17 +121,19 @@ const Content = styled(motion.div)`
   strong { color: ${({ theme }) => theme.colors.textPrimary}; }
   img { max-width: 100%; border-radius: 10px; margin: 1.5rem 0; border: 1px solid ${({ theme }) => theme.colors.borderDefault}; }
   pre {
-    background: ${({ theme }) => theme.colors.bgTertiary};
+    background: ${({ theme }) => theme.colors.codeGhostBg};
     padding: 1.25rem;
     border-radius: 10px;
     overflow-x: auto;
     font-size: 0.875rem;
     margin: 1.75rem 0;
-    border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+    border: 1px solid ${({ theme }) => theme.colors.codeGhostBorder};
+    color: ${({ theme }) => theme.colors.codeText};
   }
   code {
-    background: rgba(255, 45, 107, 0.1);
-    color: ${({ theme }) => theme.colors.accentPink};
+    background:${({ theme }) => theme.colors.codeGhostBg};
+    border: 1px solid ${({ theme }) => theme.colors.codeGhostBorder};
+    color: ${({ theme }) => theme.colors.codeText};
     padding: 2px 7px;
     border-radius: 4px;
     font-size: 0.875em;
@@ -173,7 +184,7 @@ const LinkBtn = styled.a`
 const CaseStudyDetails = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
-
+  const theme = useTheme();
   // Reads from React Query cache — no API call if visited before within staleTime
   const { data, isLoading } = useCaseStudyDetail(slug);
 
@@ -193,21 +204,45 @@ const CaseStudyDetails = () => {
         </BackBtn>
 
         <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          {data.category && (
-            <CategoryBadge $c={catColors}>{data.category}</CategoryBadge>
-          )}
-          <Title>{data.title}</Title>
-          <Summary>{data.summary}</Summary>
-          <TechRow>
-            {tags.map((tag, i) => (
-              <Tag key={i}>{tag}</Tag>
-            ))}
-          </TechRow>
-        </motion.div>
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              {data.category && (
+                <CategoryRow>
+                  {(() => {
+                    const categories = data.category
+                      .split(",")
+                      .map((cat) => cat.trim())
+                      .filter(Boolean);
+
+                    const displayCats = categories
+                   
+
+                    return (
+                      <>
+                        {displayCats.map((cat, i) => (
+                          <CategoryBadge key={i} $c={getCategoryColor(cat, theme.mode)}>
+                            {cat}
+                          </CategoryBadge>
+                        ))}
+                        
+                  
+                      </>
+                    );
+                  })()}
+                </CategoryRow>
+              )}
+
+              <Title>{data.title}</Title>
+              <Summary>{data.summary}</Summary>
+              
+              <TechRow>
+                {tags.map((tag, i) => (
+                  <Tag key={i}>{tag}</Tag>
+                ))}
+              </TechRow>
+            </motion.div>
 
         {data.thumbnail && (
           <Thumbnail

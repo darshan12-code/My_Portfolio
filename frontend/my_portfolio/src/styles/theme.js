@@ -88,6 +88,11 @@ const darkColors = {
   // ── Decorative ────────────────────────────────────────────────
   inkStroke:            'rgba(255, 255, 255, 0.03)',
   comicPanel:           'rgba(255, 255, 255, 0.02)',
+  codeGradientBg:     'linear-gradient(90deg, rgba(255,45,107,0.22) 0%, rgba(59,130,246,0.22) 100%)',
+  codeGradientBorder: 'rgba(255, 45, 107, 0.28)',
+  codeGhostBg:        'rgba(255, 255, 255, 0.06)',
+  codeGhostBorder:    'rgba(255, 255, 255, 0.10)',
+  codeText:          '#fff',
 };
 
 const lightColors = {
@@ -178,6 +183,12 @@ const lightColors = {
   // ── Decorative ────────────────────────────────────────────────
   inkStroke:            'rgba(0, 0, 0, 0.04)',
   comicPanel:           'rgba(0, 0, 0, 0.02)',
+
+  codeGradientBg:     'linear-gradient(90deg, rgba(232,23,74,0.13) 0%, rgba(29,78,216,0.13) 100%)',
+  codeGradientBorder: 'rgba(232, 23, 74, 0.22)',
+  codeGhostBg:        'rgba(0, 0, 0, 0.06)',
+  codeGhostBorder:    'rgba(0, 0, 0, 0.12)',
+  codeText:          '#1A1A2E',
 };
 
 export const darkTheme = {
@@ -237,6 +248,7 @@ export const lightTheme = {
   colors: lightColors,
   mode: 'light',
 };
+
 
 // Keep backward compat
 export const theme = darkTheme;

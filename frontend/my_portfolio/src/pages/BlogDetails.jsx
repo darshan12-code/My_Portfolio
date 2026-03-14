@@ -6,7 +6,7 @@ import { ArrowLeft, Clock } from "lucide-react";
 import { getCategoryColor } from "../utils/categoryColors";
 import { useBlogDetail } from "../hooks/useApiData";
 import PageLoader from "../components/ui/PageLoader";
-
+import { useTheme } from 'styled-components';
 
 const Page = styled.div`
   min-height: 100vh;
@@ -121,17 +121,19 @@ const Content = styled(motion.div)`
     border-radius: 0 8px 8px 0;
   }
   pre {
-    background: ${({ theme }) => theme.colors.bgTertiary};
+    background: ${({ theme }) => theme.colors.codeGhostBg};
     padding: 1.25rem;
     border-radius: 10px;
     overflow-x: auto;
     font-size: 0.875rem;
     margin: 1.75rem 0;
-    border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+    border: 1px solid ${({ theme }) => theme.colors.codeGhostBorder};
+    color:${({ theme }) => theme.colors.codeText};
   }
   code {
-    background: rgba(255, 45, 107, 0.1);
-    color: ${({ theme }) => theme.colors.accentPink};
+    background:${({ theme }) => theme.colors.codeGhostBg};
+    border: 1px solid ${({ theme }) => theme.colors.codeGhostBorder};
+    color: ${({ theme }) => theme.colors.codeText};
     padding: 2px 7px;
     border-radius: 4px;
     font-size: 0.875em;
@@ -145,14 +147,14 @@ const Content = styled(motion.div)`
 const BlogDetail = () => {
   const navigate = useNavigate();
   const { slug } = useParams();
-
+  const theme = useTheme();
   // Reads from React Query cache — no API call if visited before within staleTime
   const { data: blog, isLoading } = useBlogDetail(slug);
 
   if (isLoading) return <PageLoader label="Loading post…" />;
   if (!blog)     return <Page><Inner><p>Post not found.</p></Inner></Page>;
 
-  const catColors = getCategoryColor(blog.category);
+  const catColors = getCategoryColor(blog.category,theme.mode);
 
   return (
     <Page>

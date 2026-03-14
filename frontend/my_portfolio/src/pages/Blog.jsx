@@ -106,7 +106,7 @@ const CountLabel = styled.span`
 const Blog = () => {
   const [search, setSearch]     = useState("");
   const [visible, setVisible]   = useState(INITIAL_COUNT);
-
+  
   const { data: posts = [], isLoading } = useBlogs();
 
   if (isLoading) return <PageLoader label="Loading posts…" />;

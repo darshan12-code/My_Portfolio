@@ -184,13 +184,17 @@ const EditorArea = styled.div`
       margin: 1rem 0;
     }
     code {
-      background: #111;
+      background: ${({theme})=> theme.colors.codeGhostBg};
+      border: 1px solid ${({ theme }) => theme.colors.codeGhostBorder};
+      color:${({ theme }) => theme.colors.codeText};
       padding: 2px 6px;
       border-radius: 4px;
       font-size: 0.9em;
     }
     pre {
-      background: #111;
+      background: ${({theme})=> theme.colors.codeGhostBg};
+      border: 1px solid ${({ theme }) => theme.colors.codeGhostBorder};
+      color:${({ theme }) => theme.colors.codeText};
       padding: 1rem;
       border-radius: 8px;
       overflow-x: auto;
