@@ -76,7 +76,11 @@ const LogoutButton = styled.button`
   background: transparent;
   cursor: pointer;
   transition: ${({ theme }) => theme.transitions.fast};
-  &:hover { background: ${({ theme }) => theme.colors.gradientPinkBlue}; }
+  &:hover { 
+  background: ${({ theme }) => theme.colors.gradientPinkBlue}; 
+  color:#fff;
+  
+  }
 `;
 
 const Hamburger = styled.button`

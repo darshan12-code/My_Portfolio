@@ -223,7 +223,7 @@ const ResumeBtn = styled(motion.a)`
   font-size: ${({ theme }) => theme.fontSizes.small};
   color: ${({ theme }) => theme.colors.textWhite};
   background: transparent;
-  border: 1px solid rgba(255, 45, 107, 0.4);
+  border: 1px solid ${({ theme }) => theme.colors.borderAccent};
   border-radius: ${({ theme }) => theme.borderRadius.full};
   text-decoration: none;
   position: relative;

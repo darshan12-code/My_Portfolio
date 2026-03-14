@@ -8,7 +8,15 @@ const Btn = styled(motion.button)`
   font-family: ${({ theme }) => theme.fonts.body};
   font-weight: 600;
   font-size: ${({ theme }) => theme.fontSizes.small};
-  color: ${({ theme }) => theme.colors.codeText};
+  color: ${({ $variant, theme }) => {
+    switch ($variant) {
+      case 'outline':
+      case 'ghost':
+        return theme.colors.codeText; // Specific theme color for transparent backgrounds
+      default:
+        return '#ffffff'; // White text for gradient backgrounds (default, edit, delete)
+    }
+  }};
   border-radius: ${({ theme }) => theme.borderRadius.full};
   cursor: pointer;
   overflow: hidden;
@@ -57,7 +65,7 @@ const Btn = styled(motion.button)`
       if ($variant === 'outline' || $variant === 'ghost') return theme.colors.shadowGlowPink;
       return theme.colors.shadowGlowPink;
     }};
-
+   
     &::after {
       transform: translateX(100%);
     }

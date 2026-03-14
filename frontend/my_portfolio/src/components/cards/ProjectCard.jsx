@@ -206,7 +206,6 @@ const CardBody = styled.div`
   display: flex;
   flex-direction: column;
   padding: 1.25rem 1.25rem 1.5rem;
-  /* Clip anything that overflows — belt-and-suspenders */
   overflow: hidden;
 `;
 const Title = styled.h3`
@@ -215,13 +214,11 @@ const Title = styled.h3`
   color: ${({ theme }) => theme.colors.textPrimary};
   margin-bottom: 0.5rem;
   line-height: 1.25;
-
-  /* truncate to 2 lines with ellipsis — works on all content lengths */
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  word-break: break-word;       /* breaks very long single words like URLs */
+  word-break: break-word;      
 
   transition: color 0.2s ease;
 
@@ -230,9 +227,8 @@ const Title = styled.h3`
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    /* re-assert clamp so ellipsis survives gradient paint */
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
@@ -243,9 +239,9 @@ const Desc = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   margin-bottom: 1rem;
   line-height: 1.6;
-  /* Always exactly 3 lines — long or short descriptions look identical */
+  
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 `;
@@ -269,7 +265,7 @@ const MoreTags = styled.span`
   color: ${({ theme }) => theme.colors.textTertiary};
 `;
 
-/* margin-top: auto pushes this to the bottom of CardBody regardless of content above */
+
 const ArrowChip = styled(motion.span)`
   display: inline-flex;
   align-items: center;
