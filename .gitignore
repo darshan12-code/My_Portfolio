@@ -1,13 +1,13 @@
 # ========================
 # FRONTEND (React/Vite)
 # ========================
-frontend/node_modules/
-frontend/dist/
-frontend/build/
-frontend/.env
-frontend/.env.local
-frontend/.env.production
-
+frontend/my_portfolio/node_modules/
+frontend/my_portfolio/dist/
+frontend/my_portfolio/build/
+frontend/my_portfolio/.env
+frontend/my_portfolio/.env.local
+frontend/my_portfolio/.env.production
+frontend/my_portfolio/project_structure.md
 
 # ========================
 # BACKEND (Flask/Python)
@@ -20,7 +20,7 @@ backend/*.pyo
 backend/.env
 backend/instance/
 backend/migrations/versions/*.pyc
-
+backend/project_structure.md
 # ========================
 # GENERAL
 # ========================
@@ -28,4 +28,3 @@ backend/migrations/versions/*.pyc
 Thumbs.db
 *.log
 .vscode/settings.json
-**/project_structure.md
