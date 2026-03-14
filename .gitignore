@@ -7,7 +7,7 @@ frontend/build/
 frontend/.env
 frontend/.env.local
 frontend/.env.production
-frontend/project_structure.md
+
 
 # ========================
 # BACKEND (Flask/Python)
@@ -17,7 +17,6 @@ backend/__pycache__/
 backend/**/__pycache__/
 backend/*.pyc
 backend/*.pyo
-backend/project_structure.md
 backend/.env
 backend/instance/
 backend/migrations/versions/*.pyc
@@ -29,3 +28,4 @@ backend/migrations/versions/*.pyc
 Thumbs.db
 *.log
 .vscode/settings.json
+**/project_structure.md
