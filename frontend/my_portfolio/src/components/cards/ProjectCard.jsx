@@ -6,6 +6,7 @@ import Tilt from "react-parallax-tilt";
 import { getCategoryColor } from "../../utils/categoryColors";
 import ProjectThumbnail from "../../assets/project_thumbnail.png";
 import { useTheme } from "styled-components";
+
 const ProjectCard = ({ project }) => {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -15,8 +16,8 @@ const ProjectCard = ({ project }) => {
     .map((c) => c.trim())
     .filter(Boolean);
 
-  const shownCats   = categories.slice(0, 2);
-  const extraCount  = categories.length - 2;
+  const shownCats  = categories.slice(0, 2);
+  const extraCount = categories.length - 2;
 
   return (
     <Tilt
@@ -70,7 +71,10 @@ const ProjectCard = ({ project }) => {
             </Tags>
           )}
 
-          <ArrowChip whileHover={{ x: 5 }} transition={{ type: "spring", stiffness: 400 }}>
+          <ArrowChip
+            whileHover={{ x: 5 }}
+            transition={{ type: "spring", stiffness: 400 }}
+          >
             View Case Study →
           </ArrowChip>
         </CardBody>
@@ -80,26 +84,36 @@ const ProjectCard = ({ project }) => {
     </Tilt>
   );
 };
+
 export default ProjectCard;
 
 /* ─── STYLES ─────────────────────────────────────────── */
 
 const CardLink = styled(motion.div)`
   position: relative;
-  /* Fixed total card height — all cards identical regardless of content */
-  height: 420px;
   display: flex;
   flex-direction: column;
+
+  /* responsive fixed heights — enough room for all content at each breakpoint */
+  height: 460px;
+  @media (max-width: 1024px) { height: 460px; }
+  @media (max-width: 768px)  { height: 450px; }
+  @media (max-width: 480px)  { height: 440px; }
+
   background: ${({ theme }) => theme.colors.bgSecondary};
   border: 1px solid ${({ theme }) => theme.colors.borderDefault};
   border-radius: 14px;
   cursor: pointer;
+
+  /* clip only the image zoom — NOT the card body content */
   overflow: hidden;
+
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
     border-color: ${({ theme }) => theme.colors.borderHover};
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 45, 107, 0.08);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35),
+                0 0 0 1px rgba(255, 45, 107, 0.08);
   }
 `;
 
@@ -112,19 +126,19 @@ const TopBar = styled.span`
   transform-origin: left;
   transition: transform 0.35s ease;
   pointer-events: none;
+  z-index: 2;
 
   ${CardLink}:hover & {
     transform: scaleX(1);
   }
 `;
 
-/* Fixed image height — always same slice of the card */
 const ImageWrap = styled.div`
   position: relative;
   width: 100%;
   height: 180px;
-  flex-shrink: 0;
-  overflow: hidden;
+  flex-shrink: 0;        /* image height never shrinks */
+  overflow: hidden;      /* image zoom stays clipped to this box */
   background: ${({ theme }) => theme.colors.bgTertiary};
 `;
 
@@ -145,7 +159,11 @@ const ProjectImage = styled.img`
 const ImageOverlay = styled.div`
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, transparent 50%, rgba(13, 15, 20, 0.55) 100%);
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(13, 15, 20, 0.55) 100%
+  );
   pointer-events: none;
   transition: opacity 0.3s ease;
 
@@ -153,6 +171,7 @@ const ImageOverlay = styled.div`
     opacity: 0.8;
   }
 `;
+
 const CategoryBadge = styled.span`
   position: absolute;
   bottom: 0.65rem;
@@ -161,12 +180,11 @@ const CategoryBadge = styled.span`
   align-items: center;
   gap: 4px;
   flex-wrap: nowrap;
-  max-width: calc(100% - 1.5rem);  /* never overflow the image */
+  max-width: calc(100% - 1.5rem);
   overflow: hidden;
   backdrop-filter: blur(8px);
 `;
 
-// individual pill inside the image badge row
 const CategoryPill = styled.span`
   display: inline-block;
   padding: 0.2rem 0.65rem;
@@ -179,7 +197,6 @@ const CategoryPill = styled.span`
   border: 1px solid ${({ $c }) => $c.border};
   color: ${({ $c }) => $c.text};
   white-space: nowrap;
-  /* truncate if single category is very long */
   max-width: 110px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -192,33 +209,45 @@ const MorePill = styled.span`
   border-radius: 999px;
   font-size: 0.65rem;
   font-weight: 700;
-  background: rgba(0,0,0,0.45);
-  border: 1px solid rgba(255,255,255,0.15);
-  color: rgba(255,255,255,0.8);
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.8);
   white-space: nowrap;
   flex-shrink: 0;
   backdrop-filter: blur(8px);
 `;
 
-/* Body takes remaining height and uses flex to push arrow to bottom */
 const CardBody = styled.div`
+  /* takes all remaining height after ImageWrap */
   flex: 1;
+  min-height: 0;          /* prevents flex blowout */
   display: flex;
   flex-direction: column;
-  padding: 1.25rem 1.25rem 1.5rem;
-  overflow: hidden;
+  padding: 1.25rem 1.25rem 1.25rem;
+
+  /* NO overflow hidden — nothing inside should be clipped */
+  overflow: visible;
 `;
+
 const Title = styled.h3`
   font-family: ${({ theme }) => theme.fonts.heading};
   font-size: ${({ theme }) => theme.fontSizes.h3};
   color: ${({ theme }) => theme.colors.textPrimary};
   margin-bottom: 0.5rem;
-  line-height: 1.25;
+  line-height: 1.3;
+  flex-shrink: 0;
+
+  /* exactly 1 line, ellipsis if longer */
+  min-height: calc(1.3em + 0.1em);
+  max-height: calc(1.3em + 0.1em);
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  word-break: break-word;      
+  text-overflow: ellipsis;
+  word-break: break-word;
+  padding-bottom: 0.1em;
+  box-sizing: content-box;
 
   transition: color 0.2s ease;
 
@@ -237,20 +266,29 @@ const Title = styled.h3`
 const Desc = styled.p`
   font-size: ${({ theme }) => theme.fontSizes.small};
   color: ${({ theme }) => theme.colors.textSecondary};
-  margin-bottom: 1rem;
   line-height: 1.6;
-  
+  margin-bottom: 0.85rem;
+  flex-shrink: 0;
+
+  /* exactly 2 lines, ellipsis if longer */
+  min-height: calc(1.6em * 2 + 0.15em);
+  max-height: calc(1.6em * 2 + 0.15em);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  padding-bottom: 0.15em;
+  box-sizing: content-box;
 `;
 
 const Tags = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.75rem;
+  flex-shrink: 0;
 `;
 
 const MoreTags = styled.span`
@@ -265,24 +303,34 @@ const MoreTags = styled.span`
   color: ${({ theme }) => theme.colors.textTertiary};
 `;
 
-
 const ArrowChip = styled(motion.span)`
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  margin-top: auto;
+  margin-top: auto;      /* pushes to bottom of CardBody */
   padding: 0.35rem 0.9rem;
   border-radius: 999px;
   font-size: 0.78rem;
   font-weight: 600;
   align-self: flex-start;
-  background: linear-gradient(90deg, rgba(255, 45, 107, 0.1), rgba(59, 130, 246, 0.1));
+  flex-shrink: 0;        /* never squished by siblings above */
+  white-space: nowrap;   /* text never wraps mid-chip */
+
+  background: linear-gradient(
+    90deg,
+    rgba(255, 45, 107, 0.1),
+    rgba(59, 130, 246, 0.1)
+  );
   border: 1px solid rgba(255, 45, 107, 0.2);
   color: ${({ theme }) => theme.colors.gradientPinkBlue};
   transition: border-color 0.2s ease;
 
   ${CardLink}:hover & {
     border-color: rgba(255, 45, 107, 0.45);
-    background: linear-gradient(90deg, rgba(255, 45, 107, 0.15), rgba(59, 130, 246, 0.15));
+    background: linear-gradient(
+      90deg,
+      rgba(255, 45, 107, 0.15),
+      rgba(59, 130, 246, 0.15)
+    );
   }
 `;
