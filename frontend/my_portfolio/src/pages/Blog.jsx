@@ -5,7 +5,7 @@ import PageLoader from '../components/ui/PageLoader';
 import PageHero from '../components/ui/PageHero';
 import LoadMoreButton from '../components/ui/LoadMoreButton';
 import { useBlogs } from '../hooks/useApiData';
-
+import EmptyState from '../components/ui/EmptyState';
 const INITIAL_COUNT = 6;
 const LOAD_MORE_COUNT = 6;
 
@@ -48,14 +48,6 @@ const Grid = styled.div`
   }
 `;
 
-const Empty = styled.p`
-  color: ${({ theme }) => theme.colors.textTertiary};
-  font-size: 0.9rem;
-  text-align: center;
-  padding: 3rem 0;
-  grid-column: 1 / -1;
-`;
-
 const Blog = () => {
   const [search, setSearch]   = useState('');
   const [visible, setVisible] = useState(INITIAL_COUNT);
@@ -94,23 +86,35 @@ const Blog = () => {
         onChange={handleSearch}
       />
 
-      <Grid>
-        {shown.length === 0
-          ? <Empty>No posts found.</Empty>
-          : shown.map(post => <BlogCard key={post.id} post={post} />)
-        }
-      </Grid>
-
-      {/* ← LoadMoreButton replaces 30 lines of inline styled wrap/btn/count */}
-      {hasMore && (
-        <LoadMoreButton
-          shown={shown.length}
-          total={filtered.length}
-          onLoad={() => setVisible(v => v + LOAD_MORE_COUNT)}
+      {/* ── no posts at all ── */}
+      {posts.length === 0 ? (
+        <EmptyState
+          icon="📝"
+          title="No posts yet"
+          message="Blog posts will appear here once published."
         />
+      ) : filtered.length === 0 ? (
+        /* ── search returned nothing ── */
+        <EmptyState
+          icon="🔍"
+          title="No results found"
+          message={`Nothing matched "${search}" — try a different search.`}
+        />
+      ) : (
+        <>
+          <Grid>
+            {shown.map(post => <BlogCard key={post.id} post={post} />)}
+          </Grid>
+          {hasMore && (
+            <LoadMoreButton
+              shown={shown.length}
+              total={filtered.length}
+              onLoad={() => setVisible(v => v + LOAD_MORE_COUNT)}
+            />
+          )}
+        </>
       )}
     </Page>
   );
 };
-
 export default Blog;

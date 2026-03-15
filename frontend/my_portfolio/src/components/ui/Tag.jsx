@@ -1,21 +1,23 @@
 import styled from 'styled-components';
-
 const TagPill = styled.span`
   display: inline-block;
-  padding: 3px 10px;
+  padding: 4px 10px;
   border-radius: 6px;
   font-size: ${({ theme }) => theme.fontSizes.xs};
   font-family: ${({ theme }) => theme.fonts.mono};
-  font-weight: 500;
-  background: ${({ theme }) => theme.colors.gradientPinkBlue};
-  border: 0.5px solid ${({ theme }) => theme.colors.borderHover};
-  color: #fff;
-  background-image: ${({ theme }) => theme.colors.gradientPinkBlue};
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-`;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: ${({ theme }) => theme.colors.techGradientSubtle};
+  border: 1px solid ${({ theme }) => theme.colors.techBorder};
 
+  /* gradient text on the span inside */
+  span {
+    background: ${({ theme }) => theme.colors.techGradient};
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+`;
 // const TagPill = styled.span`
 //   display: inline-block;
 //   padding: 3px 10px;
@@ -37,5 +39,5 @@ const TagPill = styled.span`
 //   };
 //   color: ${({ theme }) => theme.mode === 'dark' ? '#ffffff' : '#1A1A2E'};
 // `;
-const Tag = ({ children }) => <TagPill>{children}</TagPill>;
+const Tag = ({ children }) => <TagPill><span>{children}</span></TagPill>;
 export default Tag;

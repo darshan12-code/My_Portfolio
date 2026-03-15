@@ -5,7 +5,7 @@ import PageHero from '../components/ui/PageHero';
 import LoadMoreButton from '../components/ui/LoadMoreButton';
 import { useCaseStudies } from '../hooks/useApiData';
 import PageLoader from '../components/ui/PageLoader';
-
+import EmptyState from '../components/ui/EmptyState';
 const INITIAL_COUNT = 6;
 const LOAD_MORE_COUNT = 6;
 
@@ -46,20 +46,28 @@ const CaseStudies = () => {
         badge={`${projects.length} Projects`}
       />
 
-      <Grid>
-        {shown.map(p => <ProjectCard key={p.id} project={p} />)}
-      </Grid>
-
-      {/* ← LoadMoreButton */}
-      {hasMore && (
-        <LoadMoreButton
-          shown={shown.length}
-          total={projects.length}
-          onLoad={() => setVisible(v => v + LOAD_MORE_COUNT)}
+      {/* ── no projects ── */}
+      {projects.length === 0 ? (
+        <EmptyState
+          icon="📁"
+          title="No case studies yet"
+          message="Projects will appear here once published."
         />
+      ) : (
+        <>
+          <Grid>
+            {shown.map(p => <ProjectCard key={p.id} project={p} />)}
+          </Grid>
+          {hasMore && (
+            <LoadMoreButton
+              shown={shown.length}
+              total={projects.length}
+              onLoad={() => setVisible(v => v + LOAD_MORE_COUNT)}
+            />
+          )}
+        </>
       )}
     </Page>
   );
 };
-
 export default CaseStudies;

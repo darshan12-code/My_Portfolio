@@ -114,17 +114,29 @@ const PreviewContent = styled.div`
     border-radius: ${({ theme }) => theme.borderRadius.sm};
     overflow-x: auto;
     font-size: 0.875rem;
-    color: ${({ theme }) => theme.colors.codeText};
+    color: ${({ theme }) => theme.colors.preText};
   }
   code {
-    background: ${({ theme }) => theme.colors.codeGhostBg};
-    border: 1px solid ${({ theme }) => theme.colors.codeGhostBorder};
-    color: ${({ theme }) => theme.colors.codeText};
+    background: ${({ theme }) => theme.colors.codeGradientBg};
+    border: 1px solid ${({ theme }) => theme.colors.codeGradientBorder};
+     color:${({ theme }) => theme.colors.preText};
     padding: 2px 6px;
     border-radius: 4px;
     font-size: 0.875em;
   }
-  pre code { background: none; color: inherit; padding: 0; }
+  /* ── code inside pre — no gradient, inherits pre color ───── */
+  pre code {
+    background: none;
+    background-image: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    -webkit-text-fill-color: ${({ theme }) => theme.colors.preText};
+    color: ${({ theme }) => theme.colors.preText};
+    box-shadow: none;
+    border: none;
+    padding: 0;
+    font-size: inherit;
+  }
   blockquote {
     border-left: 3px solid ${({ theme }) => theme.colors.accentPink};
     padding: 0.5rem 1rem;

@@ -52,6 +52,14 @@ const MetaRow = styled.div`
   }
 `;
 
+const CategoryRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 1rem;
+  align-items: center;
+`;
+
 const BlogDetail = () => {
   const { slug } = useParams();
   const { data: blog, isLoading } = useBlogDetail(slug);
@@ -70,9 +78,14 @@ const BlogDetail = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          {/* ← CategoryBadge replaces 15 lines of inline styled span */}
-          {blog.category && <CategoryBadge category={blog.category} />}
-
+          {blog.category.length > 0 && (
+            <CategoryRow>
+             
+              {blog.category.split(',').map((cat, i) => (
+                  <CategoryBadge key={i} category={cat.trim()} />
+                ))}
+            </CategoryRow>
+          )}
           <Title
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}

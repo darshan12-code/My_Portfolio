@@ -184,9 +184,9 @@ const EditorArea = styled.div`
       margin: 1rem 0;
     }
     code {
-      background: ${({theme})=> theme.colors.codeGhostBg};
-      border: 1px solid ${({ theme }) => theme.colors.codeGhostBorder};
-      color:${({ theme }) => theme.colors.codeText};
+      background: ${({theme})=> theme.colors.codeGradientBg};
+      border: 1px solid ${({ theme }) => theme.colors.codeGradientBorder};
+      color:${({ theme }) => theme.colors.preText};
       padding: 2px 6px;
       border-radius: 4px;
       font-size: 0.9em;
@@ -194,12 +194,25 @@ const EditorArea = styled.div`
     pre {
       background: ${({theme})=> theme.colors.codeGhostBg};
       border: 1px solid ${({ theme }) => theme.colors.codeGhostBorder};
-      color:${({ theme }) => theme.colors.codeText};
+      color:${({ theme }) => theme.colors.preText};
       padding: 1rem;
       border-radius: 8px;
       overflow-x: auto;
-      code { background: none; padding: 0; }
+     
     }
+       /* ── code inside pre — no gradient, inherits pre color ───── */
+  pre code {
+    background: none;
+    background-image: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    -webkit-text-fill-color: ${({ theme }) => theme.colors.preText};
+    color: ${({ theme }) => theme.colors.preText};
+    box-shadow: none;
+    border: none;
+    padding: 0;
+    font-size: inherit;
+  }
     img {
       max-width: 100%;
       border-radius: 8px;
