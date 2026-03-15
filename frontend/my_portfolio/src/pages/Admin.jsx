@@ -240,7 +240,7 @@ const handleDelete = async (id) => {
 
   return (
     <>
-      {isDemo && <DemoBanner />}
+     {isDemo && <DemoBanner variant="admin" />}
       <Page>
         <Sidebar>
           <NavSection>

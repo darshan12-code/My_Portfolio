@@ -136,18 +136,18 @@ export const CreateBtn = styled.button`
 `;
 
 export const GridWrap = styled.div`position: relative;`;
-
 export const CardGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
   gap: 1.2rem;
   padding-bottom: 0.5rem;
-  align-items: stretch;        
-  grid-auto-rows: 1fr;       
+
+  /* ← remove grid-auto-rows: 1fr — it fights with auto-fill */
+  /* stretch makes each cell fill the tallest in its row */
+  align-items: stretch;
 
   @media (max-width: 640px) {
     grid-template-columns: 1fr;
-    grid-auto-rows: auto;      
   }
 `;
 export const GridFog = styled.div`

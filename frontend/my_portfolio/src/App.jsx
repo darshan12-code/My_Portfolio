@@ -33,7 +33,13 @@ import queryClient from "./services/queryClient";
 import GlobalStyles from "./styles/globalStyles";
 import DemoLanding from "./pages/DemoLanding";
 import { ToastProvider } from './components/ui/Toast';
+import DemoBanner from "./components/admin/DemoBanner";
 
+const DemoGuard = ({ children, fallback = "/admin" }) => {
+  const { isDemo, demoSession } = useAuth();
+  if (isDemo && demoSession) return <Navigate to={fallback} replace />;
+  return children;
+};
 // Real admin only
 const ProtectedRoute = ({ children }) => {
   const { isAdmin, isDemo, demoSession, loading } = useAuth();
@@ -52,12 +58,12 @@ const AnimatedRoutes = () => {
       <AnimatePresence mode="wait" initial={false}>
         <PageTransition key={location.pathname}>
           <Routes location={location} key={location.pathname}>
-            <Route path="/"                   element={<Home />} />
+            <Route path="/"        element={<DemoGuard><Home /></DemoGuard>} />
+            <Route path="/contact" element={<DemoGuard><Contact /></DemoGuard>} />
             <Route path="/case-studies"       element={<CaseStudies />} />
             <Route path="/case-studies/:slug" element={<CaseStudyDetails />} />
             <Route path="/blog"               element={<Blog />} />
             <Route path="/blog/:slug"         element={<BlogDetail />} />
-            <Route path="/contact"            element={<Contact />} />
 
             {/* Your real admin — only you */}
             <Route path="/admin/login" element={<AdminLogin />} />
@@ -94,6 +100,7 @@ const ThemedApp = () => {
         <WaterWaves />
         <ScrollProgress />
         <Navbar />
+         <DemoBanner variant="public" />
         <AnimatedRoutes />
         <Footer />
       </ToastProvider>

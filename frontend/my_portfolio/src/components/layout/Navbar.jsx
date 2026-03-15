@@ -178,10 +178,11 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate(); // ← add this
-  
-  // ← pull isDemo and demoSession too
+  const navigate = useNavigate();
   const { isAdmin, isDemo, demoSession, logout } = useAuth();
+  const showAdminControls = isAdmin || (isDemo && demoSession);
+  
+  
 
   // ← demo users go back to /demo on logout, admin goes to /admin/login
   const handleLogout = () => {
@@ -190,8 +191,7 @@ const Navbar = () => {
     navigate(wasDemo ? "/demo" : "/admin/login");
   };
 
-  // ← true when either real admin OR demo user in active session
-  const showAdminControls = isAdmin || (isDemo && demoSession);
+
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -212,19 +212,26 @@ const Navbar = () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
-
+  const visibleLinks = (isDemo && demoSession)
+    ? navLinks.filter(link => ['/blog', '/case-studies'].includes(link.path))
+    : navLinks;
   return (
     <Nav $scrolled={scrolled}>
-      <Logo to="/" onClick={() => setMobileOpen(false)}>DARSHAN.DEV</Logo>
+     <Logo
+        to={isDemo && demoSession ? "/admin" : "/"}
+        onClick={() => setMobileOpen(false)}
+      >
+        DARSHAN.DEV
+      </Logo>
 
       <DesktopLinks variants={linksContainerVariants} initial="hidden" animate="show">
-        {navLinks.map((link) => (
+        {visibleLinks.map((link) => (
           <NavAnchor key={link.path} to={link.path} $active={location.pathname === link.path}>
             {link.label}
           </NavAnchor>
         ))}
 
-        {/* ← was isAdmin, now showAdminControls */}
+        
         {showAdminControls && (
           <>
             <NavAnchor to="/admin" $active={location.pathname === "/admin"}>
@@ -256,8 +263,8 @@ const Navbar = () => {
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
             >
               <motion.div variants={linksContainerVariants} initial="hidden" animate="show">
-                {navLinks.map((link) => (
-                  <motion.div key={link.path} variants={linkVariants}>
+                {visibleLinks.map((link) => (
+                    <motion.div key={link.path} variants={linkVariants}>
                     <MobileLink
                       to={link.path}
                       $active={location.pathname === link.path}

@@ -88,15 +88,20 @@ const shimmerMove = keyframes`
 `;
 
 const Card = styled.div`
- background: ${({ theme }) => theme.colors.bgSecondary};
+  background: ${({ theme }) => theme.colors.bgSecondary};
   border-radius: ${({ theme }) => theme.borderRadius.md};
   padding: 1.25rem;
   border: 1px solid ${({ theme }) => theme.colors.borderDefault};
   position: relative;
   overflow: hidden;
   transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+
   display: flex;
   flex-direction: column;
+  height: 100%;
+
+  /* ── fixed minimum height so short cards don't look tiny ── */
+  min-height: 200px;
 
   &:hover {
     border-color: ${({ theme }) => theme.colors.borderHover};
@@ -105,7 +110,6 @@ const Card = styled.div`
   }
   cursor: ${({ $clickable }) => $clickable ? 'pointer' : 'default'};
 
-  /* add a subtle blue tint on hover for messages instead of the default */
   ${({ $clickable, theme }) => $clickable && `
     &:hover {
       border-color: ${theme.colors.accentBlueBorder};
@@ -113,6 +117,46 @@ const Card = styled.div`
     }
   `}
 `;
+
+const CardBody = styled.div`
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.85rem;
+`;
+
+const CardTitle = styled.h3`
+  font-size: 0.93rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.textPrimary};
+  line-height: 1.3;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+ 
+  min-height: calc(1.3em * 1);
+`;
+
+const CardPreview = styled.p`
+  color: ${({ theme }) => theme.colors.textTertiary};
+  font-size: 0.82rem;
+  line-height: 1.5;
+  margin: 0.5rem 0 0;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+
+  min-height: calc(1.5em * 2);
+  & * { display: inline; }
+`;
+
 const CardShimmerBar = styled.div`
   position: absolute; top: 0; left: 0; right: 0; height: 2px;
   background: ${({ theme }) => theme.colors.gradientShimmer};
@@ -130,36 +174,8 @@ const CardHeader = styled.div`
   gap: 0.75rem;
   margin-bottom: 0.75rem;
 `;
-const CardTitle = styled.h3`
-  font-size: 0.93rem;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.textPrimary};
-  line-height: 1.3;
-  flex: 1;
-  margin: 0;
 
-  /* ── truncate long titles to 2 lines ── */
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  word-break: break-word;
-`;
 
-const CardPreview = styled.p`
-  color: ${({ theme }) => theme.colors.textTertiary};
-  font-size: 0.82rem;
-  line-height: 1.5;
-  margin: 0;
-  flex: 1;
-
-  /* ── truncate preview to 3 lines on all screens ── */
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  word-break: break-word;
-`;
 
 const CardActions = styled.div`
   display: flex;
@@ -188,13 +204,7 @@ const IconBtn = styled.button`
   }
 `;
 
-const CardBody = styled.div`
-  font-size: 0.85rem;
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-`;
+
 
 const ChipsRow = styled.div`
   display: flex;
@@ -242,4 +252,11 @@ const StatusDot = styled.span`
   border-radius: 50%;
   background: ${({ $on, theme }) => $on ? theme.colors.accentGreen : theme.colors.textTertiary};
   animation: ${({ $on }) => $on ? blinkAnim : 'none'} 2.5s ease-in-out infinite;
+`;
+
+const TiltWrap = styled(Tilt)`
+  height: 100%;
+  display: block;
+  border-radius: 14px;
+  transform-style: preserve-3d;
 `;

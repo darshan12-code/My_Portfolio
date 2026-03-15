@@ -46,62 +46,7 @@ const BadgeRow = styled.div`
   max-width: 100%;
 `;
 
-/* ---------- Card ---------- */
 
-const CardLink = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  padding: 1.5rem;
-  min-height: 240px;
-
-  background: ${({ theme }) => theme.colors.bgSecondary};
-  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-
-  transition: border-color 0.3s ease, box-shadow 0.3s ease,
-    transform 0.25s ease;
-
-  /* gradient top bar */
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-
-    background: linear-gradient(90deg, #ff2d6b 0%, #3b82f6 100%);
-
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s ease;
-  }
-
-  &:hover {
-    transform: translateY(-4px);
-    border-color: ${({ theme }) => theme.colors.borderHover};
-    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.35);
-
-    &::before {
-      transform: scaleX(1);
-    }
-  }
-
-  /* responsive height */
-  @media (max-width: 768px) {
-    min-height: 210px;
-  }
-
-  @media (max-width: 480px) {
-    min-height: auto;
-  }
-`;
 
 /* ---------- Meta ---------- */
 
@@ -116,37 +61,7 @@ const Meta = styled.div`
   margin-bottom: 0.75rem;
 `;
 
-/* ---------- Title ---------- */
 
-const Title = styled.h3`
-  font-family: ${({ theme }) => theme.fonts.heading};
-  font-size: ${({ theme }) => theme.fontSizes.h3};
-  color: ${({ theme }) => theme.colors.textPrimary};
-
-  margin-bottom: 0.4rem;
-
-  /* limit title lines */
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-`;
-
-/* ---------- Excerpt ---------- */
-
-const Excerpt = styled.p`
-  font-size: ${({ theme }) => theme.fontSizes.small};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  line-height: 1.5;
-
-  margin-bottom: 0.75rem;
-
-  /* limit text lines */
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-`;
 
 /* ---------- Date ---------- */
 
@@ -189,6 +104,74 @@ const ArrowChip = styled(motion.span)`
   color: ${({ theme }) => theme.colors.gradientPinkBlue};
 `;
 
+
+
+
+const CardLink = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
+
+  /* ── fixed height across all screen sizes ── */
+  height: 280px;
+
+  @media (max-width: 768px) { height: 260px; }
+  @media (max-width: 480px) { height: auto; min-height: 220px; }
+
+  background: ${({ theme }) => theme.colors.bgSecondary};
+  border: 1px solid ${({ theme }) => theme.colors.borderDefault};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.25s ease;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #ff2d6b 0%, #3b82f6 100%);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: ${({ theme }) => theme.colors.borderHover};
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.35);
+    &::before { transform: scaleX(1); }
+  }
+`;
+
+const Title = styled.h3`
+  font-family: ${({ theme }) => theme.fonts.heading};
+  font-size: ${({ theme }) => theme.fontSizes.h3};
+  color: ${({ theme }) => theme.colors.textPrimary};
+  margin-bottom: 0.4rem;
+  /* ── always 2 lines ── */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(1.3em * 2);
+  line-height: 1.3;
+`;
+
+const Excerpt = styled.p`
+  font-size: ${({ theme }) => theme.fontSizes.small};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+  /* ── always 3 lines ── */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(1.5em * 3);
+`;
 /* ---------- Component ---------- */
 
 const BlogCard = ({ post }) => {
