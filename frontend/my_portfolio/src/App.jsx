@@ -1,11 +1,6 @@
-// src/App.jsx
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { QueryClientProvider } from "@tanstack/react-query";
-
-// CHANGED: import the configured client instead of creating inline with no options
-
-
 
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 
@@ -36,11 +31,17 @@ import CustomCursor from "./components/ui/CustomCursor";
 import ComicGrid from "./components/effects/ComicGrid";
 import queryClient from "./services/queryClient";
 import GlobalStyles from "./styles/globalStyles";
+import DemoLanding from "./pages/DemoLanding";
+import { ToastProvider } from './components/ui/Toast';
 
+// Real admin only
 const ProtectedRoute = ({ children }) => {
-  const { isAdmin, loading } = useAuth();
+  const { isAdmin, isDemo, demoSession, loading } = useAuth();
   if (loading) return <LoadingScreen />;
-  return isAdmin ? children : <Navigate to="/admin/login" replace />;
+  // Admin always allowed. Demo only allowed if they came through /demo flow.
+  return (isAdmin || (isDemo && demoSession))
+    ? children
+    : <Navigate to="/admin/login" replace />;
 };
 
 const AnimatedRoutes = () => {
@@ -57,10 +58,16 @@ const AnimatedRoutes = () => {
             <Route path="/blog"               element={<Blog />} />
             <Route path="/blog/:slug"         element={<BlogDetail />} />
             <Route path="/contact"            element={<Contact />} />
-            <Route path="/admin/login"        element={<AdminLogin />} />
+
+            {/* Your real admin — only you */}
+            <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin"
               element={<ProtectedRoute><Admin /></ProtectedRoute>}
             />
+
+            {/* Demo flow — visitors from your case study live link */}
+            <Route path="/demo" element={<DemoLanding />} />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </PageTransition>
@@ -73,21 +80,23 @@ const ThemedApp = () => {
   const { isDark } = useTheme();
   return (
     <StyledProvider theme={isDark ? darkTheme : lightTheme}>
-      <GlobalStyles/>
-      <CustomCursor />
-      <NoiseOverlay />
-      <ComicGrid />
-      <FloatingShapes
-        mobileMode="gyro"
-        gyroSensitivity={30}
-        desktopSpin={false} 
-        desktopParallax={true}
-      />
-      <WaterWaves />
-      <ScrollProgress />
-      <Navbar />
-      <AnimatedRoutes />
-      <Footer />
+      <ToastProvider>                    
+        <GlobalStyles />
+        <CustomCursor />
+        <NoiseOverlay />
+        <ComicGrid />
+        <FloatingShapes
+          mobileMode="gyro"
+          gyroSensitivity={30}
+          desktopSpin={false}
+          desktopParallax={true}
+        />
+        <WaterWaves />
+        <ScrollProgress />
+        <Navbar />
+        <AnimatedRoutes />
+        <Footer />
+      </ToastProvider>
     </StyledProvider>
   );
 };

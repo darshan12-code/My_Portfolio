@@ -1,36 +1,27 @@
-// src/hooks/useApiData.js
-// Centralized React Query hooks for all public API calls.
-// These replace the manual useState + useEffect + fetch patterns in each page.
-//
-// WHY: When each page manages its own state with useEffect, navigating away
-// unmounts the component and destroys the data. Navigating back = fresh fetch.
-// React Query caches the result globally, so returning to a page = instant render.
-
 import { useQuery } from "@tanstack/react-query";
-import { blogAPI, caseStudyAPI,portfolioAPI } from "../services/apis";
+import { blogAPI, caseStudyAPI, portfolioAPI } from "../services/apis";
+import { useAuth } from "../contexts/AuthContext";
 
-/* ─────────────────────────────────────────────
-   QUERY KEYS — centralised so all components
-   share the same cache entries
-───────────────────────────────────────────── */
 export const QUERY_KEYS = {
-  blogs:          ["blogs"],
-  blogDetail:     (slug) => ["blog", slug],
-  caseStudies:    ["case-studies"],
-  caseStudyDetail:(slug) => ["case-study", slug],
-  featuredWork:   ["featured-work"],
-  portfolio: ["portfolio-data"]
+  blogs:           (demo) => [demo ? "demo-blogs"  : "blogs"],
+  blogDetail:      (slug, demo) => [demo ? "demo-blog"  : "blog",         slug],
+  caseStudies:     (demo) => [demo ? "demo-cases"  : "case-studies"],
+  caseStudyDetail: (slug, demo) => [demo ? "demo-case"  : "case-study",   slug],
+  featuredWork:    ["featured-work"],
+  portfolio:       ["portfolio-data"],
 };
 
-/* ─────────────────────────────────────────────
-   BLOGS LIST
-   Used by: Blog page
-───────────────────────────────────────────── */
 export function useBlogs() {
+  const { isDemo, demoSession } = useAuth();
+  // Demo user in an active session always sees demo content
+  const demo = isDemo && demoSession;
+
   return useQuery({
-    queryKey: QUERY_KEYS.blogs,
+    queryKey: QUERY_KEYS.blogs(demo),
     queryFn: async () => {
-      const res = await blogAPI.getAll(1, 100);
+      const res = demo
+        ? await blogAPI.getDemoPreview()
+        : await blogAPI.getAll(1, 100);
       return res.data.data.map((blog) => ({
         id:       blog.id,
         title:    blog.title,
@@ -41,37 +32,37 @@ export function useBlogs() {
         link:     `/blog/${blog.slug}`,
       }));
     },
-    // Keep fresh for 5 minutes — blog posts don't change often
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0, // ← always treat as stale so navigating back refetches
   });
 }
 
-/* ─────────────────────────────────────────────
-   BLOG DETAIL
-   Used by: BlogDetails page
-───────────────────────────────────────────── */
 export function useBlogDetail(slug) {
+  const { isDemo, demoSession } = useAuth();
+  const demo = isDemo && demoSession;
+
   return useQuery({
-    queryKey: QUERY_KEYS.blogDetail(slug),
-    queryFn:  async () => {
-      const res = await blogAPI.getBySlug(slug);
+    queryKey: QUERY_KEYS.blogDetail(slug, demo),
+    queryFn: async () => {
+      const res = demo
+        ? await blogAPI.getDemoPreviewBySlug(slug)
+        : await blogAPI.getBySlug(slug);
       return res.data;
     },
-    enabled: !!slug,
-    // Detail pages stay fresh longer — content rarely changes mid-session
-    staleTime: 10 * 60 * 1000,
+    enabled:   !!slug,
+    staleTime: 0,
   });
 }
 
-/* ─────────────────────────────────────────────
-   CASE STUDIES LIST
-   Used by: CaseStudies page
-───────────────────────────────────────────── */
 export function useCaseStudies() {
+  const { isDemo, demoSession } = useAuth();
+  const demo = isDemo && demoSession;
+
   return useQuery({
-    queryKey: QUERY_KEYS.caseStudies,
+    queryKey: QUERY_KEYS.caseStudies(demo),
     queryFn: async () => {
-      const res = await caseStudyAPI.getAll();
+      const res = demo
+        ? await caseStudyAPI.getDemoPreview()
+        : await caseStudyAPI.getAll();
       return res.data.data.map((item) => ({
         id:          item.id,
         title:       item.title,
@@ -81,30 +72,28 @@ export function useCaseStudies() {
         link:        `/case-studies/${item.slug}`,
       }));
     },
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0,
   });
 }
 
-/* ─────────────────────────────────────────────
-   CASE STUDY DETAIL
-   Used by: CaseStudyDetails page
-───────────────────────────────────────────── */
 export function useCaseStudyDetail(slug) {
+  const { isDemo, demoSession } = useAuth();
+  const demo = isDemo && demoSession;
+
   return useQuery({
-    queryKey: QUERY_KEYS.caseStudyDetail(slug),
-    queryFn:  async () => {
-      const res = await caseStudyAPI.getBySlug(slug);
+    queryKey: QUERY_KEYS.caseStudyDetail(slug, demo),
+    queryFn: async () => {
+      const res = demo
+        ? await caseStudyAPI.getDemoPreviewBySlug(slug)
+        : await caseStudyAPI.getBySlug(slug);
       return res.data;
     },
-    enabled: !!slug,
-    staleTime: 10 * 60 * 1000,
+    enabled:   !!slug,
+    staleTime: 0,
   });
 }
 
-/* ─────────────────────────────────────────────
-   FEATURED WORK
-   Used by: FeaturedProjects (Home page)
-───────────────────────────────────────────── */
+// These two never change based on demo — home page always shows your real data
 export function useFeaturedWork() {
   return useQuery({
     queryKey: QUERY_KEYS.featuredWork,
@@ -119,10 +108,9 @@ export function useFeaturedWork() {
         link:        `/case-studies/${item.slug}`,
       }));
     },
-    staleTime: 5 * 60 * 1000,
+      staleTime: 0,
   });
 }
-
 
 export function usePortfolioData() {
   return useQuery({
@@ -131,8 +119,6 @@ export function usePortfolioData() {
       const res = await portfolioAPI.getAll();
       return res.data;
     },
-
-    // Portfolio content rarely changes
-    staleTime: 60 * 60 * 1000,
+      staleTime: 0,
   });
 }

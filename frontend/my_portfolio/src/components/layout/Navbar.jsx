@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom"; // ← add useNavigate
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { navLinks } from "../../data/siteData";
@@ -178,7 +178,20 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
-  const { isAdmin, logout } = useAuth();
+  const navigate = useNavigate(); // ← add this
+  
+  // ← pull isDemo and demoSession too
+  const { isAdmin, isDemo, demoSession, logout } = useAuth();
+
+  // ← demo users go back to /demo on logout, admin goes to /admin/login
+  const handleLogout = () => {
+    const wasDemo = isDemo && demoSession;
+    logout();
+    navigate(wasDemo ? "/demo" : "/admin/login");
+  };
+
+  // ← true when either real admin OR demo user in active session
+  const showAdminControls = isAdmin || (isDemo && demoSession);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -186,22 +199,17 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* Close on route change */
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [location.pathname]);
+  useEffect(() => { setMobileOpen(false); }, [location.pathname]);
 
-  /* Lock scroll when open */
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
-  /* FIXED: closes menu and scrolls to top if already on that page */
   const handleMobileLinkClick = (path) => {
     setMobileOpen(false);
     if (location.pathname === path) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
@@ -215,16 +223,21 @@ const Navbar = () => {
             {link.label}
           </NavAnchor>
         ))}
-        {isAdmin && (
+
+        {/* ← was isAdmin, now showAdminControls */}
+        {showAdminControls && (
           <>
-            <NavAnchor to="/admin" $active={location.pathname === "/admin"}>Dashboard</NavAnchor>
-            <LogoutButton onClick={logout}>Logout</LogoutButton>
+            <NavAnchor to="/admin" $active={location.pathname === "/admin"}>
+              {/* ← label differs so demo user knows they're in sandbox */}
+              {isDemo ? "Demo Dashboard" : "Dashboard"}
+            </NavAnchor>
+            <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
           </>
         )}
         <ThemeToggle />
       </DesktopLinks>
 
-      <Hamburger onClick={() => setMobileOpen(p => !p)} aria-label="Toggle menu">
+      <Hamburger onClick={() => setMobileOpen((p) => !p)} aria-label="Toggle menu">
         <Line $open={mobileOpen} />
         <Line $open={mobileOpen} />
         <Line $open={mobileOpen} />
@@ -234,22 +247,17 @@ const Navbar = () => {
         {mobileOpen && (
           <>
             <Backdrop
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               onClick={() => setMobileOpen(false)}
             />
             <MobileMenu
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
             >
               <motion.div variants={linksContainerVariants} initial="hidden" animate="show">
                 {navLinks.map((link) => (
                   <motion.div key={link.path} variants={linkVariants}>
-                    {/* FIXED: onClick fires even on active page */}
                     <MobileLink
                       to={link.path}
                       $active={location.pathname === link.path}
@@ -260,22 +268,23 @@ const Navbar = () => {
                   </motion.div>
                 ))}
 
-                {isAdmin && (
+                {/* ← was isAdmin, now showAdminControls */}
+                {showAdminControls && (
                   <>
                     <MobileDivider />
                     <motion.div variants={linkVariants}>
                       <MobileLink
                         to="/admin"
                         $active={location.pathname === "/admin"}
-                        onClick={() => handleMobileLinkClick('/admin')}
+                        onClick={() => handleMobileLinkClick("/admin")}
                       >
-                        Dashboard
+                        {isDemo ? "Demo Dashboard" : "Dashboard"}
                       </MobileLink>
                     </motion.div>
                     <motion.div variants={linkVariants}>
                       <LogoutButton
-                        style={{ marginLeft: '1rem', marginTop: '0.5rem' }}
-                        onClick={() => { logout(); setMobileOpen(false); }}
+                        style={{ marginLeft: "1rem", marginTop: "0.5rem" }}
+                        onClick={() => { handleLogout(); setMobileOpen(false); }}
                       >
                         Logout
                       </LogoutButton>
@@ -284,7 +293,7 @@ const Navbar = () => {
                 )}
 
                 <MobileDivider />
-                <motion.div variants={linkVariants} style={{ paddingLeft: '1rem', paddingTop: '0.5rem' }}>
+                <motion.div variants={linkVariants} style={{ paddingLeft: "1rem", paddingTop: "0.5rem" }}>
                   <ThemeToggle />
                 </motion.div>
               </motion.div>

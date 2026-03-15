@@ -84,11 +84,9 @@ def refresh():
 def me():
     user_id = get_jwt_identity()
     user = User.query.get(int(user_id))
-    print("user: ",user_id, user)
     return jsonify({
-        "id": user.id,
+        "id":    user.id,
+        "name":  user.name,
         "email": user.email,
-        "role": user.role
+        "role":  user.role
     })
-
-

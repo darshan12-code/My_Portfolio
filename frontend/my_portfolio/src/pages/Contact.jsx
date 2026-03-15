@@ -6,8 +6,8 @@ import MagneticButton from "../components/ui/MagneticButton";
 import { contactAPI } from "../services/apis";
 import { Github, Linkedin, Twitter, Mail, MapPin, Clock, ArrowRight } from "lucide-react";
 import { personalInfo } from "../data/siteData";
+import { useToast } from '../components/ui/Toast';
 
-/* ─── Data ─────────────────────────────────────────── */
 const SOCIALS = [
   { icon: Github,   label: "GitHub",    href: `${personalInfo.socials.github}`,   handle: "@darshan12-code" },
   { icon: Linkedin, label: "LinkedIn",  href: `${personalInfo.socials.linkedin}`, handle: "darshan-agrawal-012" },
@@ -26,12 +26,7 @@ const AVAILABILITY = [
 const Contact = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [loading, setLoading] = useState(false);
-  const [toast, setToast] = useState(null);
-
-  const showToast = (type, msg) => {
-    setToast({ type, msg });
-    setTimeout(() => setToast(null), 4500);
-  };
+  const toast = useToast();
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -41,10 +36,10 @@ const Contact = () => {
     setLoading(true);
     try {
       await contactAPI.send(formData);
-      showToast("success", "Message received! I'll get back to you soon.");
+       toast.success('Message received!', "I'll get back to you soon.");
       setFormData({ name: "", email: "", message: "" });
     } catch {
-      showToast("error", "Failed to send. Please try again.");
+       toast.error('Failed to send', 'Please try again or email me directly.');
     } finally {
       setLoading(false);
     }
@@ -76,21 +71,6 @@ const Contact = () => {
         </HeaderInner>
       </Header>
 
-      {/* ── Toast ── */}
-      <AnimatePresence>
-        {toast && (
-          <Toast
-            $type={toast.type}
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 20, opacity: 0 }}
-            transition={{ duration: 0.25 }}
-          >
-            <ToastIcon>{toast.type === "success" ? "✓" : "✕"}</ToastIcon>
-            {toast.msg}
-          </Toast>
-        )}
-      </AnimatePresence>
       {/* ── Two-col layout ── */}
       <BodyGrid>
 

@@ -142,9 +142,14 @@ export const CardGrid = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
   gap: 1.2rem;
   padding-bottom: 0.5rem;
-  @media (max-width: 640px) { grid-template-columns: 1fr; }
-`;
+  align-items: stretch;        
+  grid-auto-rows: 1fr;       
 
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;      
+  }
+`;
 export const GridFog = styled.div`
   position: absolute;
   bottom: 0; left: 0; right: 0;
@@ -186,7 +191,7 @@ export const Overlay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: ${({ theme }) => theme.zIndex.overlay};
   padding: 20px;
   @media (max-width: 480px) { padding: 0; align-items: flex-end; }
 `;

@@ -93,6 +93,18 @@ const darkColors = {
   codeGhostBg:        'rgba(255, 255, 255, 0.06)',
   codeGhostBorder:    'rgba(255, 255, 255, 0.10)',
   codeText:          '#fff',
+
+
+  demoAccent:         '#F97316',
+demoAccentLight:    '#FB923C',
+demoAccentGlow:     'rgba(249,115,22,0.20)',
+demoAccentBg:       'rgba(249,115,22,0.09)',
+demoAccentBg2:      'rgba(249,115,22,0.16)',
+demoAccentBorder:   'rgba(249,115,22,0.28)',
+demoAccentBorder2:  'rgba(249,115,22,0.18)',
+demoAccentFocus:    'rgba(249,115,22,0.12)',
+demoGradient:       'linear-gradient(135deg, #F97316 0%, #EF4444 100%)',
+demoGradientSoft:   'linear-gradient(90deg, rgba(249,115,22,0.15) 0%, rgba(239,68,68,0.10) 100%)',
 };
 
 const lightColors = {
@@ -189,6 +201,18 @@ const lightColors = {
   codeGhostBg:        'rgba(0, 0, 0, 0.06)',
   codeGhostBorder:    'rgba(0, 0, 0, 0.12)',
   codeText:          '#1A1A2E',
+
+//demo
+demoAccent:         '#EA580C',
+demoAccentLight:    '#F97316',
+demoAccentGlow:     'rgba(234,88,12,0.18)',
+demoAccentBg:       'rgba(234,88,12,0.07)',
+demoAccentBg2:      'rgba(234,88,12,0.13)',
+demoAccentBorder:   'rgba(234,88,12,0.25)',
+demoAccentBorder2:  'rgba(234,88,12,0.16)',
+demoAccentFocus:    'rgba(234,88,12,0.10)',
+demoGradient:       'linear-gradient(135deg, #EA580C 0%, #DC2626 100%)',
+demoGradientSoft:   'linear-gradient(90deg, rgba(234,88,12,0.12) 0%, rgba(220,38,38,0.08) 100%)',
 };
 
 export const darkTheme = {
@@ -238,7 +262,8 @@ export const darkTheme = {
     card:      10,
     navbar:   100,
     modal:    200,
-    toast:    300,
+    overlay:  9999,   // ← add this
+    toast:    10000,  
     scrollbar: 400,
   },
 };

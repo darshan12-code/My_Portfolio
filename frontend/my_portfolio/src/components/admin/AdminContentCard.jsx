@@ -130,7 +130,6 @@ const CardHeader = styled.div`
   gap: 0.75rem;
   margin-bottom: 0.75rem;
 `;
-
 const CardTitle = styled.h3`
   font-size: 0.93rem;
   font-weight: 600;
@@ -138,6 +137,28 @@ const CardTitle = styled.h3`
   line-height: 1.3;
   flex: 1;
   margin: 0;
+
+  /* ── truncate long titles to 2 lines ── */
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+`;
+
+const CardPreview = styled.p`
+  color: ${({ theme }) => theme.colors.textTertiary};
+  font-size: 0.82rem;
+  line-height: 1.5;
+  margin: 0;
+  flex: 1;
+
+  /* ── truncate preview to 3 lines on all screens ── */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
 `;
 
 const CardActions = styled.div`
@@ -189,24 +210,19 @@ const EmailChip = styled.span`
   border-radius: 999px;
   font-size: 0.68rem;
   font-weight: 700;
-  white-space: nowrap;
   margin-bottom: 6px;
   background: ${({ theme }) => theme.colors.accentBlueBg};
   border: 1px solid ${({ theme }) => theme.colors.accentBlueBorder};
   color: ${({ theme }) => theme.colors.accentBlue};
+
+  /* ── prevent long emails from breaking layout ── */
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
-const CardPreview = styled.p`
-  color: ${({ theme }) => theme.colors.textTertiary};
-  font-size: 0.82rem;
-  line-height: 1.5;
-  margin: 0;
-  flex: 1;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-`;
+
 
 const blinkAnim = keyframes`0%,100%{opacity:1}50%{opacity:0.3}`;
 

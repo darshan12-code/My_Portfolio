@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Mail, User, Clock } from 'lucide-react';
 import { Overlay, ModalHeader, ModalTitle, ModalCloseBtn } from './adminStyles';
-
+import { formatDateTime } from '../../utils/helpers';
 const MessageModal = ({ message, onClose }) => (
   <AnimatePresence>
     {message && (
@@ -51,12 +51,7 @@ const MessageModal = ({ message, onClose }) => (
                 <MetaContent>
                   <MetaLabel>Received</MetaLabel>
                   <MetaValue>
-                    {message.created_at
-                      ? new Date(message.created_at).toLocaleString('en-US', {
-                          year: 'numeric', month: 'long', day: 'numeric',
-                          hour: '2-digit', minute: '2-digit',
-                        })
-                      : '—'}
+                   {formatDateTime(message.created_at)}
                   </MetaValue>
                 </MetaContent>
               </MetaItem>

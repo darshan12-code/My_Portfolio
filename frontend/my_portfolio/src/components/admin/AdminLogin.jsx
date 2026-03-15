@@ -2,8 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import { FlaskConical} from 'lucide-react';
 import { useAuth } from "../../contexts/AuthContext";
 import MagneticButton from "../ui/MagneticButton";
+
 
 const Page = styled.div`
   min-height: 100vh;
@@ -163,25 +165,37 @@ const AdminLogin = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
+  const [demoFilling, setDemoFilling] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
+  const fillDemo = () => {
+  setEmail("demo@portfoliolab.dev");
+  setPassword("demo1234");
+  setDemoFilling(true);
+  setTimeout(() => setDemoFilling(false), 700);
+};
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
+  setError("");
+  setIsLoading(true);
 
-    setError("");
-    setIsLoading(true);
+  try {
+    const role = await login(email, password);
 
-    try {
-      await login(email, password);
-      navigate("/admin");
-    } catch {
-      setError("Invalid credentials. Please try again.");
-    } finally {
-      setIsLoading(false);
+    if (role === "demo") {
+      // Demo user tried the real admin login — send them to the demo entry point
+      navigate("/demo");
+      return;
     }
-  };
+
+    navigate("/admin");
+  } catch {
+    setError("Invalid credentials. Please try again.");
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <Page>
