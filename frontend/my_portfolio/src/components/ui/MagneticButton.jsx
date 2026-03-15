@@ -11,6 +11,7 @@ const Btn = styled(motion.button)`
   color: ${({ $variant, theme }) => {
     switch ($variant) {
       case 'outline':
+      case 'nav':
       case 'ghost':
         return theme.colors.codeText; // Specific theme color for transparent backgrounds
       default:
@@ -37,7 +38,7 @@ const Btn = styled(motion.button)`
   }};
 
   border: ${({ $variant, theme }) => {
-    if ($variant === 'outline') return `1px solid ${theme.colors.textWhite}`;
+    if ($variant === 'outline' || $variant === 'nav') return `1px solid ${theme.colors.textWhite}`;
     if ($variant === 'ghost') return '1px solid transparent';
     return 'none';
   }};
@@ -62,7 +63,7 @@ const Btn = styled(motion.button)`
 
     box-shadow: ${({ $variant, theme }) => {
       if ($variant === 'delete') return theme.colors.shadowGlowPink;
-      if ($variant === 'outline' || $variant === 'ghost') return theme.colors.shadowGlowPink;
+      if ($variant === 'outline' || $variant === 'ghost' || $variant === 'nav') return theme.colors.shadowGlowPink;
       return theme.colors.shadowGlowPink;
     }};
    

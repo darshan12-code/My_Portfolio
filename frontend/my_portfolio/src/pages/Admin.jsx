@@ -314,7 +314,7 @@ const handleDelete = async (id) => {
                 ))
               )}
             </CardGrid>
-            {!loading && paginated.length >= 6 && <GridFog />}
+            {/* {!loading && paginated.length >= 6 && <GridFog />} */}
           </GridWrap>
 
           {!loading && totalPages > 1 && (
