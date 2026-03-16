@@ -10,8 +10,9 @@ import { useScrollReveal } from '../../hooks/useScrollReveal';
 
 /* ── Animated line draw ─────────────────────────────── */
 const linePulse = keyframes`
-  0%, 100% { box-shadow: 0 0 6px rgba(74,222,128,0.6),  0 0 20px rgba(74,222,128,0.2); }
-  50%       { box-shadow: 0 0 12px rgba(74,222,128,0.9), 0 0 36px rgba(74,222,128,0.4); }
+0%, 100% { box-shadow: 0 0 6px rgba(167,139,250,0.6), 0 0 20px rgba(236,72,153,0.2); }
+50%       { box-shadow: 0 0 12px rgba(167,139,250,0.9), 0 0 36px rgba(236,72,153,0.4); }
+
 `;
 
 const dotPop = keyframes`
@@ -59,12 +60,13 @@ const ProgressLine = styled(motion.div)`
   position: absolute;
   top: 0;
   width: 2px;
-  background: linear-gradient(
-    180deg,
-    #4ade80 0%,
-    #22c55e 60%,
-    rgba(74,222,128,0.3) 100%
-  );
+// ProgressLine gradient
+background: linear-gradient(
+  180deg,
+  #EC4899 0%,
+  #A78BFA 50%,
+  rgba(167, 139, 250, 0.15) 100%
+);
   animation: ${linePulse} 2s ease-in-out infinite;
   pointer-events: none;
   transform-origin: top center;
@@ -91,8 +93,11 @@ const LineTip = styled(motion.div)`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #4ade80;
-  box-shadow: 0 0 12px rgba(74,222,128,0.9), 0 0 28px rgba(74,222,128,0.5);
+// LineTip — matches the bottom of the gradient
+background: #A78BFA;
+box-shadow: 0 0 12px rgba(167,139,250,0.9), 0 0 28px rgba(167,139,250,0.5);
+
+
 `;
 
 /* ── Timeline items ─────────────────────────────────── */
@@ -136,8 +141,9 @@ const Dot = styled(motion.div)`
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: ${({ theme }) => theme.colors.accentCoral};
-  box-shadow: ${({ theme }) => theme.colors.shadowGlowPink};
+  background: ${({ theme }) => theme.colors.timelineDot};
+  box-shadow: ${({ theme }) => theme.colors.timelineDotShadow};
+  border: ${({ theme }) => theme.colors.timelineDotBorder};
   z-index: 2;
 
   /* Desktop: centred on line */

@@ -2,6 +2,7 @@ import { useLocation, Link } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import { FlaskConical } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { media } from '../../../media';
 
 const blink = keyframes`
   0%, 100% { opacity: 1;   }
@@ -12,18 +13,17 @@ const shimmer = keyframes`
   0%   { background-position: -200% 0; }
   100% { background-position:  200% 0; }
 `;
-
 const Banner = styled.div`
-  position: sticky;
+  position: sticky;      
   top: 0;
-  z-index: ${({ theme }) => theme.zIndex.navbar - 1};
+  z-index: ${({ theme }) => theme.zIndex.navbar - 1}; 
   display: flex;
   align-items: center;
   gap: 0.4rem 0.65rem;
   padding: 0.5rem 1.5rem;
   background: ${({ theme }) => theme.colors.demoAccentBg};
   border-bottom: 1px solid ${({ theme }) => theme.colors.demoAccentBorder2};
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 
   &::before {
     content: '';
@@ -34,8 +34,12 @@ const Banner = styled.div`
     background-size: 200% 100%;
     animation: ${shimmer} 3s linear infinite;
   }
-`;
 
+  ${media.tablet} {
+    padding: 0.4rem 1rem;
+    gap: 0.3rem 0.4rem;
+  }
+`;
 const Dot = styled.span`
   width: 7px; height: 7px;
   border-radius: 50%;
@@ -57,8 +61,24 @@ const Sub = styled.span`
   font-size: 0.75rem;
   color: ${({ theme }) => theme.colors.textSecondary};
   flex: 1;
-`;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
+  ${media.tablet} {
+    display: none;          /* hide the long text on mobile */
+  }
+`;
+const MobileSub = styled.span`
+  display: none;
+  font-size: 0.72rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  flex: 1;
+
+  ${media.tablet} {
+    display: block;
+  }
+`;
 const RealLink = styled(Link)`
   font-size: 0.72rem;
   font-weight: 600;
@@ -81,15 +101,17 @@ const DemoBanner = ({ variant = 'public' }) => {
   if (variant === 'public' && location.pathname.startsWith('/admin')) return null;
 
   return (
-    <Banner>
-      <FlaskConical size={13} style={{ opacity: 0.8, flexShrink: 0 }} />
-      <Dot />
-      <Label>Demo Mode</Label>
-      {variant === 'admin' ? (
-        <Sub>
-          You're managing sandbox data only — changes here won't affect the real portfolio.
-        </Sub>
-      ) : (
+  <Banner>
+    <FlaskConical size={13} style={{ opacity: 0.8, flexShrink: 0 }} />
+    <Dot />
+    <Label>Demo Mode</Label>
+    {variant === 'admin' ? (
+      <>
+        <Sub>You're managing sandbox data only — changes here won't affect the real portfolio.</Sub>
+        <MobileSub>Sandbox only</MobileSub>
+      </>
+    ) : (
+      <>
         <Sub>
           You're browsing demo content. Visit{' '}
           <RealLink to="https://dashanagrawal-portfolio-kappa-ten-93.vercel.app/" target="_blank" rel="noopener noreferrer">
@@ -97,9 +119,15 @@ const DemoBanner = ({ variant = 'public' }) => {
           </RealLink>
           {' '}to see the actual work.
         </Sub>
-      )}
-    </Banner>
-  );
+        <MobileSub>
+          <RealLink to="https://dashanagrawal-portfolio-kappa-ten-93.vercel.app/" target="_blank" rel="noopener noreferrer">
+            Real portfolio →
+          </RealLink>
+        </MobileSub>
+      </>
+    )}
+  </Banner>
+);
 };
 
 export default DemoBanner;

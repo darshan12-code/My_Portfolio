@@ -6,17 +6,17 @@ import RichEditor from '../ui/RichEditor';
 const VALIDATORS = {
   title: (v) => {
     if (!v?.trim()) return 'Title is required';
-    if (v.length > 200) return `Too long — ${v.length}/200 chars`;
+    if (v.length > 400) return `Too long — ${v.length}/200 chars`;
     return null;
   },
   excerpt: (v) => {
     if (!v?.trim()) return 'Excerpt is required';
-    if (v.length > 500) return `Too long — ${v.length}/500 chars`;
+    if (v.length > 1000) return `Too long — ${v.length}/500 chars`;
     return null;
   },
   summary: (v) => {
     if (!v?.trim()) return 'Summary is required';
-    if (v.length > 500) return `Too long — ${v.length}/500 chars`;
+    if (v.length > 1500) return `Too long — ${v.length}/500 chars`;
     return null;
   },
   category: (v) => {
@@ -44,12 +44,12 @@ export const validateForm = (formData, tab) => {
   if (tab === 'blogs') {
     if (!formData.title?.trim())
       errors.title = 'Title is required';
-    else if (formData.title.trim().length > 200)
+    else if (formData.title.trim().length > 400)
       errors.title = `Too long — ${formData.title.length}/200 chars`;
 
     if (!formData.excerpt?.trim())
       errors.excerpt = 'Excerpt is required';
-    else if (formData.excerpt.trim().length > 500)
+    else if (formData.excerpt.trim().length > 1000)
       errors.excerpt = `Too long — ${formData.excerpt.length}/500 chars`;
 
     if (!formData.category?.trim())
@@ -59,12 +59,12 @@ export const validateForm = (formData, tab) => {
   if (tab === 'cases') {
     if (!formData.title?.trim())
       errors.title = 'Title is required';
-    else if (formData.title.trim().length > 200)
+    else if (formData.title.trim().length > 400)
       errors.title = `Too long — ${formData.title.length}/200 chars`;
 
     if (!formData.summary?.trim())
       errors.summary = 'Summary is required';
-    else if (formData.summary.trim().length > 500)
+    else if (formData.summary.trim().length > 1500)
       errors.summary = `Too long — ${formData.summary.length}/500 chars`;
 
     if (!formData.category?.trim())

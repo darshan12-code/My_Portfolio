@@ -2,11 +2,13 @@
   "personalInfo": {
     "name": "Darshan",
     "lastName": "Agrawal",
-    "roles": [
-      "Full Stack Engineer",
-      "React + Python Developer",
-      "Remote-First Builder"
-    ],
+   "roles": [
+  "Full Stack Engineer",
+  "Frontend | Backend | Data Pipelines",
+  "React, Python & Cloud Builder",
+  "Data Viz & Systems Engineer",
+  "Remote-First Builder"
+],
     "bio": "Full Stack Engineer with 4+ years building performant, data-driven web apps. I specialize in React ecosystems and Python backends - from real-time KPI dashboards to automated data pipelines - with a sharp eye for clean code and intuitive design.",
     "email": "darshanagrawal007@gmail.com",
     "location": "India (Remote Worldwide)",
@@ -96,9 +98,9 @@
 
   "counters": [
     { "value": 4, "suffix": "+", "label": "Years Experience" },
-    { "value": 45, "suffix": "%", "label": "Load Time Reduced" },
-    { "value": 8, "suffix": "+", "label": "Projects Delivered" },
-    { "value": 70, "suffix": "%", "label": "Faster PDF Processing" }
+    { "value": 13, "suffix": "+", "label": "Projects Delivered" },
+  { "value": 30, "suffix": "+", "label": "UI Modules Built" },
+  { "value": 25, "suffix": "+", "label": "API Services Built" }
   ],
 
   "aboutTraits": [

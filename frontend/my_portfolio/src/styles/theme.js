@@ -99,25 +99,29 @@ const darkColors = {
   preTextMuted:   '#94A3B8',       
 
   demoAccent:         '#F97316',
-demoAccentLight:    '#FB923C',
-demoAccentGlow:     'rgba(249,115,22,0.20)',
-demoAccentBg:       'rgba(249,115,22,0.09)',
-demoAccentBg2:      'rgba(249,115,22,0.16)',
-demoAccentBorder:   'rgba(249,115,22,0.28)',
-demoAccentBorder2:  'rgba(249,115,22,0.18)',
-demoAccentFocus:    'rgba(249,115,22,0.12)',
-demoGradient:       'linear-gradient(135deg, #F97316 0%, #EF4444 100%)',
-demoGradientSoft:   'linear-gradient(90deg, rgba(249,115,22,0.15) 0%, rgba(239,68,68,0.10) 100%)',
+  demoAccentLight:    '#FB923C',
+  demoAccentGlow:     'rgba(249,115,22,0.20)',
+  demoAccentBg:       'rgba(249,115,22,0.09)',
+  demoAccentBg2:      'rgba(249,115,22,0.16)',
+  demoAccentBorder:   'rgba(249,115,22,0.28)',
+  demoAccentBorder2:  'rgba(249,115,22,0.18)',
+  demoAccentFocus:    'rgba(249,115,22,0.12)',
+  demoGradient:       'linear-gradient(135deg, #F97316 0%, #EF4444 100%)',
+  demoGradientSoft:   'linear-gradient(90deg, rgba(249,115,22,0.15) 0%, rgba(239,68,68,0.10) 100%)',
 
-// darkColors — keep as is or slightly boost:
-// techGradientSubtle: 'linear-gradient(90deg, rgba(6,182,212,0.14) 0%, rgba(139,92,246,0.14) 50%, rgba(236,72,153,0.14) 100%)',
-// techBorder:         'rgba(139, 92, 246, 0.35)',
-// techText:           '#C4B5FD',
+  // darkColors — keep as is or slightly boost:
+  // techGradientSubtle: 'linear-gradient(90deg, rgba(6,182,212,0.14) 0%, rgba(139,92,246,0.14) 50%, rgba(236,72,153,0.14) 100%)',
+  // techBorder:         'rgba(139, 92, 246, 0.35)',
+  // techText:           '#C4B5FD',
 
 
-techGradient:       'linear-gradient(90deg, #06B6D4 0%, #8B5CF6 50%, #EC4899 100%)',
-techGradientSubtle: 'linear-gradient(90deg, rgba(6,182,212,0.14) 0%, rgba(139,92,246,0.14) 50%, rgba(236,72,153,0.14) 100%)',
-techBorder:         'rgba(139, 92, 246, 0.35)',
+  techGradient:       'linear-gradient(90deg, #06B6D4 0%, #8B5CF6 50%, #EC4899 100%)',
+  techGradientSubtle: 'linear-gradient(90deg, rgba(6,182,212,0.14) 0%, rgba(139,92,246,0.14) 50%, rgba(236,72,153,0.14) 100%)',
+  techBorder:         'rgba(139, 92, 246, 0.35)',
+
+  timelineDot: '#FFFFFF',
+  timelineDotShadow: '0 0 8px 3px rgba(236, 72, 153, 0.6), 0 0 16px 2px rgba(167, 139, 250, 0.3)',
+  timelineDotBorder: 'none',
 };
 
 const lightColors = {
@@ -220,34 +224,39 @@ const lightColors = {
   preTextMuted:   '#4A5568',
 
 
-//demo
-demoAccent:         '#EA580C',
-demoAccentLight:    '#F97316',
-demoAccentGlow:     'rgba(234,88,12,0.18)',
-demoAccentBg:       'rgba(234,88,12,0.07)',
-demoAccentBg2:      'rgba(234,88,12,0.13)',
-demoAccentBorder:   'rgba(234,88,12,0.25)',
-demoAccentBorder2:  'rgba(234,88,12,0.16)',
-demoAccentFocus:    'rgba(234,88,12,0.10)',
-demoGradient:       'linear-gradient(135deg, #EA580C 0%, #DC2626 100%)',
-demoGradientSoft:   'linear-gradient(90deg, rgba(234,88,12,0.12) 0%, rgba(220,38,38,0.08) 100%)',
+  //demo
+  demoAccent:         '#EA580C',
+  demoAccentLight:    '#F97316',
+  demoAccentGlow:     'rgba(234,88,12,0.18)',
+  demoAccentBg:       'rgba(234,88,12,0.07)',
+  demoAccentBg2:      'rgba(234,88,12,0.13)',
+  demoAccentBorder:   'rgba(234,88,12,0.25)',
+  demoAccentBorder2:  'rgba(234,88,12,0.16)',
+  demoAccentFocus:    'rgba(234,88,12,0.10)',
+  demoGradient:       'linear-gradient(135deg, #EA580C 0%, #DC2626 100%)',
+  demoGradientSoft:   'linear-gradient(90deg, rgba(234,88,12,0.12) 0%, rgba(220,38,38,0.08) 100%)',
 
 
 
-// light:
+  // light:
 
-// techGradientSubtle: 'linear-gradient(90deg, rgba(6,182,212,0.15) 0%, rgba(139,92,246,0.15) 50%, rgba(236,72,153,0.15) 100%)',
-// techBorder:         'rgba(139, 92, 246, 0.40)',
-// techText:           '#5B21B6',
+  // techGradientSubtle: 'linear-gradient(90deg, rgba(6,182,212,0.15) 0%, rgba(139,92,246,0.15) 50%, rgba(236,72,153,0.15) 100%)',
+  // techBorder:         'rgba(139, 92, 246, 0.40)',
+  // techText:           '#5B21B6',
 
-// techGradientSubtle: 'linear-gradient(90deg, #E0F7FA 0%, #EDE9FE 50%, #FCE7F3 100%)',
-// techBorder:         '#A78BFA',  // solid purple border
-// techText:           '#5B21B6',  // deep purple text
+  // techGradientSubtle: 'linear-gradient(90deg, #E0F7FA 0%, #EDE9FE 50%, #FCE7F3 100%)',
+  // techBorder:         '#A78BFA',  // solid purple border
+  // techText:           '#5B21B6',  // deep purple text
 
 
-techGradient:       'linear-gradient(90deg, #0891B2 0%, #7C3AED 50%, #DB2777 100%)',
-techGradientSubtle: 'linear-gradient(90deg, #E0F7FA 0%, #EDE9FE 50%, #FCE7F3 100%)',
-techBorder:         '#A78BFA',
+  techGradient:       'linear-gradient(90deg, #0891B2 0%, #7C3AED 50%, #DB2777 100%)',
+  techGradientSubtle: 'linear-gradient(90deg, #E0F7FA 0%, #EDE9FE 50%, #FCE7F3 100%)',
+  techBorder:         '#A78BFA',
+
+
+  timelineDot: '#FFFFFF',
+  timelineDotShadow: '0 0 8px 3px rgba(236, 72, 153, 0.6), 0 0 16px 2px rgba(167, 139, 250, 0.3)',
+  timelineDotBorder: '2px solid rgba(236, 72, 153, 0.4)',
 };
 
 export const darkTheme = {
@@ -258,6 +267,10 @@ export const darkTheme = {
     body:    "'DM Sans', sans-serif",
     mono:    "'JetBrains Mono', monospace",
   },
+  sizes: {
+  navbarHeight: '64px',   // whatever your navbar height is
+  bannerHeight: '36px',   // matches your banner padding — adjust if needed
+},
   fontSizes: {
     heroName: 'clamp(3rem, 8vw, 7rem)',
     heroRole: 'clamp(1rem, 2.5vw, 1.5rem)',

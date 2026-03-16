@@ -31,7 +31,7 @@ import CustomCursor from "./components/ui/CustomCursor";
 import ComicGrid from "./components/effects/ComicGrid";
 import queryClient from "./services/queryClient";
 import GlobalStyles from "./styles/globalStyles";
-import DemoLanding from "./pages/DemoLanding";
+import DemoLogin from "./pages/DemoLogin";
 import { ToastProvider } from './components/ui/Toast';
 import DemoBanner from "./components/admin/DemoBanner";
 
@@ -72,7 +72,7 @@ const AnimatedRoutes = () => {
             />
 
             {/* Demo flow — visitors from your case study live link */}
-            <Route path="/demo" element={<DemoLanding />} />
+            <Route path="/demo" element={<DemoLogin />} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
@@ -99,7 +99,7 @@ const ThemedApp = () => {
         />
         <WaterWaves />
         <ScrollProgress />
-        <Navbar />
+          <Navbar />
          <DemoBanner variant="public" />
         <AnimatedRoutes />
         <Footer />

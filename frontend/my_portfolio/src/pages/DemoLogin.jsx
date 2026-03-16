@@ -4,6 +4,7 @@ import styled, { keyframes } from "styled-components";
 import { motion } from "framer-motion";
 import { FlaskConical, ArrowRight, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
+import { media } from "../../media";
 
 /* ── same scan line animation as AdminLogin ──────────────────── */
 const scanMove = keyframes`
@@ -18,14 +19,22 @@ const float = keyframes`
 
 /* ── layout — identical to AdminLogin ────────────────────────── */
 const Page = styled.div`
-  min-height: 100vh;
+  min-height: calc(100vh - 64px);   /* subtract navbar height */
+  margin-top: 64px;                  /* push below navbar */
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
   background: ${({ theme }) => theme.colors.gradientHero};
-`;
 
+  ${media.tablet} {
+    min-height: calc(100vh - 56px);  /* mobile navbar usually shorter */
+    margin-top: 56px;
+    padding: 1.5rem 1rem;
+    align-items: flex-start;         /* don't force center on small screens */
+    padding-top: 2rem;
+  }
+`;
 const Card = styled(motion.div)`
   position: relative;
   overflow: hidden;
@@ -36,9 +45,11 @@ const Card = styled(motion.div)`
   border: 1px solid ${({ theme }) => theme.colors.borderDefault};
   background: ${({ theme }) => theme.colors.bgSecondary};
   backdrop-filter: blur(20px);
+
+  ${media.tablet} {
+    padding: 1.75rem 1.5rem;   /* tighter on mobile */
+  }
 `;
-
-
 
 
 
@@ -52,8 +63,12 @@ const IconBox = styled(motion.div)`
   background: ${({ theme }) => theme.colors.demoGradient};
   border: 1px solid ${({ theme }) => theme.colors.demoAccentBorder};
   animation: ${float} 3s ease-in-out infinite;
-`;
 
+  ${media.tablet} {
+    width: 48px; height: 48px;   /* smaller on mobile */
+    margin-bottom: 0.75rem;
+  }
+`;
 // Badge — use demo tokens:
 const Badge = styled.span`
   font-size: 0.64rem;
@@ -164,18 +179,13 @@ const ScanLine = styled(motion.div)`
 `;
 
 
-
-
-
-
-
-
-
-
-
 const Header = styled(motion.div)`
   text-align: center;
   margin-bottom: 1.75rem;
+
+  ${media.tablet} {
+    margin-bottom: 1.25rem;
+  }
 `;
 
 /* ── glitch title — same keyframe trick as AdminLogin ─────────── */
@@ -313,7 +323,7 @@ const FinePrintLink = styled(Link)`
 const DEMO_EMAIL = "demo@portfoliolab.dev";
 const DEMO_PASS  = "demo1234";
 
-const DemoLanding = () => {
+const DemoLogin = () => {
   const { loginAsDemo, isDemo, demoSession } = useAuth();
   const navigate = useNavigate();
 
@@ -459,4 +469,4 @@ const DemoLanding = () => {
   );
 };
 
-export default DemoLanding;
+export default DemoLogin;
