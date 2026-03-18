@@ -92,7 +92,7 @@ const ThemedApp = () => {
         <NoiseOverlay />
         <ComicGrid />
         <FloatingShapes
-          mobileMode="gyro"
+          mobileMode="spin"
           gyroSensitivity={30}
           desktopSpin={false}
           desktopParallax={true}
