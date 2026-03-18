@@ -147,12 +147,12 @@ const CaseStudyDetails = () => {
 
         <LinkRow>
           {data.github_url && (
-            <LinkBtn href={data.github_url} target="_blank" rel="noreferrer">
+            <LinkBtn href={data.github_url} target="_blank" rel="noreferrer"  className="outline">
               <Github size={15} /> GitHub
             </LinkBtn>
           )}
           {data.live_url && (
-            <LinkBtn href={data.live_url} target="_blank" rel="noreferrer" className="outline">
+            <LinkBtn href={data.live_url} target="_blank" rel="noreferrer">
               <ExternalLink size={15} /> Live Site
             </LinkBtn>
           )}
