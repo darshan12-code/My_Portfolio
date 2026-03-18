@@ -283,7 +283,7 @@ const Hero = ({personalInfo}) => {
               View Work →
             </MagneticButton>
             <ResumeBtn
-              href="/resume.pdf"
+              href="/Darshan_Agrawal_Resume.pdf"
               download="Darshan_Agrawal_Resume.pdf"
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.97 }}
