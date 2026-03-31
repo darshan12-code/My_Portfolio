@@ -3,12 +3,12 @@
     "name": "Darshan",
     "lastName": "Agrawal",
    "roles": [
-  "Full Stack Engineer",
-  "Frontend | Backend | Data Pipelines",
-  "React, Python & Cloud Builder",
-  "Data Viz & Systems Engineer",
-  "Remote-First Builder"
-],
+      "Senior Full Stack Engineer",
+      "React · Flask · PostgreSQL · Cloud",
+      "Data Pipelines & Systems Builder",
+      "Remote-First · IST / US EST overlap",
+      "Frontend | Backend | Data Viz"
+    ],
     "bio": "Full stack engineer with 4+ years turning complex data and business requirements into products people actually use  from telecom KPI dashboards to automated data pipelines. I work across React, Node.js, Flask, and PostgreSQL, deploy on Azure, and care as much about clean architecture as I do about the experience on the other side of the screen. Quick to pick up new stacks, comfortable owning things end to end.",
     "email": "darshanagrawal007@gmail.com",
     "location": "India (Remote Worldwide)",
@@ -47,17 +47,29 @@
     { "name": "Docker", "icon": "SiDocker" },
     { "name": "Git", "icon": "SiGit" },
     { "name": "Jira", "icon": "SiJira" },
-    { "name": "Pandas", "icon": "SiPandas" }
+    { "name": "Pandas", "icon": "SiPandas" },
+    { "name": "FastAPI", "icon": "SiFastapi" },
+    { "name": "Redis", "icon": "SiRedis" },
+    { "name": "AWS", "icon": "SiAmazonaws" }
   ],
 
   "experience": [
     {
       "id": 1,
-      "role": "Full Stack Engineer",
+      "role": "Independent — Building & Consulting",
+      "company": "Self-directed",
+      "location": "Remote",
+      "period": "Jan 2026 – Present",
+      "description": "Built AlgoSensei — an AI-powered DSA and interview prep platform (React, Node.js, Groq/Llama 3.3) shipped end-to-end in 4 weeks. Solved Groq SDK streaming limitations by architecting separate handlers for conversational and structured JSON responses.",
+      "tech": ["React", "Node.js", "MongoDB", "Groq SDK", "Express.js"]
+    },
+    {
+      "id": 2,
+      "role": "Senior Software Engineer (Full Stack)",
       "company": "Rhombuz",
       "location": "Remote — Seattle, USA",
       "period": "Feb 2023 – Jan 2026",
-      "description": "Led full-stack delivery of a real-time KPI dashboard visualizing 26 metrics with D3.js graphs. Automated telecom data workflows processing 16+ public records, cutting PDF processing time by 70%. Optimized API performance, reduced query latency, and mentored junior developers.",
+      "description": "Reduced average API response time by 30% by profiling slow queries and restructuring Flask endpoints. Designed and shipped a 26-metric KPI dashboard used daily by executives — PostgreSQL schema, Flask APIs, and React + D3.js frontend. Built a multi-service pipeline (Azure Data Factory → Databricks → PostgreSQL → Flask → React) and automating 75% of manual extraction work and cutting PDF processing time by 70%. Mentored 4–6 junior engineers to independent production delivery.",
       "tech": [
         "React",
         "Python",
@@ -70,8 +82,8 @@
       ]
     },
     {
-      "id": 2,
-      "role": "Frontend Engineer",
+      "id": 3,
+      "role": "Software Engineer (Frontend)",
       "company": "Rhombuz",
       "location": "Remote — Seattle, USA",
       "period": "Dec 2021 – Jan 2023",
@@ -86,7 +98,7 @@
       ]
     },
     {
-      "id": 3,
+      "id": 4,
       "role": "System Engineer Intern",
       "company": "Western Coalfields Ltd.",
       "location": "Chandrapur, India",
