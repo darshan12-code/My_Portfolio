@@ -56,12 +56,12 @@
   "experience": [
     {
       "id": 1,
-      "role": "Independent — Building & Consulting",
-      "company": "Self-directed",
+      "role": "Freelance Full Stack Engineer",
+      "company": "Independent Consulting",
       "location": "Remote",
-      "period": "Jan 2026 – Present",
-      "description": "Built AlgoSensei — an AI-powered DSA and interview prep platform (React, Node.js, Groq/Llama 3.3) shipped end-to-end in 4 weeks. Solved Groq SDK streaming limitations by architecting separate handlers for conversational and structured JSON responses.",
-      "tech": ["React", "Node.js", "MongoDB", "Groq SDK", "Express.js"]
+      "period": "February 2026 – Present",
+      "description": "Delivered contract based software engineering solutions for referral based and local clients. Built frontend applications, backend services, APIs, and database architectures based on project requirements while collaborating directly with stakeholders to define and implement technical solutions.",
+      "tech": ["React", "JavaScript","Next.js" ,"Node.js", "Python", "D3.js","PostgreSQL","MySQL","MongoDB", "LLM API Integration", "Express.js", "REST APIs"]
     },
     {
       "id": 2,
