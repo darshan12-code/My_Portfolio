@@ -481,8 +481,8 @@ Check that public routes (`GET /portfolio/blogs`, `GET /portfolio/case-studies`)
 The demo account lets you explore the full admin panel — create, edit, and delete content — without touching any live portfolio data.
 
 ```
-URL:      https://dashanagrawal-portfolio-kappa-ten-93.vercel.app/demo
-Email:    demo@portfolio.com
+URL:      https://dashanagrawal-portfolio.vercel.app/demo
+Email:    demo@portfoliolab.dev
 Password: demo1234
 ```
 
